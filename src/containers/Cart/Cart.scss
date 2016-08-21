@@ -1,0 +1,163 @@
+.headline {
+  text-align: center;
+  margin-top: 46px;
+  margin-bottom: 48px;
+  padding-left: 28px;
+  padding-right: 28px;
+}
+
+.checkoutBox {
+    padding: 48px 0 48px;
+    background-color: #fff;
+}
+
+.section {
+    margin-left: 48px;
+    margin-right: 48px;
+}
+
+.cart {
+    padding: 0 0 0 0px;
+    font-size: 14px;
+}
+.cart .title {
+    height: 38px;
+    padding: 0 24px;
+    //background: #E6E7E8;
+    border-bottom: 1px solid #E1E1E1;
+    line-height: 38px;
+    color: #666;
+}
+
+.cart .title span{
+    float: right;
+    text-align: center;
+}
+
+.cart .title .checkbox {
+    width: 152px;
+    float: left;
+    text-align: left;
+}
+
+.cart .title .name {
+    float: left;
+    text-align: left;
+}
+
+.cart .title .operation {
+    width: 152px;
+    padding-right: 30px;
+    text-align: right;
+}
+
+.cart .title .subtotal {
+    width: 152px;
+    padding-right: 30px;
+    text-align: right;
+}
+
+.cart .title .num {
+    width: 152px;
+    padding-right: 30px;
+    text-align: right;
+}
+
+.cart .title .price {
+    width: 152px;
+    padding-right: 30px;
+    text-align: right;
+}
+
+.cart .items {
+    padding: 0 24px;
+    border-bottom: 1px solid #E1E1E1;
+    height: 120px;
+}
+
+.cart .items .checkbox {
+    margin-top: 20px;
+    //border: 1px solid #F0F0F0;
+    width: 78px;
+    height: 78px;
+    line-height: 110px;
+    border-radius: 4px;
+    float: left;
+}
+
+.cart .items .itemThump {
+    margin-top: 20px;
+    //border: 1px solid #F0F0F0;
+    width: 78px;
+    height: 78px;
+    border-radius: 4px;
+    float: left;
+}
+
+.cart .items .itemDesc {
+    width: 315px;
+    margin-left: 21px;
+    line-height: 110px;
+    float: left;
+}
+
+.cart .items span{
+    float: right;
+    text-align: center;
+}
+
+.cart .items .operation {
+    width: 152px;
+    padding-right: 30px;
+    line-height: 110px;
+    text-align: right;
+}
+
+.cart .items .subtotal {
+    width: 152px;
+    padding-right: 30px;
+    line-height: 110px;
+    text-align: right;
+}
+
+.cart .items .num {
+    width: 152px;
+    padding-right: 30px;
+    line-height: 110px;
+    text-align: right;
+}
+
+.cart .items .price {
+    padding-right: 30px;
+    line-height: 110px;
+    text-align: right;
+}
+
+.cart .summary {
+    padding: 0 24px;
+    border-bottom: 1px solid #E1E1E1;
+    height: 120px;
+}
+
+.cart .summary .total{
+    padding-right: 30px;
+    line-height: 110px;
+    text-align: right;
+    float: right;
+}
+
+.cart .summary .submitButton{
+    width: 152px;
+    padding-right: 30px;
+    line-height: 110px;
+    text-align: right;
+    float: right;
+}
+
+.cart .summary .total span{
+    width: 152px;
+    padding-right: 30px;
+    line-height: 110px;
+    text-align: right;
+    float: right;
+}

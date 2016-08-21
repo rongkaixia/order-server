@@ -1,0 +1,65 @@
+.buyNecklacePage {
+  input {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  form {
+    margin: 30px 0;
+    :global(.btn) {
+      margin-left: 10px;
+    }
+  }
+}
+
+.headline {
+  text-align: center;
+  margin-top: 46px;
+  margin-bottom: 48px;
+  padding-left: 28px;
+  padding-right: 28px;
+}
+
+.paymentBox {
+    padding: 48px 0 48px;
+    background-color: #fff;
+}
+
+.payInfo {
+    margin-left: 48px;
+    margin-right: 48px;
+    border: 1px solid #e0e0e0;
+    height: 160px;
+}
+
+.payInfo .success {
+    float: left;
+    line-height: 160px;
+    padding-left: 20px;
+    width: 15%;
+}
+
+.payInfo h3 {    
+    padding-bottom: 20px;
+    line-height: 36px;
+    font-size: 36px;
+    color: #212121;
+}
+
+.payInfo .comment {
+    line-height: 28px;
+    font-size: 16px;
+}
+
+.payMethod {
+    margin-left: 48px;
+    margin-right: 48px;
+    margin-top: 48px;
+    // border: 1px solid #e0e0e0;
+    height: 160px;
+}
+
+.payMethod .tab-content{
+    border: 1px solid #e0e0e0;
+    height: 160px;
+}

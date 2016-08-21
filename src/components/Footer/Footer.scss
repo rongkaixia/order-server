@@ -1,0 +1,38 @@
+dt {
+	color: #424242;
+	font-size: 18px;
+	padding: 0 0 13px;
+}
+
+dd {
+	float: left;
+	color: #757575;
+	font-size: 14px;
+	padding: 6px 0;
+	line-height: 1;
+	width: 173px;
+}
+
+.copyright {
+  clear: both;
+  color: #434d55;
+  font-size: 12px;
+  padding: 10px 0 10px;
+  h2, h3 {
+    height: 15px;
+    line-height: 15px;
+    color: #757575;
+    font-size: 100%;
+    font-weight: 400;
+  }
+  h4 {
+		clear: both;
+    padding: 10px 0 0;
+    font-size: 100%;
+    font-weight: 400;
+    color: #bdbdbd;
+    font-size: 12px;
+    height: 12px;
+    line-height: 1;
+  }
+}

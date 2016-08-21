@@ -1,0 +1,116 @@
+.buyNecklacePage {
+  input {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  form {
+    margin: 30px 0;
+    :global(.btn) {
+      margin-left: 10px;
+    }
+  }
+}
+
+.headline {
+  text-align: center;
+  margin-top: 46px;
+  margin-bottom: 48px;
+  padding-left: 28px;
+  padding-right: 28px;
+}
+
+.gridItem {
+  // text-align: center;
+  //padding-bottom: 32px;
+  vertical-align: top;
+  margin-top: 46px;
+  margin-bottom: 48px;
+}
+
+.selectionImage {
+    margin: 0;
+    width: 40%;
+    padding-left: 30px;
+    height: 100%;
+    float: left;
+}
+
+.productSelectionArea {
+  display: inline-block;
+  vertical-align: middle;
+  //width: 40%;
+  width: 410px;
+  height: 100%;
+  float: left;
+}
+
+.productSelectionArea .introductionTitle {
+  position: relative;
+  overflow: hidden;
+  width: 460px;
+  margin: -7px 0 14px;
+  font-size: 30px;
+  line-height: 1;
+  color: #000;
+}
+
+.productSelectionArea .introductionSummary {
+    padding: 0 0 28px;
+    // border-bottom: 1px solid #E0E0E0;
+    color: #999;
+}
+
+.productSelectionArea .subTitle {
+    height: 14px;
+    padding: 20px 0 20px;
+    line-height: 14px;
+    font-size: 14px;
+    font-family: Arial,'Hiragino Sans GB',STHeiti,'STHeiti Light [STXihei]','Microsoft Yahei',sans-serif;
+    color: #585858;
+    border-top: 1px solid #E0E0E0;
+}
+
+.productSelectionArea .chooseOption {
+    height: 60px;
+}
+
+.productSelectionArea ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.productSelectionArea .chooseOption li:first-child {
+    margin: 0;
+}
+
+.productSelectionArea .chooseOption li {
+    float: left;
+    position: relative;
+    width: 134px;
+    height: 54px;
+    padding: 2px;
+    margin-left: 20px;
+    background: #FFF;
+    border: 1px solid #dbdbdb;
+    border-radius: 6px;
+    color: #000;
+    line-height: 54px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    -moz-transition: box-shadow .15s linear;
+    -webkit-transition: box-shadow .15s linear;
+    transition: box-shadow .15s linear;
+    -moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.productSelectionArea .chooseOptionComment {
+  width: auto;
+  padding: 10px 0 10px;
+  color: #999;
+  // border-bottom: 1px solid #EEE;
+}

@@ -1,0 +1,180 @@
+.buyNecklacePage {
+  input {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  form {
+    margin: 30px 0;
+    :global(.btn) {
+      margin-left: 10px;
+    }
+  }
+}
+
+.headline {
+  text-align: center;
+  margin-top: 46px;
+  margin-bottom: 48px;
+  padding-left: 28px;
+  padding-right: 28px;
+}
+
+.orderDetailBox {
+    //padding: 48px 0 48px;
+    background-color: #fff;
+}
+
+.section {
+    margin-left: 48px;
+    margin-right: 48px;
+}
+
+.sectionHeader {
+    float: left;
+    width: 90%;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 10px;
+}
+
+.section .sectionHeader .operation {
+    padding-top: 10px;
+    padding-right: 30px;
+    vertical-align: top;
+    float: right;
+}
+
+.section .sectionHeader .title {
+    float: left;
+    color: #333;
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: normal;
+}
+
+.section .sectionHeader .modify {
+    float: left;
+    color: #32a0e8;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: normal;
+    padding-left: 8px;
+}
+
+
+.sectionBody {
+    float: left;
+    width: 90%;
+}
+
+.section .sectionBody table{
+    color: #757575;
+}
+
+.section .sectionBody th{
+    padding: 3px;
+}
+
+.shoppingList {
+    padding: 0 0 0 0px;
+    font-size: 14px;
+}
+.shoppingList .title {
+    height: 38px;
+    padding: 0 24px;
+    //background: #E6E7E8;
+    border-bottom: 1px solid #E1E1E1;
+    line-height: 38px;
+    color: #666;
+}
+
+.shoppingList .title span{
+    float: right;
+    text-align: center;
+}
+
+.shoppingList .title .name {
+    float: left;
+    text-align: left;
+}
+
+.shoppingList .title .subtotal {
+    width: 152px;
+    padding-right: 30px;
+    text-align: right;
+}
+
+.shoppingList .title .num {
+    width: 152px;
+    padding-right: 30px;
+    text-align: right;
+}
+
+.shoppingList .title .price {
+    width: 152px;
+    padding-right: 30px;
+    text-align: right;
+}
+
+.shoppingList .items {
+    padding: 0 24px;
+    border-bottom: 1px solid #E1E1E1;
+    height: 120px;
+}
+
+.shoppingList .items .itemThump {
+    margin-top: 20px;
+    //border: 1px solid #F0F0F0;
+    width: 78px;
+    height: 78px;
+    border-radius: 4px;
+    float: left;
+}
+
+.shoppingList .items .itemDesc {
+    width: 315px;
+    margin-left: 21px;
+    line-height: 110px;
+    float: left;
+}
+
+.shoppingList .items span{
+    float: right;
+    text-align: center;
+}
+
+.shoppingList .items .subtotal {
+    width: 152px;
+    padding-right: 30px;
+    line-height: 110px;
+    text-align: right;
+}
+
+.shoppingList .items .num {
+    width: 152px;
+    padding-right: 30px;
+    line-height: 110px;
+    text-align: right;
+}
+
+.shoppingList .items .price {
+    width: 152px;
+    padding-right: 30px;
+    line-height: 110px;
+    text-align: right;
+}
+
+.shoppingList .summary {
+    padding: 0 24px;
+    border-bottom: 1px solid #E1E1E1;
+    height: 120px;
+}
+
+.shoppingList .summary .total{
+    width: 152px;
+    padding-right: 30px;
+    line-height: 110px;
+    text-align: right;
+    float: right;
+}
+

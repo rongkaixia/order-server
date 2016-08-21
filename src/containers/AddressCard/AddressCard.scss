@@ -1,0 +1,17 @@
+.AddressCard {
+	float: left;
+}
+
+.addressItem {
+    float: left;
+    // margin-left: 17px;
+    // margin-bottom: 24px;
+    margin: 5px;
+    width: 268px;
+    height: 178px;
+    //border: 1px solid #e0e0e0;
+    cursor: pointer;
+    position: relative;
+    -webkit-transition: all .4s ease;
+    transition: all .4s ease;
+}

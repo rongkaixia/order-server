@@ -1,0 +1,241 @@
+syntax = "proto3";
+
+package com.echo;
+
+// ./scalapbc-0.5.26/bin/scalapbc protocol/protocol.proto --scala_out=./src/main/scala/
+// ./lib/protoc-3.0.0-beta-3-osx-x86_64/protoc --js_out=import_style=commonjs,binary:. ./lib/protocol/protocol.proto
+enum MsgType{
+  MSG_TYPE_EMPTY = 0x00000000; // due to the bug of scalapbc, do not use EMPTY in your code
+
+  SIGNUP_REQUEST = 0x00000001;
+  LOGIN_REQUEST = 0x00000002;
+  AUTHENTICATION_REQUEST = 0x00000003;
+
+  SIGNUP_RESPONSE = 0x00010000;
+  LOGIN_RESPONSE = 0x00010001;
+  AUTHENTICATION_RESPONSE = 0x00010002;
+}
+
+enum LoginType{
+  LOGIN_TYPE_EMPTY = 0x00000000; // due to the bug of scalapbc, do not use EMPTY in your code
+
+  LOGIN_BY_PHONENUM = 0x00000001;
+  LOGIN_BY_EMAIL = 0x00000002;
+
+  LOGIN_BY_WECHAT = 0x00000003;
+  LOGIN_BY_WEIBO = 0x00000004;
+}
+
+enum AuthType{
+  AUTH_TYPE_EMPTY = 0x00000000; // due to the bug of scalapbc, do not use EMPTY in your code
+
+  LOCAL = 0x00000001;
+  WECHAT = 0x00000002;
+  WEIBO = 0x00000003;
+}
+
+message UserAddress{
+  string id = 1;
+  string recipients_name = 2;
+  string recipients_phone = 3;
+  string recipients_address = 4;
+  string recipients_postcode = 5;
+}
+
+message SecurityQuestionPair{
+  string question = 1;
+  string answer = 2;
+}
+
+message Request{
+  oneof content {
+    SignupRequest signup_request = 1001;
+    LoginRequest login_request = 1002;
+    AuthenticationRequest authentication_request = 1003;
+    LogoutRequest logout_request = 1004;
+    QueryUserInfoRequest query_user_info_request = 1005;
+    UpdateUserInfoRequest update_user_info_request = 1006;
+
+    AddUserAddressRequest add_user_address_request = 1100;
+    UpdateUserAddressRequest update_user_address_request = 1101;
+    DeleteUserAddressRequest delete_user_address_request = 1102;
+  }
+
+  message SignupRequest{
+    string phonenum = 1;
+    string password = 2;
+  }
+
+  message LoginRequest{
+    oneof name{
+      string phonenum = 1;
+      string email = 2;
+    }
+    string password = 10;
+  }
+
+  message AuthenticationRequest{
+    string token = 1;
+    // AuthType auth_name = 2;
+  }
+
+  message LogoutRequest{
+    string token = 1;
+    // AuthType auth_name = 2;
+  }
+
+  message QueryUserInfoRequest{
+    string token = 1;
+
+    bool query_user_id = 2;
+    bool query_username = 3;
+    bool query_email = 4;
+    bool query_phonenum = 5;
+    bool query_security_questions = 6;
+    bool query_addresses = 7;
+  }
+
+  message UpdateUserInfoRequest{
+    string token = 1;
+    repeated UpdateData data = 2;
+
+    message UpdateData{
+      oneof value{
+        string username = 1;
+        string password = 2;
+        string email = 3;
+        string phonenum = 4;
+        SecurityQuestionPair security_question1 = 5;
+        SecurityQuestionPair security_question2 = 6;
+        SecurityQuestionPair security_question3 = 7;
+      }
+    }
+  }
+
+  message AddUserAddressRequest{
+    string token = 1;
+    string recipients_name = 3;
+    string recipients_phone = 4;
+    string recipients_address = 5;
+    string recipients_postcode = 6;
+  }
+
+  message UpdateUserAddressRequest{
+    string token = 1;
+    string id = 2;
+    string recipients_name = 3;
+    string recipients_phone = 4;
+    string recipients_address = 5;
+    string recipients_postcode = 6;
+  }
+
+  message DeleteUserAddressRequest{
+    string token = 1;
+    string id = 2;
+  }
+}
+
+enum ResultCode{
+  SUCCESS = 0;
+
+  INTERNAL_SERVER_ERROR = 10000;
+
+  // message error
+  REQUEST_RESOURCE_NOT_FOUND = 10001;
+  METHOD_NOT_ALLOW = 10002;
+  MESSAGE_TYPE_ERROR = 10003;
+  INVALID_MESSAGE = 10004;
+
+  // signin or signup error
+  INVALID_PHONENUM = 20001;
+  INVALID_EMAIL = 20002;
+  PHONENUM_ALREADY_EXISTED = 20005;
+  EMAIL_ALREADY_EXISTED = 20006;
+  INVALID_PASSWORD = 20011;
+
+  // auth error
+  INVALID_SESSION_TOKEN = 30001;
+  SESSION_TOKEN_EXPIRED = 30002;
+
+  // form authentication error
+  INVALID_FROM_TOKEN = 40001;
+  EXPIRED_FROM_TOKEN = 40002;
+
+  // update error
+  ILLEGAL_ARGUMENT = 50001;
+}
+
+message Response{
+  ResultCode result = 1;
+  string error_description = 2;
+
+  oneof content {
+    SignupResponse signup_response = 1001;
+    LoginResponse login_response = 1002;
+    AuthenticationResponse authentication_response = 1003;
+    LogoutResponse logout_response = 1004;
+    QueryUserInfoResponse query_user_info_response = 1005;
+    UpdateUserInfoResponse update_user_info_response = 1006;
+
+    AddUserAddressResponse add_user_address_reponse = 1100;
+    UpdateUserAddressResponse update_user_address_reponse = 1101;
+    DeleteUserAddressResponse delete_user_address_reponse = 1102;
+  }
+    
+  message SignupResponse{
+    string token = 2;
+    int32 expires_in = 3;
+    string user_id = 4;
+    string username = 5;
+  }
+
+  message LoginResponse{
+    string token = 2;
+    int32 expires_in = 3;
+    string user_id = 4;
+    string username = 5;
+  }
+
+  message AuthenticationResponse{
+    bool is_expired = 2;
+    int32 expires_in = 3;
+    string user_id = 4;
+    string username = 5;
+  }
+
+  message LogoutResponse{
+  }
+
+  message QueryUserInfoResponse{
+    string user_id = 2;
+    string username = 3;
+    string email = 4;
+    string phonenum = 5;
+    SecurityQuestionPair security_question1 = 6;
+    SecurityQuestionPair security_question2 = 7;
+    SecurityQuestionPair security_question3 = 8;
+    repeated UserAddress addressArray = 20;
+  }
+
+  message UpdateUserInfoResponse{
+  }
+
+  message AddUserAddressResponse{
+  }
+
+  message UpdateUserAddressResponse{
+  }
+
+  message DeleteUserAddressResponse{
+  }
+
+}
+
+message Message{
+  MsgType msg_type = 1; // useless for REST-ful API
+
+  oneof body{
+    Request request = 1001;
+    Response response = 1002;
+  }
+}

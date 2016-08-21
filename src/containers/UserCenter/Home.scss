@@ -1,0 +1,44 @@
+.userCenterPage {
+  input {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  form {
+    margin: 30px 0;
+    :global(.btn) {
+      margin-left: 10px;
+    }
+  }
+}
+
+.userInfoPanel, .userOrderPanel {
+  float: left;
+  width: 100%;
+  padding-left: 30px;
+}
+
+.userInfoPanel {
+  height: 20%;
+}
+
+.userOrderPanel {
+  height: 80%;
+}
+
+.userInfoWelcome .userInfoDesc {
+  float: left;
+  height: 100%;
+}
+
+.userInfoWelcome {
+  width: 30%;
+}
+
+.userInfoDesc {
+  width: 70%;
+}
+
+.boxBackground {
+  background-color: rgba(245, 240, 240, 0);
+}
