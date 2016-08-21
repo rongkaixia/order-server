@@ -11,7 +11,6 @@ import Tabs from 'react-bootstrap/lib/Tabs';
 import Tab from 'react-bootstrap/lib/Tab';
 import { routeActions } from 'react-router-redux';
 import * as userAction from 'redux/modules/userInfo';
-import {AddressCard} from 'containers';
 
 
 // TODO: 增加错误展示界面，监听loadInfo的错误

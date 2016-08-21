@@ -10,7 +10,6 @@ import Button from 'react-bootstrap/lib/Button';
 import { routeActions } from 'react-router-redux';
 import * as shopAction from 'redux/modules/shop';
 import * as userAction from 'redux/modules/userInfo';
-import {AddressCard} from 'containers';
 
 
 // TODO: 增加错误展示界面，监听loadInfo的错误

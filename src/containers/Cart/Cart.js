@@ -10,7 +10,6 @@ import Button from 'react-bootstrap/lib/Button';
 import { routeActions } from 'react-router-redux';
 import * as shopAction from 'redux/modules/shop';
 import * as userAction from 'redux/modules/userInfo';
-import {AddressCard} from 'containers';
 
 
 // TODO: 增加错误展示界面，监听loadInfo的错误
@@ -46,17 +45,6 @@ export default class UserCenter extends Component {
     const {user} = this.props;
     const styles = require('./Cart.scss');
     const imagePath = require('../../../static/diaozhui80X80.jpg');
-    let addressCards = [];
-    if (user.addressarrayList) {
-      user.addressarrayList.forEach((address) => {
-        addressCards.push(
-          <AddressCard address={address}/>
-        );
-      })
-    }
-    addressCards.push(
-      <AddressCard />
-    );
     return (
       <div className={styles.checkoutBox}>
 

@@ -63,7 +63,6 @@ export default (store) => {
   /**
    * Please keep routes in alphabetical order
    */
-  // TODO: 把UserCenter改成跟App类似的结构
   return (
     <Route path="/" component={App}>
       { /* Home (main) route */ }
@@ -82,12 +81,12 @@ export default (store) => {
           <Route path="address" component={AccountAddress}/>
           <Route path="coupon" component={AccountCoupon}/>
         </Route>
+        <Route path="buy/checkout/:id" component={Checkout}/>
+        <Route path="buy/payment" component={Payment}/>
       </Route>
       <Route path="necklace" component={Necklace}/>
       <Route path="shop/buy-necklace/:id" component={BuyNecklace}/>
       <Route path="cart" component={Cart}/>
-      <Route path="buy/checkout/:id" component={Checkout}/>
-      <Route path="buy/payment" component={Payment}/>
       { /* Routes */ }
       <Route onEnter={requireNotLogin}>
         <Route path="login" component={Login}/>
