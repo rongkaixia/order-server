@@ -11,6 +11,7 @@ import userInfo from './userInfo';
 import csrf from './csrf';
 import widgets from './widgets';
 import shop from './shop';
+import order from './order';
 
 // console.log("formAuth: " + formAuth);
 // console.log("auth: " + auth);
@@ -22,6 +23,7 @@ export default combineReducers({
   form,
   csrf,
   shop,
+  order,
   multireducer: multireducer({
     counter1: counter,
     counter2: counter,

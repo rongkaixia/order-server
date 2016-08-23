@@ -15,3 +15,96 @@
     -webkit-transition: all .4s ease;
     transition: all .4s ease;
 }
+
+.orderAddress {
+    position: relative;
+    //padding: 0 40px 40px;
+    margin-bottom: 10px;
+
+    .orderAddressCheckbox.checked {
+        padding: 0 15px;
+        border: 2px solid #00c3f5;
+    }
+
+    .orderAddressCheckbox {
+        float: left;
+        position: relative;
+        width: 275px;
+        height: 144px;
+        border: 1px solid #e4e4e4;
+        cursor: pointer;
+        margin: 0 0 30px 12px;
+        padding: 1px 16px;
+        transition: border-color .8s;
+
+        .orderAddressCheckboxTop {
+            font-size: 12px;
+            padding-top: 15px;
+            height: 40px;
+            border-bottom: 1px solid #e4e4e4;
+            font-weight: bolder; 
+            .orderAddressCheckboxName {
+                float: left;
+                width: 125px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .orderAddressCheckboxPhone {
+                float: right;
+            }
+        }
+
+        .orderAddressCheckboxContent {
+            padding-top: 10px;
+            word-break: break-all;
+            word-wrap: break-word;
+            font-size: 12px;
+            height: 70px;
+            overflow: hidden;
+            color: #515151;
+        }
+
+        .orderAddressCheckboxChecked {
+            display: none;
+            position: absolute;
+            overflow: hidden;
+            right: 0;
+            bottom: 0;
+            width: 30px;
+            height: 30px;
+        }
+
+        .orderAddressCheckboxCtrl {
+            position: absolute;
+            opacity: 0;
+            filter: alpha(opacity=0);
+            // bottom: -20px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            font-size: 14px;
+            padding-top: 5px;
+            color: #00c3f5;
+            .edit{
+                float: right;
+                margin-right: 10px;
+            }
+
+            .delete{
+                float: right;
+                margin-right: 10px;
+            }
+        }
+
+        &:hover{
+            .orderAddressCheckboxCtrl{
+                opacity: 1;
+            }
+        }
+    }
+
+}
+
+

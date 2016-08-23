@@ -1,12 +1,14 @@
 import { createStore as _createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
 import createMiddleware from './middleware/clientMiddleware';
 import { syncHistory } from 'react-router-redux';
 
-export default function createStore(history, client, data) {
+export default function createStore(history, client, data, thunkArgs) {
   // Sync dispatched route actions to the history
   const reduxRouterMiddleware = syncHistory(history);
 
-  const middleware = [createMiddleware(client), reduxRouterMiddleware];
+  console.log("thunkArgs: " + JSON.stringify(thunkArgs));
+  const middleware = [createMiddleware(client), reduxRouterMiddleware, thunk.withExtraArgument({...thunkArgs})];
 
   let finalCreateStore;
   if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {

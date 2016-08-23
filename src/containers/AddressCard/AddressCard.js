@@ -30,6 +30,7 @@ const customStyles = {
 export default class AccountAddress extends Component {
   static propTypes = {
     address: PropTypes.object,
+    checked: PropTypes.object,
     addressForm: PropTypes.object,
     authKey: PropTypes.string.isRequired,
     loadInfo: PropTypes.func.isRequired,
@@ -204,35 +205,69 @@ export default class AccountAddress extends Component {
 
   render() {
     const styles = require('./AddressCard.scss');
-    const {address} = this.props;
+    console.log(styles);
+    const {address, checked} = this.props;
     const addressModal = this.renderAddressModal(address);
     const deleteAddressModal = this.renderDeleteAddressModal(address);
     const plusIconPath = require('./plus.png');
     console.log("plusIconPath: " + plusIconPath);
     const addressId = address ? address.id : null
 
-          // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
     return (
-        <div className={styles.addressItem}>
-          <div className={"panel panel-default"} style={{height: '100%'}} onClick={this.openUpdateModal.bind(this)}>
-            {!address &&
-            <div style={{'padding-left': '35%', 'padding-top': '20%'}}>
-              <Image href="#" alt="25x25 pull-xs-left" src={plusIconPath} responsive rounded/>
-            </div>}
-            {address &&
-            <div className={"panel-heading"} style={{height: '20%'}}>
-              <input name="utf8" ref="addressId" type="hidden" value={addressId} />
-              <span>{address.recipientsName}</span><span>{address.recipientsPhone}</span>
-            </div>}
-            {address &&
-            <div className={"panel-body"} style={{height:'70%'}}>
-              {address.recipientsAddress}
-            </div>}
-            {address && <div class="panel-footer" style={{height:'10%'}}><span onClick={this.openDeleteModel.bind(this)}>删除</span></div>}
-          </div>
-          {addressModal}
-          {deleteAddressModal}
+      <div className={styles.orderAddress}>
+        <div className={checked ? styles.orderAddressCheckbox + ' ' + styles.checked : styles.orderAddressCheckbox}>
+          {address &&
+          <div className={styles.orderAddressCheckboxTop}>
+            <div className={styles.orderAddressCheckboxName}>{address.recipientsName}</div>
+            <div className={styles.orderAddressCheckboxPhone}>{address.recipientsPhone}</div>
+          </div>}
+          {address &&
+          <div className={styles.orderAddressCheckboxContent}>
+          {address.recipientsAddress}
+          </div>}
+          {address && checked &&
+          <div className={styles.orderAddressCheckboxCtrl}>
+            <div className={styles.edit} onClick={this.openUpdateModal.bind(this)}>修改</div>
+            <div className={styles.edit} onClick={this.openDeleteModel.bind(this)}>删除</div>
+          </div>}
         </div>
+        {addressModal}
+        {deleteAddressModal}
+      </div>
     );
   }
+
+  // render() {
+  //   const styles = require('./AddressCard.scss');
+  //   const {address} = this.props;
+  //   const addressModal = this.renderAddressModal(address);
+  //   const deleteAddressModal = this.renderDeleteAddressModal(address);
+  //   const plusIconPath = require('./plus.png');
+  //   console.log("plusIconPath: " + plusIconPath);
+  //   const addressId = address ? address.id : null
+
+  //   return (
+  //       <div className={styles.addressItem}>
+  //         <div className={"panel panel-default"} style={{height: '100%'}} onClick={this.openUpdateModal.bind(this)}>
+  //           {!address &&
+  //           <div style={{'padding-left': '35%', 'padding-top': '20%'}}>
+  //             <Image href="#" alt="25x25 pull-xs-left" src={plusIconPath} responsive rounded/>
+  //           </div>}
+  //           {address &&
+  //           <div className={"panel-heading"} style={{height: '20%'}}>
+  //             <input name="utf8" ref="addressId" type="hidden" value={addressId} />
+  //             <span>{address.recipientsName}</span><span>{address.recipientsPhone}</span>
+  //           </div>}
+  //           {address &&
+  //           <div className={"panel-body"} style={{height:'70%'}}>
+  //             {address.recipientsAddress}
+  //           </div>}
+  //           {address && <div class="panel-footer" style={{height:'10%'}}><span onClick={this.openDeleteModel.bind(this)}>删除</span></div>}
+  //           {address && <div class="panel-footer" style={{height:'10%'}}><span onClick={this.openUpdateModal.bind(this)}>修改</span></div>}
+  //         </div>
+  //         {addressModal}
+  //         {deleteAddressModal}
+  //       </div>
+  //   );
+  // }
 }

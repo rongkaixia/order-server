@@ -6,9 +6,9 @@ import ErrorMessage from '../error';
 import Config from '../Config';
 
 import API from 'order-sdk/api';
-
+var path = require('path');
 let grpc = require('grpc');
-let protoDescriptor = grpc.load('../protobuf/protocol.proto');
+let protoDescriptor = grpc.load(path.resolve('lib/order-sdk/protobuf/protocol.proto'));
 let protos = protoDescriptor.com.echo.gold;
 let host = Config.goldHost;
 let port = Config.goldPort;
@@ -22,9 +22,8 @@ router.use(BodyParser.json()); // for parsing application/json
 router.use(BodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 router.use(CookieParser())
 
-
 router.post(API.ORDER, (req, res) => {
-  console.log('handle order request: ' + req.body);
+  console.log('handle order request: ' + JSON.stringify(req.body));
   // check input
   
   // construct signup request
@@ -57,7 +56,7 @@ router.post(API.ORDER, (req, res) => {
     }else {
       result = response.toRaw();
     }
-    res.json(result);
+    res.json(Object.assign({},result.header.toRaw(),result.toRaw()))
   })
 })
 

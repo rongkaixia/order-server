@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/lib/Button';
 import { routeActions } from 'react-router-redux';
 import * as shopAction from 'redux/modules/shop';
 import * as userAction from 'redux/modules/userInfo';
+import * as orderAction from 'redux/modules/order';
 import {AddressCard} from 'containers';
 
 
@@ -25,12 +26,15 @@ import {AddressCard} from 'containers';
   }
 }])
 @connect((state => ({user: state.userInfo.user,
-                    necklace: state.shop.products.necklace})),
-        {redirectTo: routeActions.push})
+                    necklace: state.shop.products.necklace,
+                    authKey: state.csrf._csrf})),
+        {...orderAction, redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
     user: PropTypes.object,
     necklace: PropTypes.object,
+    authKey: PropTypes.object,
+    order: PropTypes.func.isRequired,
     redirectTo: PropTypes.func.isRequired
   };
 
@@ -41,6 +45,13 @@ export default class UserCenter extends Component {
       </div>
     );
   }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const {authKey} = this.props;
+    this.props.order({test: "test"}, authKey);
+  }
+
   renderItem(item) {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
     const {user} = this.props;
@@ -51,7 +62,7 @@ export default class UserCenter extends Component {
     if (user.addressarrayList) {
       user.addressarrayList.forEach((address) => {
         addressCards.push(
-          <AddressCard address={address}/>
+          <AddressCard address={address} checked/>
         );
       })
     }
@@ -128,7 +139,7 @@ export default class UserCenter extends Component {
               </div>
               <div className={styles.submit}>
                 <div className={styles.submitButton}>
-                  <Button bsSize="large" bsStyle={"warning"} href="/buy/payment">提交订单</Button>
+                  <Button bsSize="large" bsStyle={"warning"} onClick={this.handleSubmit}>提交订单</Button>
                 </div>
               </div>
             </div>

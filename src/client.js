@@ -6,6 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import createStore from './redux/create';
 import ApiClient from './helpers/ApiClient';
+import GoldClient from 'order-sdk/client/ApiClient';
 import io from 'socket.io-client';
 import {Provider} from 'react-redux';
 import { Router, browserHistory } from 'react-router';
@@ -15,9 +16,10 @@ import useScroll from 'scroll-behavior/lib/useStandardScroll';
 import getRoutes from './routes';
 
 const client = new ApiClient();
+const goldClient = new GoldClient();
 const history = useScroll(() => browserHistory)();
 const dest = document.getElementById('content');
-const store = createStore(history, client, window.__data);
+const store = createStore(history, client, window.__data, {goldClient: goldClient});
 
 // function initSocket() {
 //   const socket = io('', {path: '/ws'});

@@ -8,6 +8,7 @@ import httpProxy from 'http-proxy';
 import path from 'path';
 import createStore from './redux/create';
 import ApiClient from './helpers/ApiClient';
+import GoldClient from 'order-sdk/client/ApiClient';
 import Html from './helpers/Html';
 import PrettyError from 'pretty-error';
 import http from 'http';
@@ -21,6 +22,7 @@ import CookieParser from 'cookie-parser';
 import getRoutes from './routes';
 import CaptainMiddleware from './middleware/CaptainMiddleware';
 import ProductMiddleware from './middleware/ProductMiddleware';
+import ApiMiddleware from './middleware/ApiMiddleware';
 import {generateCsrfToken} from 'utils/AuthenticityToken';
 import csurf from 'csurf';
 import {load as loadCsrfToken} from './redux/modules/csrf';
@@ -42,6 +44,7 @@ app.use(Express.static(path.join(__dirname, '..', 'static')));
 // captain router, redirect request to captain server
 app.use(CaptainMiddleware);
 app.use(ProductMiddleware);
+app.use(ApiMiddleware);
 
 app.use((req, res) => {
   console.log("*************In normal app use((req,res)=>{...})***************")
@@ -54,9 +57,11 @@ app.use((req, res) => {
     webpackIsomorphicTools.refresh();
   }
   const client = new ApiClient(req, res);
+  const goldClient = new GoldClient(req,res);
   const history = createHistory(req.originalUrl);
+  const initData = undefined;
 
-  const store = createStore(history, client);
+  const store = createStore(history, client, initData, {goldClient: goldClient});
 
   // load csrf token into store
   store.dispatch(loadCsrfToken(req.csrfToken()));
