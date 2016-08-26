@@ -19,7 +19,7 @@ const client = new ApiClient();
 const goldClient = new GoldClient();
 const history = useScroll(() => browserHistory)();
 const dest = document.getElementById('content');
-const store = createStore(history, client, window.__data, {goldClient: goldClient});
+const store = createStore(history, window.__data, {client: client, goldClient: goldClient});
 
 // function initSocket() {
 //   const socket = io('', {path: '/ws'});

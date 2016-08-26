@@ -108,14 +108,14 @@ export function isLoaded(globalState) {
 export function load() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get(API.VALIDATE_TOKEN_API_PATH)
+    promise: ({client}) => client.get(API.VALIDATE_TOKEN_API_PATH)
   };
 }
 
 export function login(username, password, authKey) {
   return {
     types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
-    promise: (client) => client.post(API.LOGIN_API_PATH, {
+    promise: ({client}) => client.post(API.LOGIN_API_PATH, {
       data: {
         username: username,
         password: password,
@@ -128,7 +128,7 @@ export function login(username, password, authKey) {
 export function logout(authKey) {
   return {
     types: [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL],
-    promise: (client) => client.post(API.LOGOUT_API_PATH, {
+    promise: ({client}) => client.post(API.LOGOUT_API_PATH, {
       data: {
         _csrf: authKey
       }
@@ -139,7 +139,7 @@ export function logout(authKey) {
 export function signup(username, password, authKey) {
   return {
     types: [SIGNUP, SIGNUP_SUCCESS, SIGNUP_FAIL],
-    promise: (client) => client.post(API.SIGNUP_API_PATH, {
+    promise: ({client}) => client.post(API.SIGNUP_API_PATH, {
       // authenticity_token
       data: {
         username: username,

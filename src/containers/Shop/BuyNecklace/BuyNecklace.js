@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import {reduxForm} from 'redux-form';
 import Helmet from 'react-helmet';
 import { asyncConnect } from 'redux-async-connect';
 import {UserCenterLeftPanel} from 'containers';
@@ -13,6 +14,10 @@ import * as shopAction from 'redux/modules/shop';
 
 // TODO: 增加错误展示界面，监听loadInfo的错误
 /* eslint-disable */ 
+@reduxForm({
+  form: 'address',
+  fields: ['product_id', 'num']
+})
 @asyncConnect([{
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
     return dispatch(shopAction.loadNecklace());

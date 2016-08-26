@@ -15,7 +15,7 @@ module.exports = Object.assign({
   captainHost: process.env.CAPTAIN_HOST || 'localhost',
   captainPort: process.env.CAPTAIN_PORT,
   goldHost: process.env.GOLD_HOST || 'localhost',
-  goldPort: process.env.GOLD_PORT,
+  goldPort: process.env.GOLD_PORT || 50051,
   captainApiPath: '/api/v1.0',
   staticResourcePath: 'http://localhost:4000/dist',
   mainDomain: 'echomoment.cn',

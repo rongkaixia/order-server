@@ -56,12 +56,13 @@ app.use((req, res) => {
     // hot module replacement is enabled in the development env
     webpackIsomorphicTools.refresh();
   }
+
   const client = new ApiClient(req, res);
   const goldClient = new GoldClient(req,res);
   const history = createHistory(req.originalUrl);
   const initData = undefined;
 
-  const store = createStore(history, client, initData, {goldClient: goldClient});
+  const store = createStore(history, initData, {client: client, goldClient: goldClient});
 
   // load csrf token into store
   store.dispatch(loadCsrfToken(req.csrfToken()));

@@ -57,7 +57,7 @@ export default function reducer(state = initialState, action = {}) {
 export function loadInfo(path) {
   return {
     types: [LOAD_PRODUCT, LOAD_PRODUCT_SUCCESS, LOAD_PRODUCT_FAIL],
-    promise: (client) => client.get(path ? API.PRODUCT_API_PATH + '/' + path : API.PRODUCT_API_PATH)
+    promise: ({client}) => client.get(path ? API.PRODUCT_API_PATH + '/' + path : API.PRODUCT_API_PATH)
   };
 }
 

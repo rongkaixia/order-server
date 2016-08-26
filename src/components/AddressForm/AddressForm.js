@@ -24,26 +24,18 @@ const validate = values => {
 /* eslint-disable */
 @reduxForm({
   form: 'address',
-  fields: ['id', 'recipientsName', 'recipientsPhone', 'recipientsAddress', 'serverError'],
+  fields: ['id', 'recipientsName', 'recipientsPhone', 'recipientsAddress', 'submitError'],
   validate
 })
-export default class AccountAddress extends Component {
+export default class AddressForm extends Component {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
     initialValues: PropTypes.object
   };
 
-  // componentWillReceiveProps(nextProps) {
-  //   const {signingUp, signupError, signupErrorDesc} = nextProps;
-  //   if (!signingUp && !signupError) {
-  //     console.log('signup success');
-  //     // login
-  //     this.props.redirectTo('/login');
-  //   }
-  // }
   render() {
-    const {fields: {id, recipientsName, recipientsPhone, recipientsAddress, serverError}, 
+    const {fields: {id, recipientsName, recipientsPhone, recipientsAddress, submitError}, 
           handleClose,
           handleSubmit} =  this.props;
     return (
@@ -67,7 +59,7 @@ export default class AccountAddress extends Component {
             </textarea>}
             {recipientsAddress.touched && recipientsAddress.error && <div>{recipientsAddress.error}</div>}
           </div>
-            {serverError.touched && serverError.error && <div>{serverError.error}</div>}
+            {submitError.touched && submitError.error && <div>{submitError.error}</div>}
           <button className="btn btn-success" onClick={handleSubmit}>保存</button>
         </form>
       </div>
