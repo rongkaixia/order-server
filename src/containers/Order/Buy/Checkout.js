@@ -11,8 +11,9 @@ import Button from 'react-bootstrap/lib/Button';
 import { routeActions } from 'react-router-redux';
 import * as shopAction from 'redux/modules/shop';
 import * as userAction from 'redux/modules/userInfo';
-import * as orderAction from 'redux/modules/order';
+import * as checkoutAction from 'redux/modules/checkout';
 import {AddressCard} from 'containers';
+import TimerMixin from 'react-timer-mixin';
 
 const customStyles = {
   content: {
@@ -33,6 +34,13 @@ const DELIVER_METHOD_DTD = 'DTD';
 /* eslint-disable */ 
 @asyncConnect([{
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
+    const state = getState();
+    if (state.checkout && state.checkout.productId && state.checkout.num) {
+      return dispatch(checkoutAction.pricing({}, state.csrf._csrf))
+    }
+  }
+},{
+  promise: ({store: {dispatch, getState}, helpers: {client}}) => {
     return dispatch(shopAction.loadNecklace());
   }
 },{
@@ -41,9 +49,10 @@ const DELIVER_METHOD_DTD = 'DTD';
   }
 }])
 @connect((state => ({user: state.userInfo.user,
+                    checkout: state.checkout,
                     necklace: state.shop.products.necklace,
                     authKey: state.csrf._csrf})),
-        {...orderAction, 
+        {...checkoutAction, 
         loadInfo: userAction.loadInfo,
         addAddress: userAction.addUserAddress,
         updateAddress: userAction.updateUserAddress,
@@ -64,8 +73,83 @@ export default class UserCenter extends Component {
     deliverMethod: DELIVER_METHOD_EXPRESS,
     comment: '',
     submitError: null,
-    validateModalIsOpen: false
+    orderErrorModalIsOpen: false,
+    resubmitting: false,
+    invalidArgument: false,
+    unauthorizedRequest: false,
+    countdown: null
   };
+
+  componentWillMount(){
+    console.log("componentWillMount");
+    let self = this;
+    this.intervals = [];
+    console.log("props: " + JSON.stringify(this.props));
+    // check invalid post data
+    if(!this.props.checkout.productId || !this.props.checkout.num || !this.props.checkout.priceSuccess) {
+      console.log("invalid argument.");
+      console.log("redirecting to /");
+      this.setState({invalidArgument: true, countdown: 5});
+      if (!__SERVER__) {
+        this.intervals.push(setInterval(() => {
+          self.setState({countdown: self.state.countdown - 1});
+          if (self.state.countdown <= 0) {
+            clearInterval();
+            self.props.redirectTo('/');
+          }
+        }, 1000))
+      }
+    }
+    // check resubmit
+    if(this.props.checkout && this.props.checkout.orderSuccess) {
+      console.log("redirecting to /");
+      this.setState({resubmitting: true, countdown: 5});
+      if (!__SERVER__) {
+        this.intervals.push(setInterval(() => {
+          self.setState({countdown: self.state.countdown - 1});
+          if (self.state.countdown <= 0) {
+            clearInterval();
+            self.props.redirectTo('/');
+          }
+        }, 1000))
+      }
+    }
+  }
+
+  componentDidMount(){
+    console.log("componentDidMount");  
+  }
+  shouldComponentUpdate(){
+    console.log("shouldComponentUpdate");
+    return true;
+  }
+
+  componentWillUpdate(){
+    console.log("componentWillUpdate");
+  }
+
+  componentDidUpdate(){
+    console.log("componentDidUpdate");
+  }
+
+  componentWillUnmount() {
+    this.intervals.forEach(clearInterval);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log("componentWillReceiveProps: " + JSON.stringify(nextProps));
+    console.log('checkout: ' + JSON.stringify(this.props.checkout));
+    console.log('nextProps: ' + JSON.stringify(nextProps.checkout));
+    if (this.props.checkout && nextProps.checkout) {
+      if (!this.props.checkout.orderSuccess && nextProps.checkout.orderSuccess) {
+        this.props.redirectTo('/buy/payment');
+      } else if (!this.props.checkout.orderError && nextProps.checkout.orderError) {
+        let err = nextProps.checkout.orderErrorDesc;
+        this.setState({submitError: '订单提交失败，请稍后再试。' + '(' + JSON.stringify(err) + ')', 
+                      orderErrorModalIsOpen: true})
+      }
+    }
+  }
 
   setAddress = (address, event) => {
     event.preventDefault();
@@ -129,20 +213,19 @@ export default class UserCenter extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    const {authKey, user, location} = this.props;
+    const {authKey, user, checkout} = this.props;
     const {selectedAddress, payMethod, deliverMethod, comment} = this.state;
     // validate form
     if (!selectedAddress) {
-      this.setState({submitError: '请选择收货地址', validateModalIsOpen: true})
+      this.setState({submitError: '请选择收货地址', orderErrorModalIsOpen: true})
     }else if (!payMethod) {
-      this.setState({submitError: '请选择支付方式', validateModalIsOpen: true})
+      this.setState({submitError: '请选择支付方式', orderErrorModalIsOpen: true})
     }else if (!deliverMethod) {
-      this.setState({submitError: '请选择配送方式', validateModalIsOpen: true})
+      this.setState({submitError: '请选择配送方式', orderErrorModalIsOpen: true})
     }else {
-      let productId = location.pathname.split("/").reverse()[0]
       let req = {userId: user.userId,
                 title: 'buy',
-                productId: productId,
+                productId: checkout.productId,
                 num: 1,
                 payMethod: payMethod,
                 deliverMethod: deliverMethod,
@@ -152,13 +235,6 @@ export default class UserCenter extends Component {
                 comment: comment};
       console.log("sending order request: " + JSON.stringify(req));
       this.props.order(req, authKey)
-      .then((data) => {
-        this.props.redirectTo('/buy/payment');
-      })
-      .catch((err) => {
-        this.setState({submitError: '订单提交失败，请稍后再试。' + '(' + JSON.stringify(err) + ')', 
-                      validateModalIsOpen: true})
-      })
     }
   }
 
@@ -169,7 +245,7 @@ export default class UserCenter extends Component {
   closeValidateModal(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.setState({submitError: null, validateModalIsOpen: false});
+    this.setState({submitError: null, orderErrorModalIsOpen: false});
   }
 
   renderValidateFormErrorModal() {
@@ -177,7 +253,7 @@ export default class UserCenter extends Component {
     return (
       <div>
         <Modal
-          isOpen={this.state.validateModalIsOpen}
+          isOpen={this.state.orderErrorModalIsOpen}
           onAfterOpen={this.afterOpenValidateModal}
           onRequestClose={this.closeValidateModal}
           style={customStyles} >
@@ -316,13 +392,31 @@ export default class UserCenter extends Component {
 
   render() {
     const styles = require('./Checkout.scss');
-    const {necklace, location} = this.props;
-    var id = location.pathname.split("/").reverse()[0]
+    const {necklace, checkout} = this.props;
+    const {resubmitting, invalidArgument, countdown} = this.state;
+    if (resubmitting) {
+      return (
+        <div className={'container'}>
+        <h4>{'请勿重复提交表单，正在跳转到购物车页面...' + countdown + 's'}</h4>
+        </div>
+      );
+    } else if(invalidArgument) {
+      return (
+        <div className={'container'}>
+        <h4>{'非法参数，正在跳转到首页...' + countdown + 's'}</h4>
+        </div>
+      );
+    }
+    var id = checkout.productId;
     let item = necklace[id];
+    console.log('id');
+    console.log(id);
     let itemView = null;
     if (item) {
       itemView = this.renderItem(item);
     }
+    console.log('itemView');
+    console.log(itemView);
     let validateErrorModal = this.renderValidateFormErrorModal();
 
     return (

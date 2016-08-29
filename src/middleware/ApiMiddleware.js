@@ -70,6 +70,7 @@ router.post(API.ORDER, (req, res) => {
     header.setResult(protos.ResultCode.INVALID_REQUEST_ARGUMENT);
     header.setResultDescription(err);
     res.json(header);
+    return;
   })
   
   try{
@@ -138,11 +139,12 @@ function validatePayInput(req) {
 router.post(API.PAY, (req, res) => {
   console.log('handle pay request: ' + JSON.stringify(req.body));
   // check input
-  validateOrderInput(req.body).catch((err) => {
+  validatePayInput(req.body).catch((err) => {
     let header = new protos.ResponseHeader();
     header.setResult(protos.ResultCode.INVALID_REQUEST_ARGUMENT);
     header.setResultDescription(err);
     res.json(header);
+    return;
   })
   
   try{
@@ -150,6 +152,7 @@ router.post(API.PAY, (req, res) => {
     let client = new protos.OrderService(host + ':' + port, grpc.credentials.createInsecure());
 
     let request = new protos.PayRequest();
+    request.setOrderId(req.body.orderId);
 
     // send request to backend server
     client.pay(request, (err, response)=>{
@@ -162,6 +165,112 @@ router.post(API.PAY, (req, res) => {
         result = new protos.OrderResponse().setHeader(header)
       }else {
         console.log("recieve pay response from gold server: " + JSON.stringify(response));
+        result = response;
+      }
+      res.json(Object.assign({},result.header,result))
+    })
+  }catch(err){
+    let header = new protos.ResponseHeader();
+    header.setResult(protos.ResultCode.INTERNAL_SERVER_ERROR);
+    header.setResultDescription(JSON.stringify(err));
+    res.json(header);
+  }
+})
+
+function validateQueryInput(req) {
+  return new Promise((resolve, reject) => {
+    if (!req) {
+      reject("an query request is required");
+    } else if (!Validation.isString(req.orderId) || Validation.empty(req.orderId)) {
+      reject("orderId(string) is required");
+    } else {
+      resolve();
+    }
+  })
+}
+
+router.post(API.QUERY, (req, res) => {
+  console.log('handle query request: ' + JSON.stringify(req.body));
+  // check input
+  validateQueryInput(req.body).catch((err) => {
+    let header = new protos.ResponseHeader();
+    header.setResult(protos.ResultCode.INVALID_REQUEST_ARGUMENT);
+    header.setResultDescription(err);
+    res.json(header);
+    return;
+  })
+  
+  try{
+    // construct signup request
+    let client = new protos.OrderService(host + ':' + port, grpc.credentials.createInsecure());
+
+    let request = new protos.QueryOrderRequest();
+    request.setOrderId(req.body.orderId);
+
+    // send request to backend server
+    client.queryOrder(request, (err, response)=>{
+      let result = {};
+      if (err) {
+        console.log("send query request to Gold Server error: " + JSON.stringify(err));
+        let header = new protos.ResponseHeader();
+        header.setResult(protos.ResultCode.INTERNAL_SERVER_ERROR);
+        header.setResultDescription(JSON.stringify(err));
+        result = new protos.OrderResponse().setHeader(header)
+      }else {
+        console.log("recieve query response from gold server: " + JSON.stringify(response));
+        result = response;
+      }
+      res.json(Object.assign({},result.header,result))
+    })
+  }catch(err){
+    let header = new protos.ResponseHeader();
+    header.setResult(protos.ResultCode.INTERNAL_SERVER_ERROR);
+    header.setResultDescription(JSON.stringify(err));
+    res.json(header);
+  }
+})
+
+function validateNotifyInput(req) {
+  return new Promise((resolve, reject) => {
+    if (!req) {
+      reject("an notify request is required");
+    } else if (!Validation.isString(req.orderId) || Validation.empty(req.orderId)) {
+      reject("orderId(string) is required");
+    } else {
+      resolve();
+    }
+  })
+}
+
+router.post(API.NOTIFY, (req, res) => {
+  console.log('handle notify request: ' + JSON.stringify(req.body));
+  // check input
+  validateNotifyInput(req.body).catch((err) => {
+    let header = new protos.ResponseHeader();
+    header.setResult(protos.ResultCode.INVALID_REQUEST_ARGUMENT);
+    header.setResultDescription(err);
+    res.json(header);
+    return;
+  })
+  
+  try{
+    // construct signup request
+    let client = new protos.OrderService(host + ':' + port, grpc.credentials.createInsecure());
+
+    let request = new protos.NotifyRequest();
+    request.setOrderId(req.body.orderId);
+
+    // send request to backend server
+    client.notify(request, (err, response)=>{
+      let result = {};
+      if (err) {
+        console.log("send notify request to Gold Server error: " + JSON.stringify(err));
+        let header = new protos.ResponseHeader();
+        header.setResult(protos.ResultCode.INTERNAL_SERVER_ERROR);
+        header.setResultDescription(JSON.stringify(err));
+        result = new protos.OrderResponse().setHeader(header)
+      }else {
+        console.log("recieve notify response from gold server: " + JSON.stringify(response));
         result = response;
       }
       res.json(Object.assign({},result.header,result))

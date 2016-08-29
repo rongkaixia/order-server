@@ -19,6 +19,7 @@ module.exports = Object.assign({
   captainApiPath: '/api/v1.0',
   staticResourcePath: 'http://localhost:4000/dist',
   mainDomain: 'echomoment.cn',
+  orderDomain: 'order.echomoment.cn:4000',
   app: {
     title: 'jade-web-server',
     description: 'All the modern best practices in one example.',

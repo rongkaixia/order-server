@@ -168,7 +168,7 @@ export default class UserCenter extends Component {
   render() {
     const styles = require('./Detail.scss');
     const {necklace} = this.props;
-    let item = necklaces[0];
+    let item = necklace['0000001'];
     let itemView = null;
     if (item) {
       itemView = this.renderItem(item);

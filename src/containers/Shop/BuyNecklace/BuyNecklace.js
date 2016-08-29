@@ -11,6 +11,7 @@ import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import Button from 'react-bootstrap/lib/Button';
 import { routeActions } from 'react-router-redux';
 import * as shopAction from 'redux/modules/shop';
+import Config from 'config';
 
 // TODO: 增加错误展示界面，监听loadInfo的错误
 /* eslint-disable */ 
@@ -23,11 +24,13 @@ import * as shopAction from 'redux/modules/shop';
     return dispatch(shopAction.loadNecklace());
   }
 }])
-@connect((state => ({necklace: state.shop.products.necklace})),
+@connect((state => ({necklace: state.shop.products.necklace,
+                    authKey: state.csrf._csrf})),
         {redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
     necklace: PropTypes.object,
+    authKey: PropTypes.object,
     redirectTo: PropTypes.func.isRequired
   };
 
@@ -52,6 +55,7 @@ export default class UserCenter extends Component {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
     const styles = require('./BuyNecklace.scss');
     const imagePath = require('../../../../static/diaozhui.png');
+    const {authKey} = this.props;
     const choices = item.choices.map((choice) => {
       return this.renderChoice(choice);
     })
@@ -71,11 +75,17 @@ export default class UserCenter extends Component {
             <Button bsSize="large">+</Button>
           </ButtonGroup>
           <p className={styles.chooseOptionComment}></p>
-          <Button bsSize="large" bsStyle="info" href="/buy/checkout/0000001">立即购买</Button>
+          <form action={"http://" + Config.orderDomain + "/buy/checkout"} method="post">
+            <input name="productId" type="hidden" value={'0000001'} />
+            <input name="num" type="hidden" value={1} />
+            <input name="_csrf" type="hidden" value={authKey} />
+            <Button bsSize="large" bsStyle="info" type="submit">立即购买</Button>
+          </form>
         </div>
       </div>
     );
   }
+            // <input type="submit" value="Post" />
 
   render() {
     const styles = require('./BuyNecklace.scss');

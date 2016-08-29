@@ -26,9 +26,11 @@ import ApiMiddleware from './middleware/ApiMiddleware';
 import {generateCsrfToken} from 'utils/AuthenticityToken';
 import csurf from 'csurf';
 import {load as loadCsrfToken} from './redux/modules/csrf';
+import {checkoutSync} from './redux/modules/checkout';
+import Config from 'config';
 
 const pretty = new PrettyError();
-const csrfProtection = csurf({ cookie: true })
+const csrfProtection = csurf({ cookie: true})
 const app = new Express();
 const server = new http.Server(app);
 
@@ -48,9 +50,9 @@ app.use(ApiMiddleware);
 
 app.use((req, res) => {
   console.log("*************In normal app use((req,res)=>{...})***************")
-  console.log("baseurl: " + req.baseUrl)
-  console.log("path: " + req.path)
-  console.log("query: " + req.query)
+  console.log("req.originalUrl: " + req.originalUrl)
+  console.log("req.path: " + req.path)
+  console.log("req.method: " + req.method)
   if (__DEVELOPMENT__) {
     // Do not cache webpack stats: the script file would change since
     // hot module replacement is enabled in the development env
@@ -63,9 +65,6 @@ app.use((req, res) => {
   const initData = undefined;
 
   const store = createStore(history, initData, {client: client, goldClient: goldClient});
-
-  // load csrf token into store
-  store.dispatch(loadCsrfToken(req.csrfToken()));
 
   function hydrateOnClient() {
     res.send('<!doctype html>\n' +
@@ -86,6 +85,13 @@ app.use((req, res) => {
       res.status(500);
       hydrateOnClient();
     } else if (renderProps) {
+      // load csrf token into store
+      store.dispatch(loadCsrfToken(req.csrfToken()));
+
+      if (req.path === '/buy/checkout' && req.method === 'POST' && req.body) {
+        store.dispatch(checkoutSync(req.body.productId, req.body.num));
+      }
+
       loadOnServer({...renderProps, store, helpers: {client}}).then(() => {
           const component = (
           <Provider store={store} key="provider">
