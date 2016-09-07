@@ -20,7 +20,7 @@ const customStyles = {
 
 
 /* AddressCard Component
-address: user address object, 
+address: user address object,
          e.g. {id: xx, recipientsName: xx, recipientsPhone: xx, recipientsAddress: xx, recipientsPostcode: xx}
 checked: boolean, checked
 onAddAddress: promise, addAddress cb

@@ -14,6 +14,7 @@ import * as userAction from 'redux/modules/userInfo';
 import * as checkoutAction from 'redux/modules/checkout';
 import {AddressCard} from 'containers';
 import TimerMixin from 'react-timer-mixin';
+import Config from 'config';
 
 const customStyles = {
   content: {
@@ -95,7 +96,7 @@ export default class UserCenter extends Component {
           self.setState({countdown: self.state.countdown - 1});
           if (self.state.countdown <= 0) {
             clearInterval();
-            self.props.redirectTo('/');
+            self.props.redirectTo(Config.mainDomainAbsPath + '/account/order');
           }
         }, 1000))
       }
@@ -109,7 +110,7 @@ export default class UserCenter extends Component {
           self.setState({countdown: self.state.countdown - 1});
           if (self.state.countdown <= 0) {
             clearInterval();
-            self.props.redirectTo('/');
+            self.props.redirectTo(Config.mainDomainAbsPath + '/account/order');
           }
         }, 1000))
       }

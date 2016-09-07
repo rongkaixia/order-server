@@ -156,7 +156,7 @@ export function pricing(pricingReq, authKey) {
 /**
  * order action, 下单请求
  *
- * @param   {object}  orderReq  
+ * @param   {object}  orderReq
  * orderReq format
  * {
  * userId: string, user id,
@@ -189,7 +189,7 @@ export function order(orderReq, authKey) {
 /**
  * pay action, 拉起支付页面
  *
- * @param   {object}  payReq  
+ * @param   {object}  payReq
  * payReq format
  * {
  * orderId: string, order id
@@ -211,7 +211,7 @@ export function pay(payReq, authKey) {
 /**
  * query order action，查询订单状态
  *
- * @param   {object}  queryReq  
+ * @param   {object}  queryReq
  * queryReq format
  * {
  * orderId: string, order id

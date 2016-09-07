@@ -18,7 +18,8 @@ module.exports = Object.assign({
   goldPort: process.env.GOLD_PORT || 50051,
   captainApiPath: '/api/v1.0',
   staticResourcePath: 'http://localhost:4000/dist',
-  mainDomain: 'echomoment.cn',
+  mainDomain: 'echomoment.cn:4000',
+  mainDomainAbsPath: 'http://echomoment.cn:4000',
   orderDomain: 'order.echomoment.cn:4000',
   app: {
     title: 'jade-web-server',

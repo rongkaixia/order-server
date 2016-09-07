@@ -51,13 +51,6 @@ export default class NavBar extends Component {
 
         <Navbar.Collapse eventKey={0}>
           <Nav>
-            {user && <LinkContainer to="/chat">
-              <NavItem eventKey={1}>Chat</NavItem>
-            </LinkContainer>}
-
-            <LinkContainer to="/widgets">
-              <NavItem eventKey={2}>Widgets</NavItem>
-            </LinkContainer>
             <LinkContainer to="/necklace">
               <NavItem eventKey={3}>项链/吊坠</NavItem>
             </LinkContainer>

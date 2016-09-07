@@ -1,6 +1,6 @@
 {
   "javascript": {
-    "main": "http://localhost:4001/dist/main-bfa68d3f4915832ee49a.js"
+    "main": "http://localhost:4001/dist/main-a1c030800ed35489ac29.js"
   },
   "styles": {},
   "assets": {
@@ -32,28 +32,6 @@
       "time": "time___vX6YJ",
       "_style": ".infoBar___1lCH- {\n  font-variant: italics;\n}\n\n.time___vX6YJ {\n  margin: 0 30px;\n}\n"
     },
-    "./src/components/SurveyForm/SurveyForm.scss": {
-      "inputGroup": "inputGroup___2c2S9",
-      "flags": "flags___L5Trs",
-      "active": "active___3juuq",
-      "dirty": "dirty___15qv3",
-      "visited": "visited___3wHfp",
-      "touched": "touched___3JYjk",
-      "radioLabel": "radioLabel___Zk2Ia",
-      "cog": "cog___WTV9k",
-      "_style": ".inputGroup___2c2S9 {\n  position: relative;\n}\n\n.flags___L5Trs {\n  position: absolute;\n  right: 20px;\n  top: 7px;\n}\n\n.flags___L5Trs > * {\n  margin: 0 2px;\n  width: 20px;\n  height: 20px;\n  border-radius: 20px;\n  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);\n  color: white;\n  float: right;\n  text-align: center;\n}\n\n.flags___L5Trs .active___3juuq {\n  background: linear-gradient(#cc0, #aa0);\n  color: black;\n}\n\n.flags___L5Trs .dirty___15qv3 {\n  background: linear-gradient(#090, #060);\n}\n\n.flags___L5Trs .visited___3wHfp {\n  background: linear-gradient(#009, #006);\n}\n\n.flags___L5Trs .touched___3JYjk {\n  background: linear-gradient(#099, #066);\n}\n\n.radioLabel___Zk2Ia {\n  margin: 0 25px 0 5px;\n}\n\n.cog___WTV9k {\n  position: absolute;\n  left: 0;\n  top: 10px;\n}\n"
-    },
-    "./src/containers/Widgets/Widgets.scss": {
-      "widgets": "widgets___3Vbnr",
-      "refreshBtn": "refreshBtn___2YfHs",
-      "idCol": "idCol___3gXnt",
-      "colorCol": "colorCol___26SGu",
-      "sprocketsCol": "sprocketsCol___WvE6B",
-      "ownerCol": "ownerCol___1UhxO",
-      "buttonCol": "buttonCol___2Bobx",
-      "saving": "saving___1S4NA",
-      "_style": ".widgets___3Vbnr .refreshBtn___2YfHs {\n  margin-left: 20px;\n}\n\n.widgets___3Vbnr .idCol___3gXnt {\n  width: 5%;\n}\n\n.widgets___3Vbnr .colorCol___26SGu {\n  width: 20%;\n}\n\n.widgets___3Vbnr .sprocketsCol___WvE6B {\n  width: 20%;\n  text-align: right;\n}\n\n.widgets___3Vbnr .sprocketsCol___WvE6B input {\n  text-align: right;\n}\n\n.widgets___3Vbnr .ownerCol___1UhxO {\n  width: 30%;\n}\n\n.widgets___3Vbnr .buttonCol___2Bobx {\n  width: 25%;\n}\n\n.widgets___3Vbnr .buttonCol___2Bobx .btn {\n  margin: 0 5px;\n}\n\n.widgets___3Vbnr tr.saving___1S4NA {\n  opacity: 0.8;\n}\n\n.widgets___3Vbnr tr.saving___1S4NA .btn[disabled] {\n  opacity: 1;\n}\n"
-    },
     "./src/components/NavBar/NavBar.scss": {
       "brand": "brand___1Lukv",
       "_style": ".brand___1Lukv {\n  position: absolute;\n  top: 5px;\n  left: 5px;\n  display: inline-block;\n  background: #2d2d2d url(http://localhost:4001/dist/static/logo.png) no-repeat center center;\n  width: 40px;\n  height: 40px;\n  background-size: 80%;\n  margin: 0 10px 0 0;\n  border-radius: 20px;\n}\n\nnav .fa {\n  font-size: 2em;\n  line-height: 20px;\n}\n"
@@ -66,10 +44,6 @@
       "app": "app___3sz-J",
       "brand": "brand____u4av",
       "_style": ".app___3sz-J .brand____u4av {\n  position: absolute;\n  top: 5px;\n  left: 5px;\n  display: inline-block;\n  background: #2d2d2d url(http://localhost:4001/dist/src/containers/Home/logo.png) no-repeat center center;\n  width: 40px;\n  height: 40px;\n  background-size: 80%;\n  margin: 0 10px 0 0;\n  border-radius: 20px;\n}\n\n.app___3sz-J nav .fa {\n  font-size: 2em;\n  line-height: 20px;\n}\n"
-    },
-    "./src/containers/Chat/Chat.scss": {
-      "chat": "chat___VbTsu",
-      "_style": ".chat___VbTsu input {\n  padding: 5px 10px;\n  border-radius: 5px;\n  border: 1px solid #ccc;\n}\n\n.chat___VbTsu form {\n  margin: 30px 0;\n}\n\n.chat___VbTsu form .btn {\n  margin-left: 10px;\n}\n"
     },
     "./src/containers/Home/Home.scss": {
       "home": "home___1bkob",

@@ -24,24 +24,25 @@ import CaptainMiddleware from './middleware/CaptainMiddleware';
 import ProductMiddleware from './middleware/ProductMiddleware';
 import ApiMiddleware from './middleware/ApiMiddleware';
 import {generateCsrfToken} from 'utils/AuthenticityToken';
-import csurf from 'csurf';
+import csurf from 'csrf-protection';
 import {load as loadCsrfToken} from './redux/modules/csrf';
 import {checkoutSync} from './redux/modules/checkout';
 import Config from 'config';
 
 const pretty = new PrettyError();
-const csrfProtection = csurf({ cookie: true})
 const app = new Express();
 const server = new http.Server(app);
 
 app.use(CookieParser())
 app.use(BodyParser.json()); // for parsing application/json
 app.use(BodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-app.use(csrfProtection)
 app.use(compression());
 app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
-
 app.use(Express.static(path.join(__dirname, '..', 'static')));
+
+// csrf protection
+const csrfProtection = csurf({cookie: true, ignoredPath: '/buy/checkout'})
+app.use(csrfProtection)
 
 // captain router, redirect request to captain server
 app.use(CaptainMiddleware);
