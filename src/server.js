@@ -41,7 +41,7 @@ app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
 app.use(Express.static(path.join(__dirname, '..', 'static')));
 
 // csrf protection
-const csrfProtection = csurf({cookie: true, ignoredPath: '/buy/checkout'})
+const csrfProtection = csurf({cookie: true, ignoredPath: ['/buy/checkout']})
 app.use(csrfProtection)
 
 // captain router, redirect request to captain server
