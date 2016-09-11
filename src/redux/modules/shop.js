@@ -1,4 +1,4 @@
-import API from 'echo-common/api/api'
+import API from 'echo-common-tmp/api/api'
 
 const LOAD_PRODUCT = 'redux-example/product/LOAD_PRODUCT';
 const LOAD_PRODUCT_SUCCESS = 'redux-example/product/LOAD_PRODUCT_SUCCESS';

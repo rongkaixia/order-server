@@ -1,4 +1,4 @@
-import API from 'echo-common/api/api'
+import API from 'echo-common-tmp/api/api'
 
 const LOAD = 'redux-example/auth/LOAD';
 const LOAD_SUCCESS = 'redux-example/auth/LOAD_SUCCESS';

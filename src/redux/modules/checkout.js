@@ -1,4 +1,4 @@
-import API from 'order-sdk/api';
+import ApiPath from 'api/ApiPath';
 
 const CHECKOUT = 'redux-example/checkout/CHECKOUT';
 
@@ -180,7 +180,7 @@ export function order(orderReq, authKey) {
   let postData = {...orderReq, ...{_csrf: authKey}};
   return {
     types: [ORDERING, ORDER_SUCCESS, ORDER_FAIL],
-    promise: ({goldClient}) => goldClient.post(API.ORDER, {
+    promise: ({apiClient}) => apiClient.post(ApiPath.ORDER, {
       data: postData
     })
   };
@@ -225,7 +225,7 @@ export function query(queryReq, authKey) {
   let postData = {...queryReq, ...{_csrf: authKey}};
   return {
     types: [QUERYING, QUERY_SUCCESS, QUERY_FAIL],
-    promise: ({goldClient}) => goldClient.post(API.QUERY, {
+    promise: ({apiClient}) => apiClient.post(ApiPath.QUERY, {
       data: postData
     })
   };
@@ -235,7 +235,7 @@ export function fakeNotify(notifyReq, authKey) {
   let postData = {...notifyReq, ...{_csrf: authKey}};
   return {
     types: [FAKE_NOTIFYING, FAKE_NOTIFY_SUCCESS, FAKE_NOTIFY_FAIL],
-    promise: ({goldClient}) => goldClient.post(API.NOTIFY, {
+    promise: ({apiClient}) => apiClient.post(ApiPath.NOTIFY, {
       data: postData
     })
   };

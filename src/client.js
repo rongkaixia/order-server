@@ -5,8 +5,8 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import createStore from './redux/create';
-import ApiClient from './helpers/ApiClient';
-import GoldClient from 'order-sdk/client/ApiClient';
+import OldApiClient from './helpers/ApiClient';
+import ApiClient from 'api/ApiClient';
 import io from 'socket.io-client';
 import {Provider} from 'react-redux';
 import { Router, browserHistory } from 'react-router';
@@ -15,11 +15,11 @@ import useScroll from 'scroll-behavior/lib/useStandardScroll';
 
 import getRoutes from './routes';
 
-const client = new ApiClient();
-const goldClient = new GoldClient();
+const client = new OldApiClient();
+const apiClient = new ApiClient();
 const history = useScroll(() => browserHistory)();
 const dest = document.getElementById('content');
-const store = createStore(history, window.__data, {client: client, goldClient: goldClient});
+const store = createStore(history, window.__data, {client: client, apiClient: apiClient});
 
 // function initSocket() {
 //   const socket = io('', {path: '/ws'});

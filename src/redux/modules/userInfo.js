@@ -2,7 +2,7 @@ import {LOAD_SUCCESS as LOAD_AUTH_SUCCESS,
         LOGIN_SUCCESS,
         LOGOUT_SUCCESS,
         SIGNUP_SUCCESS} from './auth';
-import API from 'echo-common/api/api'
+import API from 'echo-common-tmp/api/api'
 
 const LOAD_INFO = 'redux-example/userInfo/LOAD_INFO';
 const LOAD_INFO_SUCCESS = 'redux-example/userInfo/LOAD_INFO_SUCCESS';

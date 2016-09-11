@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+include commom.proto;
+
 package com.echo.gold;
 
 enum PayMethod{

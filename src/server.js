@@ -1,37 +1,39 @@
 import Express from 'express';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
-import config from './config';
 import favicon from 'serve-favicon';
 import compression from 'compression';
 import httpProxy from 'http-proxy';
 import path from 'path';
-import createStore from './redux/create';
-import ApiClient from './helpers/ApiClient';
-import GoldClient from 'order-sdk/client/ApiClient';
-import Html from './helpers/Html';
 import PrettyError from 'pretty-error';
 import http from 'http';
-
-import { RouterContext, match } from 'react-router';
-import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
-import createHistory from 'react-router/lib/createMemoryHistory';
 import {Provider} from 'react-redux';
 import BodyParser from 'body-parser';
 import CookieParser from 'cookie-parser';
+import { RouterContext, match } from 'react-router';
+import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
+import createHistory from 'react-router/lib/createMemoryHistory';
+
+import createStore from './redux/create';
+import OldApiClient from './helpers/ApiClient';
+import ApiClient from 'api/ApiClient';
+import Html from './helpers/Html';
 import getRoutes from './routes';
 import CaptainMiddleware from './middleware/CaptainMiddleware';
 import ProductMiddleware from './middleware/ProductMiddleware';
-import ApiMiddleware from './middleware/ApiMiddleware';
 import csurf from 'csrf-protection';
 import {load as loadCsrfToken} from './redux/modules/csrf';
+import ApiPath from 'api/ApiPath';
 import {checkoutSync} from './redux/modules/checkout';
 import Config from 'config';
+// api
+import {Order, QueryOrder, Notify} from 'api';
 
 const pretty = new PrettyError();
 const app = new Express();
 const server = new http.Server(app);
 
+// express middleware
 app.use(CookieParser())
 app.use(BodyParser.json()); // for parsing application/json
 app.use(BodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -46,7 +48,11 @@ app.use(csrfProtection)
 // captain router, redirect request to captain server
 app.use(CaptainMiddleware);
 app.use(ProductMiddleware);
-app.use(ApiMiddleware);
+
+// api
+app.use(ApiPath.ORDER, Order);
+app.use(ApiPath.QUERY, QueryOrder);
+app.use(ApiPath.NOTIFY, Notify);
 
 app.use((req, res) => {
   console.log("*************In normal app use((req,res)=>{...})***************")
@@ -59,12 +65,12 @@ app.use((req, res) => {
     webpackIsomorphicTools.refresh();
   }
 
-  const client = new ApiClient(req, res);
-  const goldClient = new GoldClient(req,res);
+  const client = new OldApiClient(req, res);
+  const apiClient = new ApiClient(req,res);
   const history = createHistory(req.originalUrl);
   const initData = undefined;
 
-  const store = createStore(history, initData, {client: client, goldClient: goldClient});
+  const store = createStore(history, initData, {client: client, apiClient: apiClient});
 
   function hydrateOnClient() {
     res.send('<!doctype html>\n' +
@@ -112,12 +118,12 @@ app.use((req, res) => {
   });
 });
 
-if (config.port) {
-  server.listen(config.port, (err) => {
+if (Config.port) {
+  server.listen(Config.port, (err) => {
     if (err) {
       console.error(err);
     }
-    console.info('==> 💻  Open http://%s:%s in a browser to view the app.', config.host, config.port);
+    console.info('==> 💻  Open http://%s:%s in a browser to view the app.', Config.host, Config.port);
   });
 } else {
   console.error('==>     ERROR: No PORT environment variable has been specified');
