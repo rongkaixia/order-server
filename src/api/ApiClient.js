@@ -1,10 +1,6 @@
 import superagent from 'superagent';
 // import unirest from 'unirest';
 
-// let grpc = require('grpc');
-// let protoDescriptor = grpc.load('lib/order-sdk/protobuf/protocol.proto');
-// let protos = protoDescriptor.com.echo.gold;
-
 const methods = ['get', 'post', 'put', 'patch', 'del'];
 
 class CApiClient {
@@ -72,8 +68,8 @@ class CApiClient {
           }
           if (err) {
             console.log("ApiClient recieve error: " + err);
-            // let errorMsg = new protos.ResponseHeader();
-            // errorMsg.setResult(protos.ResultCode.INTERNAL_SERVER_ERROR);
+            // let errorMsg = new protos.common.ResponseHeader();
+            // errorMsg.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
             // errorMsg.setResultDescription("INTERNAL_SERVER_ERROR");
             let errorMsg = {result: 'INTERNAL_SERVER_ERROR', result_description: 'INTERNAL_SERVER_ERROR'};
             reject(errorMsg);

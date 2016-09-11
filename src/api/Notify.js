@@ -3,8 +3,8 @@ import Validation from 'utils/Validation';
 
 var path = require('path');
 let grpc = require('grpc');
-let protoDescriptor = grpc.load(path.resolve('lib/order-sdk/protobuf/protocol.proto'));
-let protos = protoDescriptor.com.echo.gold;
+let protoDescriptor = grpc.load(path.resolve('lib/echo-common/protobuf/gold.proto'));
+let protos = protoDescriptor.com.echo.protocol;
 let host = Config.goldHost;
 let port = Config.goldPort;
 
@@ -24,8 +24,8 @@ exports = module.exports = function(req, res) {
   console.log('handle notify request: ' + JSON.stringify(req.body));
   // check input
   validateNotifyInput(req.body).catch((err) => {
-    let header = new protos.ResponseHeader();
-    header.setResult(protos.ResultCode.INVALID_REQUEST_ARGUMENT);
+    let header = new protos.common.ResponseHeader();
+    header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);
     header.setResultDescription(err);
     res.json(header);
     return;
@@ -33,9 +33,9 @@ exports = module.exports = function(req, res) {
   
   try{
     // construct signup request
-    let client = new protos.OrderService(host + ':' + port, grpc.credentials.createInsecure());
+    let client = new protos.gold.OrderService(host + ':' + port, grpc.credentials.createInsecure());
 
-    let request = new protos.NotifyRequest();
+    let request = new protos.gold.NotifyRequest();
     request.setOrderId(req.body.orderId);
 
     // send request to backend server
@@ -43,10 +43,10 @@ exports = module.exports = function(req, res) {
       let result = {};
       if (err) {
         console.log("send notify request to Gold Server error: " + JSON.stringify(err));
-        let header = new protos.ResponseHeader();
-        header.setResult(protos.ResultCode.INTERNAL_SERVER_ERROR);
+        let header = new protos.common.ResponseHeader();
+        header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
         header.setResultDescription(JSON.stringify(err));
-        result = new protos.OrderResponse().setHeader(header)
+        result = new protos.gold.OrderResponse().setHeader(header)
       }else {
         console.log("recieve notify response from gold server: " + JSON.stringify(response));
         result = response;
@@ -54,8 +54,8 @@ exports = module.exports = function(req, res) {
       res.json(Object.assign({},result.header,result))
     })
   }catch(err){
-    let header = new protos.ResponseHeader();
-    header.setResult(protos.ResultCode.INTERNAL_SERVER_ERROR);
+    let header = new protos.common.ResponseHeader();
+    header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
     header.setResultDescription(JSON.stringify(err));
     res.json(header);
   }

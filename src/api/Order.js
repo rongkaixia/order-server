@@ -3,8 +3,8 @@ import Validation from 'utils/Validation';
 
 var path = require('path');
 let grpc = require('grpc');
-let protoDescriptor = grpc.load(path.resolve('lib/order-sdk/protobuf/protocol.proto'));
-let protos = protoDescriptor.com.echo.gold;
+let protoDescriptor = grpc.load(path.resolve('lib/echo-common/protobuf/gold.proto'));
+let protos = protoDescriptor.com.echo.protocol;
 let host = Config.goldHost;
 let port = Config.goldPort;
 
@@ -51,8 +51,8 @@ exports = module.exports = function(req, res) {
   console.log('handle order request: ' + JSON.stringify(req.body));
   // check input
   validateOrderInput(req.body).catch((err) => {
-    let header = new protos.ResponseHeader();
-    header.setResult(protos.ResultCode.INVALID_REQUEST_ARGUMENT);
+    let header = new protos.common.ResponseHeader();
+    header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);
     header.setResultDescription(err);
     res.json(header);
     return;
@@ -60,23 +60,23 @@ exports = module.exports = function(req, res) {
   
   try{
     // construct signup request
-    let client = new protos.OrderService(host + ':' + port, grpc.credentials.createInsecure());
+    let client = new protos.gold.OrderService(host + ':' + port, grpc.credentials.createInsecure());
 
-    let request = new protos.OrderRequest();
+    let request = new protos.gold.OrderRequest();
 
     request.setUserId(req.body.userId);
     request.setTitle(req.body.title);
     request.setProductId(req.body.productId);
     request.setNum(req.body.num);
     if (req.body.payMethod === PAY_METHOD_ONLINE) {
-      request.setPayMethod(protos.PayMethod.ONLINE);
+      request.setPayMethod(protos.gold.PayMethod.ONLINE);
     } else {
-      request.setPayMethod(protos.PayMethod.COD);
+      request.setPayMethod(protos.gold.PayMethod.COD);
     }
     if (req.body.deliverMethod === DELIVER_METHOD_EXPRESS) {
-      request.setDeliverMethod(protos.DeliverMethod.EXPRESS)
+      request.setDeliverMethod(protos.gold.DeliverMethod.EXPRESS)
     } else {
-      request.setDeliverMethod(protos.DeliverMethod.DTD)
+      request.setDeliverMethod(protos.gold.DeliverMethod.DTD)
     }
     request.setRecipientsName(req.body.recipientsName);
     request.setRecipientsPhone(req.body.recipientsPhone);
@@ -91,10 +91,10 @@ exports = module.exports = function(req, res) {
       let result = {};
       if (err) {
         console.log("send order request to Gold Server error: " + JSON.stringify(err));
-        let header = new protos.ResponseHeader();
-        header.setResult(protos.ResultCode.INTERNAL_SERVER_ERROR);
+        let header = new protos.common.ResponseHeader();
+        header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
         header.setResultDescription(JSON.stringify(err));
-        result = new protos.OrderResponse().setHeader(header)
+        result = new protos.gold.OrderResponse().setHeader(header)
       }else {
         console.log("recieve order response from gold server: " + JSON.stringify(response));
         result = response;
@@ -102,8 +102,8 @@ exports = module.exports = function(req, res) {
       res.json(Object.assign({},result.header,result))
     })
   }catch(err){
-    let header = new protos.ResponseHeader();
-    header.setResult(protos.ResultCode.INTERNAL_SERVER_ERROR);
+    let header = new protos.common.ResponseHeader();
+    header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
     header.setResultDescription(JSON.stringify(err));
     res.json(header);
   }
