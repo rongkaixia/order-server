@@ -23,7 +23,6 @@ import getRoutes from './routes';
 import CaptainMiddleware from './middleware/CaptainMiddleware';
 import ProductMiddleware from './middleware/ProductMiddleware';
 import ApiMiddleware from './middleware/ApiMiddleware';
-import {generateCsrfToken} from 'utils/AuthenticityToken';
 import csurf from 'csrf-protection';
 import {load as loadCsrfToken} from './redux/modules/csrf';
 import {checkoutSync} from './redux/modules/checkout';

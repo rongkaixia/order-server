@@ -58,7 +58,8 @@ const DELIVER_METHOD_DTD = 'DTD';
         addAddress: userAction.addUserAddress,
         updateAddress: userAction.updateUserAddress,
         deleteAddress: userAction.deleteUserAddress,
-        redirectTo: routeActions.push})
+        redirectTo: routeActions.push,
+        replace: routeActions.replace})
 export default class UserCenter extends Component {
   static propTypes = {
     user: PropTypes.object,
@@ -96,7 +97,7 @@ export default class UserCenter extends Component {
           self.setState({countdown: self.state.countdown - 1});
           if (self.state.countdown <= 0) {
             clearInterval();
-            self.props.redirectTo(Config.mainDomainAbsPath + '/account/order');
+            self.props.replace(Config.mainDomainAbsPath + '/account/order');
           }
         }, 1000))
       }
@@ -110,7 +111,7 @@ export default class UserCenter extends Component {
           self.setState({countdown: self.state.countdown - 1});
           if (self.state.countdown <= 0) {
             clearInterval();
-            self.props.redirectTo(Config.mainDomainAbsPath + '/account/order');
+            self.props.replace(Config.mainDomainAbsPath + '/account/order');
           }
         }, 1000))
       }
@@ -143,7 +144,7 @@ export default class UserCenter extends Component {
     console.log('nextProps: ' + JSON.stringify(nextProps.checkout));
     if (this.props.checkout && nextProps.checkout) {
       if (!this.props.checkout.orderSuccess && nextProps.checkout.orderSuccess) {
-        this.props.redirectTo('/buy/payment');
+        this.props.replace('/buy/payment');
       } else if (!this.props.checkout.orderError && nextProps.checkout.orderError) {
         let err = nextProps.checkout.orderErrorDesc;
         this.setState({submitError: '订单提交失败，请稍后再试。' + '(' + JSON.stringify(err) + ')', 

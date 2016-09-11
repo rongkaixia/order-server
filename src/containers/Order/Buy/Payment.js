@@ -43,7 +43,8 @@ const ORDER_STATE = {
                     checkout: state.checkout,
                     authKey: state.csrf._csrf})),
         {...checkoutAction,
-        redirectTo: routeActions.push})
+        redirectTo: routeActions.push,
+        replace: routeActions.replace})
 export default class UserCenter extends Component {
   static propTypes = {
     user: PropTypes.object,
@@ -79,7 +80,7 @@ export default class UserCenter extends Component {
           self.setState({countdown: self.state.countdown - 1});
           if (self.state.countdown <= 0) {
             clearInterval();
-            self.props.redirectTo(Config.mainDomainAbsPath + '/account/order');
+            self.props.replace(Config.mainDomainAbsPath + '/account/order');
           }
         }, 1000)
       }
@@ -95,7 +96,7 @@ export default class UserCenter extends Component {
           self.setState({countdown: self.state.countdown - 1});
           if (self.state.countdown <= 0) {
             clearInterval();
-            self.props.redirectTo(Config.mainDomainAbsPath + '/account/order');
+            self.props.replace(Config.mainDomainAbsPath + '/account/order');
           }
         }, 1000)
       }
@@ -134,7 +135,7 @@ export default class UserCenter extends Component {
           self.setState({countdown: self.state.countdown - 1});
           if (self.state.countdown <= 0) {
             clearInterval();
-            self.props.redirectTo(Config.mainDomainAbsPath + '/account/order');
+            self.props.replace(Config.mainDomainAbsPath + '/account/order');
           }
         }, 1000)
       }

@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {generateCsrfToken} from 'utils/AuthenticityToken'
 import * as authActions from 'redux/modules/auth';
 
 @connect(
@@ -22,7 +21,7 @@ class LoginSuccess extends Component {
 
   render() {
     const {user, logout} = this.props;
-    const authKey = generateCsrfToken();
+    const authKey = null;
     return (user &&
       <div className="container">
         <h1>Login Success</h1>
