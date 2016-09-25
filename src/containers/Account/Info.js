@@ -136,7 +136,7 @@ export default class Info extends Component {
     event.preventDefault();
     const {authKey} = this.props;
     const username = this.refs.username;
-    this.props.updateUsername(username.value, authKey).then(this.props.loadInfo);
+    this.props.updateUsername({value: username.value}, authKey).then(this.props.loadInfo);
     this.setState({isUserModalOpen: false});
     // this.props.signup(username.value, password.value);
     // username.value = '';
@@ -148,7 +148,7 @@ export default class Info extends Component {
     const {authKey} = this.props;
     const oldPassword = this.refs.oldPassword;
     const newPassword = this.refs.newPassword;
-    this.props.updatePassword(oldPassword.value, newPassword.value, authKey)
+    this.props.updatePassword({value: newPassword.value}, authKey)
     .then(() => {
       this.props.loadInfo();
       this.setState({isPasswordModalOpen: false});
@@ -167,7 +167,7 @@ export default class Info extends Component {
     event.preventDefault();
     const {authKey} = this.props;
     const email = this.refs.email;
-    this.props.updateEmail(email.value, authKey).then(this.props.loadInfo);
+    this.props.updateEmail({value: email.value}, authKey).then(this.props.loadInfo);
     this.setState({isEmailModalOpen: false});
     // this.props.signup(username.value, password.value);
     // username.value = '';
@@ -178,7 +178,7 @@ export default class Info extends Component {
     event.preventDefault();
     const {authKey} = this.props;
     const phonenum = this.refs.phonenum;
-    this.props.updatePhonenum(phonenum.value, authKey).then(this.props.loadInfo);
+    this.props.updatePhonenum({value: phonenum.value}, authKey).then(this.props.loadInfo);
     this.setState({isPhoneModalOpen: false});
     // this.props.signup(username.value, password.value);
     // username.value = '';

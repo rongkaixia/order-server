@@ -24,7 +24,7 @@ const validate = values => {
 /* eslint-disable */
 @reduxForm({
   form: 'address',
-  fields: ['id', 'recipientsName', 'recipientsPhone', 'recipientsAddress', 'submitError'],
+  fields: ['addressId', 'recipientsName', 'recipientsPhone', 'recipientsAddress', 'submitError'],
   validate
 })
 export default class AddressForm extends Component {
@@ -35,7 +35,7 @@ export default class AddressForm extends Component {
   };
 
   render() {
-    const {fields: {id, recipientsName, recipientsPhone, recipientsAddress, submitError}, 
+    const {fields: {addressId, recipientsName, recipientsPhone, recipientsAddress, submitError}, 
           handleClose,
           handleSubmit} =  this.props;
     return (

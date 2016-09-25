@@ -26,13 +26,18 @@ const customStyles = {
   }
 }])
 @connect((state =>  ({user: state.userInfo.user,
+                      authKey: state.csrf._csrf,
                       loadInfoError: state.userInfo.loadInfoError,
                       loadInfoErrorDesc: state.userInfo.loadInfoErrorDesc})),
         {loadInfo: userAction.loadInfo,
+        addAddress: userAction.addUserAddress,
+        updateAddress: userAction.updateUserAddress,
+        deleteAddress: userAction.deleteUserAddress,
         redirectTo: routeActions.push})
 export default class Address extends Component {
   static propTypes = {
     user: PropTypes.object,
+    authKey: PropTypes.object,
     redirectTo: PropTypes.func.isRequired
   };
 
@@ -44,21 +49,55 @@ export default class Address extends Component {
   //     this.props.redirectTo('/login');
   //   }
   // }
+  
+  handleUpdateAddress = (address) => {
+    const {authKey} = this.props;
+    console.log('handle update address: ' + JSON.stringify(address));
+    console.log("authKey: " + authKey);
+    return this.props.updateAddress(address, authKey)
+                     .then(() => {return this.props.loadInfo()})
+  }
+
+  handleDeleteAddress = (address) => {
+    const {authKey} = this.props;
+    console.log('handle delete address: ' + JSON.stringify(address));
+    console.log("authKey: " + authKey);
+    return this.props.deleteAddress(address, authKey)
+                     .then(() => {return this.props.loadInfo()})
+  }
+
+  handleAddAddress = (address) => {
+    const {authKey} = this.props;
+    console.log('handle add address: ' + JSON.stringify(address));
+    console.log("authKey: " + authKey);
+    return this.props.addAddress(address, authKey)
+                     .then(() => {this.props.loadInfo()})
+  }
 
   render() {
     const styles = require('./Address.scss');
     const {user, loadInfo, addAddress, updateAddress, deleteAddress} = this.props;
     // const address = {id: '1111', username: '小明', phonenum: '15002029322', address: "深圳市南山区鸿瑞花园4-702"}
     let addressCards = [];
-    if (user.addressarrayList) {
-      user.addressarrayList.forEach((address) => {
+    if (user.addresses) {
+      user.addresses.forEach((address) => {
+        let addressFormatted = {addressId: address.address_id,
+                                recipientsName: address.recipients_name,
+                                recipientsPhone: address.recipients_phone,
+                                recipientsAddress: address.recipients_address};
         addressCards.push(
-          <AddressCard address={address}/>
+          <AddressCard address={addressFormatted}
+          onAddAddress={this.handleAddAddress.bind(this)}
+          onUpdateAddress={this.handleUpdateAddress.bind(this)}
+          onDeleteAddress={this.handleDeleteAddress.bind(this)}/>
         );
       })
     }
     addressCards.push(
-      <AddressCard />
+      <AddressCard
+      onAddAddress={this.handleAddAddress.bind(this)}
+      onUpdateAddress={this.handleUpdateAddress.bind(this)}
+      onDeleteAddress={this.handleDeleteAddress.bind(this)}/>
     );
     return (
       <div className={styles.AddressPanel}>

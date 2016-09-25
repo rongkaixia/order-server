@@ -1,5 +1,5 @@
 import Config from '../Config';
-import Validation from 'utils/Validation';
+import * as Validation from 'utils/Validation';
 
 var path = require('path');
 let grpc = require('grpc');
@@ -17,30 +17,30 @@ function validateOrderInput(req) {
   return new Promise((resolve, reject) => {
     if (!req) {
       reject("an order request is required");
-    } else if (!req.userId || Validation.isString(req.userId)) {
+    } else if (Validation.isEmpty(req.userId) || !Validation.isString(req.userId)) {
       reject("userId(string) is required");
-    } else if (!req.title || Validation.isString(req.title)) {
+    } else if (Validation.isEmpty(req.title) || !Validation.isString(req.title)) {
       reject("title(string) is required");
-    } else if (!req.productId || Validation.isString(req.productId)) {
+    } else if (Validation.isEmpty(req.productId) || !Validation.isString(req.productId)) {
       reject("productId(string) is required");
-    } else if (!req.num || Validation.integer(req.num)) {
+    } else if (Validation.isEmpty(req.num) || !Validation.isInteger(req.num)) {
       reject("num(int) is required");
-    } else if (!req.payMethod || Validation.isString(req.payMethod)) {
+    } else if (Validation.isEmpty(req.payMethod) || !Validation.isString(req.payMethod)) {
       reject("payMethod(string) is required");
-    } else if (!req.deliverMethod || Validation.isString(req.deliverMethod)) {
+    } else if (Validation.isEmpty(req.deliverMethod) || !Validation.isString(req.deliverMethod)) {
       reject("deliverMethod(string) is required");
-    } else if (!req.recipientsName || Validation.isString(req.setRecipientsName)) {
+    } else if (Validation.isEmpty(req.recipientsName) || !Validation.isString(req.recipientsName)) {
       reject("recipientsName(string) is required");
-    } else if (!req.recipientsPhone || Validation.isString(req.setRecipientsPhone)) {
+    } else if (Validation.isEmpty(req.recipientsPhone) || !Validation.isString(req.recipientsPhone)) {
       reject("recipientsPhone(string) is required");
-    } else if (!req.recipientsAddress || Validation.isString(req.setRecipientsAddress)) {
+    } else if (Validation.isEmpty(req.recipientsAddress) || !Validation.isString(req.recipientsAddress)) {
       reject("recipientsAddress(string) is required");
-    } else if (!req.comment || Validation.isString(req.comment)) {
+    } else if (!Validation.isString(req.comment)) {
       reject("comment(string) is required");
-    } else if (req.payMethod !== PAY_METHOD_ONLINE || req.payMethod !== PAY_METHOD_COD) {
-      reject("payMethod MUST be PAY_METHOD_ONLINE or PAY_METHOD_COD");
-    } else if (req.deliverMethod !== DELIVER_METHOD_EXPRESS || req.deliverMethod !== DELIVER_METHOD_DTD) {
-      reject("deliverMethod MUST be DELIVER_METHOD_EXPRESS or DELIVER_METHOD_DTD");
+    } else if (req.payMethod != PAY_METHOD_ONLINE && req.payMethod != PAY_METHOD_COD) {
+      reject("payMethod MUST be ONLINE or COD");
+    } else if (req.deliverMethod != DELIVER_METHOD_EXPRESS && req.deliverMethod != DELIVER_METHOD_DTD) {
+      reject("deliverMethod MUST be EXPRESS or DTD");
     } else {
       resolve();
     }
@@ -49,17 +49,13 @@ function validateOrderInput(req) {
 
 exports = module.exports = function(req, res) {
   console.log('handle order request: ' + JSON.stringify(req.body));
+
   // check input
-  validateOrderInput(req.body).catch((err) => {
-    let header = new protos.common.ResponseHeader();
-    header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);
-    header.setResultDescription(err);
-    res.json(header);
-    return;
-  })
-  
-  try{
+  validateOrderInput(req.body)
+  .then(() => {
     // construct signup request
+    console.log(host);
+    console.log(port);
     let client = new protos.gold.OrderService(host + ':' + port, grpc.credentials.createInsecure());
 
     let request = new protos.gold.OrderRequest();
@@ -101,10 +97,20 @@ exports = module.exports = function(req, res) {
       }
       res.json(Object.assign({},result.header,result))
     })
-  }catch(err){
+  }
+  ,(err) => {
+    console.log("validateOrderInput eror:" + JSON.stringify(err));
+    console.log(err);
+    let header = new protos.common.ResponseHeader();
+    header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);
+    header.setResultDescription(err);
+    res.json(header);
+  })
+  .catch((err) => {
+    console.log(err);
     let header = new protos.common.ResponseHeader();
     header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
     header.setResultDescription(JSON.stringify(err));
     res.json(header);
-  }
+  })
 }

@@ -95,7 +95,7 @@ export default class AddressCard extends Component {
   handleOnDeleteAddress = (event) => {
     // event.preventDefault();
     this.setState({deleteAddressError: null})
-    let address = {id: this.refs.addressId && this.refs.addressId.value}
+    let address = {addressId: this.refs.addressId && this.refs.addressId.value}
     this.props.onDeleteAddress(address)
     .then(() => {
       this.setState({deleteModalIsOpen: false});
@@ -109,12 +109,12 @@ export default class AddressCard extends Component {
   handleOnUpdateAddress = (event) => {
     // event.preventDefault();
     const {addressForm} = this.props;
-    let address = {id: addressForm.id && addressForm.id.value,
+    let address = {addressId: addressForm.addressId && addressForm.addressId.value,
                    recipientsName: addressForm.recipientsName && addressForm.recipientsName.value,
                    recipientsPhone: addressForm.recipientsPhone && addressForm.recipientsPhone.value,
                    recipientsAddress: addressForm.recipientsAddress && addressForm.recipientsAddress.value}
     let promise = [];
-    if (!Validation.empty(address.id)) {
+    if (!Validation.empty(address.addressId)) {
       promise = this.props.onUpdateAddress(address);
     }else{
       promise = this.props.onAddAddress(address);
@@ -134,7 +134,7 @@ export default class AddressCard extends Component {
 
   renderAddressModal(data) {
     const {authKey} =  this.props;
-    const initialValues = {id: data ? data.id : null, 
+    const initialValues = {addressId: data ? data.addressId : null, 
                           recipientsName: data ? data.recipientsName : null, 
                           recipientsPhone: data ? data.recipientsPhone : null,
                           recipientsAddress: data ? data.recipientsAddress : null}
@@ -148,7 +148,7 @@ export default class AddressCard extends Component {
           <AddressForm 
           initialValues={initialValues} 
           handleClose={this.closeUpdateModal} 
-          onSubmit={this.handleOnUpdateAddress} 
+          onSubmit={this.handleOnUpdateAddress.bind(this)} 
           />
         </Modal>
       </div>
@@ -185,7 +185,7 @@ export default class AddressCard extends Component {
     const deleteAddressModal = this.renderDeleteAddressModal(address);
     const plusIconPath = require('./plus.png');
     console.log("plusIconPath: " + plusIconPath);
-    const addressId = address ? address.id : null
+    const addressId = address ? address.addressId : null
 
     return (
       <div className={styles.orderAddress}>

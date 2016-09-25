@@ -17,7 +17,7 @@ class CApiClient {
     return adjustedPath;
   }
 
-  constructor(req, res, host = "localhost", port = 50051) { // express req and res
+  constructor(req, res, host = "localhost", port = 4000) { // express req and res
     let self = this;
     self.host = host;
     self.port = port;
@@ -37,9 +37,6 @@ class CApiClient {
         }
 
         if (__SERVER__ && req && req.get('cookie')) {
-          // console.log(req);
-          // console.log("=========cookie========")
-          // console.log(req.get('cookie'))
           request.set('cookie', req.get('cookie'));
         }
 
@@ -75,6 +72,7 @@ class CApiClient {
             reject(errorMsg);
           }
           let body = response.body;
+          console.log("ApiClient: response.body: " + JSON.stringify(body));
           if (body && body.result !== "SUCCESS") {
             reject(body);
           }else {

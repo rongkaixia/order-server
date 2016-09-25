@@ -5,7 +5,6 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import createStore from './redux/create';
-import OldApiClient from './helpers/ApiClient';
 import ApiClient from 'api/ApiClient';
 import io from 'socket.io-client';
 import {Provider} from 'react-redux';
@@ -15,11 +14,10 @@ import useScroll from 'scroll-behavior/lib/useStandardScroll';
 
 import getRoutes from './routes';
 
-const client = new OldApiClient();
 const apiClient = new ApiClient();
 const history = useScroll(() => browserHistory)();
 const dest = document.getElementById('content');
-const store = createStore(history, window.__data, {client: client, apiClient: apiClient});
+const store = createStore(history, window.__data, {apiClient: apiClient});
 
 // function initSocket() {
 //   const socket = io('', {path: '/ws'});
@@ -48,7 +46,7 @@ const store = createStore(history, window.__data, {client: client, apiClient: ap
  */
 const component = (
   <Router render={(props) =>
-        <ReduxAsyncConnect {...props} helpers={{client}} filter={item => !item.deferred} />
+        <ReduxAsyncConnect {...props} helpers={{apiClient}} filter={item => !item.deferred} />
       } history={history}>
     {getRoutes(store)}
   </Router>

@@ -47,8 +47,8 @@ export default class UserCenter extends Component {
     const styles = require('./Order.scss');
     const imagePath = require('../../../../static/diaozhui80X80.jpg');
     let addressCards = [];
-    if (user.addressarrayList) {
-      user.addressarrayList.forEach((address) => {
+    if (user.addresses) {
+      user.addresses.forEach((address) => {
         addressCards.push(
           <AddressCard address={address}/>
         );

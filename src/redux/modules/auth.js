@@ -1,4 +1,4 @@
-import API from 'echo-common-tmp/api/api'
+import ApiPath from 'api/ApiPath';
 
 const LOAD = 'redux-example/auth/LOAD';
 const LOAD_SUCCESS = 'redux-example/auth/LOAD_SUCCESS';
@@ -30,14 +30,14 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         loading: false,
         loaded: true
-        // user: action.data.userId ? action.data : null
       };
     case LOAD_FAIL:
       return {
         ...state,
         loading: false,
         loaded: false,
-        error: action.errorDescription
+        authError: action.result,
+        authErrorDesc: action.result_description
       };
     case LOGIN:
       return {
@@ -48,15 +48,14 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loggingIn: false,
-        loginError: false,
-        loginErrorDesc: action.errorDescription
+        loginSuccess: true,
       };
     case LOGIN_FAIL:
       return {
         ...state,
         loggingIn: false,
-        loginError: action.errorCode,
-        loginErrorDesc: action.errorDescription
+        loginError: action.result,
+        loginErrorDesc: action.result_description
       };
     case LOGOUT:
       return {
@@ -67,15 +66,14 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loggingOut: false,
-        logoutError: false,
-        logoutErrorDesc: action.errorDescription
+        logoutSuccess: true,
       };
     case LOGOUT_FAIL:
       return {
         ...state,
         loggingOut: false,
-        logoutError: action.errorCode,
-        logoutErrorDesc: action.errorDescription
+        logoutError: action.result,
+        logoutErrorDesc: action.result_description
       };
     case SIGNUP:
       return {
@@ -86,15 +84,14 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         signingUp: false,
-        signupError: false,
-        signupErrorDesc: action.errorDescription
+        signupSuccess: true,
       };
     case SIGNUP_FAIL:
       return {
         ...state,
         signingUp: false,
-        signupError: action.errorCode,
-        signupErrorDesc: action.errorDescription
+        signupError: action.result,
+        signupErrorDesc: action.result_description
       };
     default:
       return state;
@@ -108,44 +105,71 @@ export function isLoaded(globalState) {
 export function load() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: ({client}) => client.get(API.VALIDATE_TOKEN_API_PATH)
+    promise: ({apiClient}) => apiClient.get(ApiPath.AUTH)
   };
 }
 
-export function login(username, password, authKey) {
+/**
+ * login action，登录
+ *
+ * @param   {object}  loginReq
+ * loginReq format
+ * {
+ * username: string, username
+ * password: string, password
+ * }
+ * 
+ * @param   {string}  authKey   csrf token
+ *
+ * @return  {promise}
+ */
+export function login(loginReq, authKey) {
+  let postData = {...loginReq, ...{_csrf: authKey}};
   return {
     types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
-    promise: ({client}) => client.post(API.LOGIN_API_PATH, {
-      data: {
-        username: username,
-        password: password,
-        _csrf: authKey
-      }
+    promise: ({apiClient}) => apiClient.post(ApiPath.LOGIN, {
+      data: postData
     })
   };
 }
 
+/**
+ * logout action，登出
+ *
+ * @param   {string}  authKey   csrf token
+ *
+ * @return  {promise}
+ */
 export function logout(authKey) {
+  let postData = {_csrf: authKey};
   return {
     types: [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL],
-    promise: ({client}) => client.post(API.LOGOUT_API_PATH, {
-      data: {
-        _csrf: authKey
-      }
+    promise: ({apiClient}) => apiClient.post(ApiPath.LOGOUT, {
+      data: postData
     })
   };
 }
 
-export function signup(username, password, authKey) {
+/**
+ * signup action，登录
+ *
+ * @param   {object}  signupReq
+ * signupReq format
+ * {
+ * username: string, username
+ * password: string, password
+ * }
+ * 
+ * @param   {string}  authKey   csrf token
+ *
+ * @return  {promise}
+ */
+export function signup(signupReq, authKey) {
+  let postData = {...signupReq, ...{_csrf: authKey}};
   return {
     types: [SIGNUP, SIGNUP_SUCCESS, SIGNUP_FAIL],
-    promise: ({client}) => client.post(API.SIGNUP_API_PATH, {
-      // authenticity_token
-      data: {
-        username: username,
-        password: password,
-        _csrf: authKey
-      }
+    promise: ({apiClient}) => apiClient.post(ApiPath.SIGNUP, {
+      data: postData
     })
   };
 }

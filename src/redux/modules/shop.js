@@ -1,4 +1,4 @@
-import API from 'echo-common-tmp/api/api'
+import ApiPath from 'api/ApiPath';
 
 const LOAD_PRODUCT = 'redux-example/product/LOAD_PRODUCT';
 const LOAD_PRODUCT_SUCCESS = 'redux-example/product/LOAD_PRODUCT_SUCCESS';
@@ -57,7 +57,7 @@ export default function reducer(state = initialState, action = {}) {
 export function loadInfo(path) {
   return {
     types: [LOAD_PRODUCT, LOAD_PRODUCT_SUCCESS, LOAD_PRODUCT_FAIL],
-    promise: ({client}) => client.get(path ? API.PRODUCT_API_PATH + '/' + path : API.PRODUCT_API_PATH)
+    promise: ({apiClient}) => apiClient.get(path ? ApiPath.QUERY_PRODUCT + '/' + path : ApiPath.QUERY_PRODUCT)
   };
 }
 

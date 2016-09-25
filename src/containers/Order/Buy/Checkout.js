@@ -86,7 +86,7 @@ export default class UserCenter extends Component {
     console.log("componentWillMount");
     let self = this;
     this.intervals = [];
-    console.log("props: " + JSON.stringify(this.props));
+    // console.log("props: " + JSON.stringify(this.props));
     // check invalid post data
     if(!this.props.checkout.productId || !this.props.checkout.num || !this.props.checkout.priceSuccess) {
       console.log("invalid argument.");
@@ -178,10 +178,7 @@ export default class UserCenter extends Component {
     const {authKey} = this.props;
     console.log('handle add address: ' + JSON.stringify(address));
     console.log("authKey: " + authKey);
-    return this.props.addAddress({recipientsName: address.recipientsName, 
-                                  recipientsPhone: address.recipientsPhone, 
-                                  recipientsAddress: address.recipientsAddress, 
-                                  authKey: authKey})
+    return this.props.addAddress(address, authKey)
                      .then(() => {this.props.loadInfo()})
   }
 
@@ -189,24 +186,19 @@ export default class UserCenter extends Component {
     const {authKey} = this.props;
     console.log('handle update address: ' + JSON.stringify(address));
     console.log("authKey: " + authKey);
-    return this.props.updateAddress({id: address.id,
-                                    recipientsName: address.recipientsName, 
-                                    recipientsPhone: address.recipientsPhone, 
-                                    recipientsAddress: address.recipientsAddress, 
-                                    authKey: authKey})
+    return this.props.updateAddress(address, authKey)
                      .then(() => {return this.props.loadInfo()})
   }
 
   handleDeleteAddress = (address) => {
     const {authKey} = this.props;
     const {selectedAddress} = this.state;
-    console.log('handle update address: ' + JSON.stringify(address));
+    console.log('handle delete address: ' + JSON.stringify(address));
     console.log("authKey: " + authKey);
-    return this.props.deleteAddress({id: address.id,
-                                    authKey: authKey})
+    return this.props.deleteAddress(address, authKey)
                      .then(() => {return this.props.loadInfo()})
                      .then(() => {
-                        if (selectedAddress && address.id == selectedAddress.id) {
+                        if (selectedAddress && address.addressId == selectedAddress.addressId) {
                           this.setState({selectedAddress: null});
                         }
                      })
@@ -225,7 +217,7 @@ export default class UserCenter extends Component {
     }else if (!deliverMethod) {
       this.setState({submitError: '请选择配送方式', orderErrorModalIsOpen: true})
     }else {
-      let req = {userId: user.userId,
+      let req = {userId: user.user_id,
                 title: 'buy',
                 productId: checkout.productId,
                 num: 1,
@@ -282,13 +274,17 @@ export default class UserCenter extends Component {
     console.log("imagePath: " + imagePath);
 
     let addressCards = [];
-    if (user.addressarrayList) {
+    if (user.addresses) {
       let index = 0;
-      user.addressarrayList.forEach((address) => {
+      user.addresses.forEach((address) => {
+        let addressFormatted = {addressId: address.address_id,
+                                recipientsName: address.recipients_name,
+                                recipientsPhone: address.recipients_phone,
+                                recipientsAddress: address.recipients_address};
         addressCards.push(
-          <AddressCard address={address}
-          checked={selectedAddress && selectedAddress.id === address.id ? true : null}
-          onClick={this.setAddress.bind(this, address)}
+          <AddressCard address={addressFormatted}
+          checked={selectedAddress && selectedAddress.addressId === addressFormatted.addressId ? true : null}
+          onClick={this.setAddress.bind(this, addressFormatted)}
           onAddAddress={this.handleAddAddress.bind(this)}
           onUpdateAddress={this.handleUpdateAddress.bind(this)}
           onDeleteAddress={this.handleDeleteAddress.bind(this)}/>
@@ -411,14 +407,10 @@ export default class UserCenter extends Component {
     }
     var id = checkout.productId;
     let item = necklace[id];
-    console.log('id');
-    console.log(id);
     let itemView = null;
     if (item) {
       itemView = this.renderItem(item);
     }
-    console.log('itemView');
-    console.log(itemView);
     let validateErrorModal = this.renderValidateFormErrorModal();
 
     return (

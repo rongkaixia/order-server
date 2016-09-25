@@ -2,7 +2,7 @@ import {LOAD_SUCCESS as LOAD_AUTH_SUCCESS,
         LOGIN_SUCCESS,
         LOGOUT_SUCCESS,
         SIGNUP_SUCCESS} from './auth';
-import API from 'echo-common-tmp/api/api'
+import ApiPath from 'api/ApiPath';
 
 const LOAD_INFO = 'redux-example/userInfo/LOAD_INFO';
 const LOAD_INFO_SUCCESS = 'redux-example/userInfo/LOAD_INFO_SUCCESS';
@@ -20,19 +20,22 @@ export default function reducer(state = initialState, action = {}) {
   let newInfo = {};
   switch (action.type) {
     case LOAD_AUTH_SUCCESS:
+      newInfo = action.user_id ? {user_id: action.user_id, username: action.username} : null;
       return {
         ...state,
-        user: action.data.userId ? action.data : null
+        user: newInfo
       }
     case LOGIN_SUCCESS:
+      newInfo = action.user_id ? {user_id: action.user_id, username: action.username} : null;
       return {
         ...state,
-        user: action.data.userId ? action.data : null
+        user: newInfo
       }
     case SIGNUP_SUCCESS:
+      newInfo = action.user_id ? {user_id: action.user_id, username: action.username} : null;
       return {
         ...state,
-        user: action.data.userId ? action.data : null
+        user: newInfo
       }
     case LOGOUT_SUCCESS:
       return {
@@ -45,22 +48,21 @@ export default function reducer(state = initialState, action = {}) {
         loading: true
       };
     case LOAD_INFO_SUCCESS:
-      newInfo = {...(state.user), ...(action.data)};
+      newInfo = {...(state.user), ...(action.user_info)};
       return {
         ...state,
         loading: false,
         loaded: true,
         user: newInfo,
-        loadInfoError: false,
-        loadInfoErrorDesc: action.errorDescription
+        loadInfoSuccess: true
       };
     case LOAD_INFO_FAIL:
       return {
         ...state,
         loading: false,
         loaded: false,
-        loadInfoError: action.errorCode,
-        loadInfoErrorDesc: action.errorDescription
+        loadInfoError: action.result,
+        loadInfoErrorDesc: action.result_description
       };
     case UPDATE_INFO:
       return {
@@ -68,22 +70,21 @@ export default function reducer(state = initialState, action = {}) {
         updating: true
       };
     case UPDATE_INFO_SUCCESS:
-      newInfo = {...(state.user), ...(action.data)};
+      newInfo = {...(state.user), ...(action.user_info)};
       return {
         ...state,
         updating: false,
         updated: true,
         user: newInfo,
-        updateInfoError: false,
-        updateInfoErrorDesc: action.errorDescription
+        updateInfoSuccess: true
       };
     case UPDATE_INFO_FAIL:
       return {
         ...state,
         updating: false,
         updated: false,
-        updateInfoError: action.errorCode,
-        updateInfoErrorDesc: action.errorDescription
+        updateInfoError: action.result,
+        updateInfoErrorDesc: action.result_description
       };
 
     default:
@@ -94,99 +95,172 @@ export default function reducer(state = initialState, action = {}) {
 export function loadInfo() {
   return {
     types: [LOAD_INFO, LOAD_INFO_SUCCESS, LOAD_INFO_FAIL],
-    promise: ({client}) => client.get(API.USER_INFO_API_PATH)
+    promise: ({apiClient}) => apiClient.get(ApiPath.USER_INFO)
   };
 }
 
-export function updateUsername(newUsername, authKey) {
+/**
+ * update username action
+ *
+ * @param   {object}  req
+ * req format
+ * {
+ * value: string, new username
+ * }
+ * 
+ * @param   {string}  authKey   csrf token
+ *
+ * @return  {promise}
+ */
+export function updateUsername(req, authKey) {
+  let postData = {...req, ...{_csrf: authKey}};
   return {
     types: [UPDATE_INFO, UPDATE_INFO_SUCCESS, UPDATE_INFO_FAIL],
-    promise: ({client}) => client.post(API.USER_INFO_API_PATH + '/' + API.USER_INFO_API_USERNAME_SUFFIX, {
-      data: {
-        newUsername: newUsername,
-        _csrf: authKey
-      }
+    promise: ({apiClient}) => apiClient.post(ApiPath.USER_INFO + '/username', {
+      data: postData
     })
   };
 }
 
-export function updateEmail(newEmail, authKey) {
+/**
+ * update email action
+ *
+ * @param   {object}  req
+ * req format
+ * {
+ * value: string, new email
+ * }
+ * 
+ * @param   {string}  authKey   csrf token
+ *
+ * @return  {promise}
+ */
+export function updateEmail(req, authKey) {
+  let postData = {...req, ...{_csrf: authKey}};
   return {
     types: [UPDATE_INFO, UPDATE_INFO_SUCCESS, UPDATE_INFO_FAIL],
-    promise: ({client}) => client.post(API.USER_INFO_API_PATH + '/' + API.USER_INFO_API_EMAIL_SUFFIX, {
-      data: {
-        newEmail: newEmail,
-        _csrf: authKey
-      }
+    promise: ({apiClient}) => apiClient.post(ApiPath.USER_INFO + '/email', {
+      data: postData
     })
   };
 }
 
-export function updatePhonenum(newPhonenum, authKey) {
+/**
+ * update phonenum action
+ *
+ * @param   {object}  req
+ * req format
+ * {
+ * value: string, new phonenum
+ * }
+ * 
+ * @param   {string}  authKey   csrf token
+ *
+ * @return  {promise}
+ */
+export function updatePhonenum(req, authKey) {
+  let postData = {...req, ...{_csrf: authKey}};
   return {
     types: [UPDATE_INFO, UPDATE_INFO_SUCCESS, UPDATE_INFO_FAIL],
-    promise: ({client}) => client.post(API.USER_INFO_API_PATH + '/' + API.USER_INFO_API_PHONENYM_SUFFIX, {
-      data: {
-        newPhonenum: newPhonenum,
-        _csrf: authKey
-      }
+    promise: ({apiClient}) => apiClient.post(ApiPath.USER_INFO + '/phonenum', {
+      data: postData
     })
   };
 }
 
-export function updatePassword(oldPassword, newPassword, authKey) {
+/**
+ * update password action
+ *
+ * @param   {object}  req
+ * req format
+ * {
+ * value: string, new password
+ * }
+ * 
+ * @param   {string}  authKey   csrf token
+ *
+ * @return  {promise}
+ */
+export function updatePassword(req, authKey) {
+  let postData = {...req, ...{_csrf: authKey}};
   return {
     types: [UPDATE_INFO, UPDATE_INFO_SUCCESS, UPDATE_INFO_FAIL],
-    promise: ({client}) => client.post(API.USER_INFO_API_PATH + '/' + API.USER_INFO_API_PASSWORD_SUFFIX, {
-      data: {
-        oldPassword: oldPassword,
-        newPassword: newPassword,
-        _csrf: authKey
-      }
+    promise: ({apiClient}) => apiClient.post(ApiPath.USER_INFO + '/password', {
+      data: postData
     })
   };
 }
 
-export function addUserAddress({recipientsName, recipientsPhone, recipientsAddress, authKey}) {
+/**
+ * add user address action
+ *
+ * @param   {object}  req
+ * req format
+ * {
+ * recipientsName: string, recipientsName
+ * recipientsPhone: string, recipientsPhone
+ * recipientsAddress: string, recipientsAddress
+ * }
+ * 
+ * @param   {string}  authKey   csrf token
+ *
+ * @return  {promise}
+ */
+export function addUserAddress(req, authKey) {
+  let postData = {...req, ...{_csrf: authKey}};
   return {
     types: [UPDATE_INFO, UPDATE_INFO_SUCCESS, UPDATE_INFO_FAIL],
-    promise: ({client}) => client.post(API.USER_ADDRESS_API_PATH, {
-      // authenticity_token
-      data: {
-        recipientsName: recipientsName,
-        recipientsPhone: recipientsPhone,
-        recipientsAddress: recipientsAddress,
-        _csrf: authKey
-      }
+    promise: ({apiClient}) => apiClient.post(ApiPath.USER_ADDRESS, {
+      data: postData
     })
   };
 }
 
-export function updateUserAddress({id, recipientsName, recipientsPhone, recipientsAddress, authKey}) {
+/**
+ * update user address action
+ *
+ * @param   {object}  req
+ * req format
+ * {
+ * addressId: string, addressId
+ * recipientsName: string, recipientsName
+ * recipientsPhone: string, recipientsPhone
+ * recipientsAddress: string, recipientsAddress
+ * }
+ * 
+ * @param   {string}  authKey   csrf token
+ *
+ * @return  {promise}
+ */
+export function updateUserAddress(req, authKey) {
+  let postData = {...req, ...{_csrf: authKey}};
   return {
     types: [UPDATE_INFO, UPDATE_INFO_SUCCESS, UPDATE_INFO_FAIL],
-    promise: ({client}) => client.put(API.USER_ADDRESS_API_PATH, {
-      // authenticity_token
-      data: {
-        id: id,
-        recipientsName: recipientsName,
-        recipientsPhone: recipientsPhone,
-        recipientsAddress: recipientsAddress,
-        _csrf: authKey
-      }
+    promise: ({apiClient}) => apiClient.put(ApiPath.USER_ADDRESS, {
+      data: postData
     })
   };
 }
 
-export function deleteUserAddress({id, authKey}) {
+/**
+ * delete user address action
+ *
+ * @param   {object}  req
+ * req format
+ * {
+ * addressId: string, addressId
+ * }
+ * 
+ * @param   {string}  authKey   csrf token
+ *
+ * @return  {promise}
+ */
+export function deleteUserAddress(req, authKey) {
+  let postData = {...req, ...{_csrf: authKey}};
   return {
     types: [UPDATE_INFO, UPDATE_INFO_SUCCESS, UPDATE_INFO_FAIL],
-    promise: ({client}) => client.del(API.USER_ADDRESS_API_PATH, {
-      // authenticity_token
-      data: {
-        id: id,
-        _csrf: authKey
-      }
+    promise: ({apiClient}) => apiClient.del(ApiPath.USER_ADDRESS, {
+      data: postData
     })
   };
 }

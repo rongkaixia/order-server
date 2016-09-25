@@ -225,7 +225,7 @@ export function query(queryReq, authKey) {
   let postData = {...queryReq, ...{_csrf: authKey}};
   return {
     types: [QUERYING, QUERY_SUCCESS, QUERY_FAIL],
-    promise: ({apiClient}) => apiClient.post(ApiPath.QUERY, {
+    promise: ({apiClient}) => apiClient.post(ApiPath.QUERY_ORDER, {
       data: postData
     })
   };

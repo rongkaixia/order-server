@@ -1,5 +1,5 @@
 import Config from '../Config';
-import Validation from 'utils/Validation';
+import * as Validation from 'utils/Validation';
 
 var path = require('path');
 let grpc = require('grpc');
@@ -12,7 +12,7 @@ function validateNotifyInput(req) {
   return new Promise((resolve, reject) => {
     if (!req) {
       reject("an notify request is required");
-    } else if (!Validation.isString(req.orderId) || Validation.empty(req.orderId)) {
+    } else if (!Validation.isString(req.orderId) || Validation.isEmpty(req.orderId)) {
       reject("orderId(string) is required");
     } else {
       resolve();
@@ -23,15 +23,8 @@ function validateNotifyInput(req) {
 exports = module.exports = function(req, res) {
   console.log('handle notify request: ' + JSON.stringify(req.body));
   // check input
-  validateNotifyInput(req.body).catch((err) => {
-    let header = new protos.common.ResponseHeader();
-    header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);
-    header.setResultDescription(err);
-    res.json(header);
-    return;
-  })
-  
-  try{
+  validateNotifyInput(req.body)
+  .then(() => {
     // construct signup request
     let client = new protos.gold.OrderService(host + ':' + port, grpc.credentials.createInsecure());
 
@@ -53,10 +46,18 @@ exports = module.exports = function(req, res) {
       }
       res.json(Object.assign({},result.header,result))
     })
-  }catch(err){
+  }
+  ,(err) => {
+    let header = new protos.common.ResponseHeader();
+    header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);
+    header.setResultDescription(err);
+    res.json(header);
+  })
+  .catch((err) => {
+    console.log(err);
     let header = new protos.common.ResponseHeader();
     header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
     header.setResultDescription(JSON.stringify(err));
     res.json(header);
-  }
+  })
 }

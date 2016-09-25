@@ -49,7 +49,7 @@ export default class Login extends Component {
     const {authKey} = this.props;
     const username = this.refs.username;
     const password = this.refs.password;
-    this.props.login(username.value, password.value, authKey);
+    this.props.login({username: username.value, password: password.value}, authKey);
     password.value = '';
   }
 

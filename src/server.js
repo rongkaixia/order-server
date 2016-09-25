@@ -15,11 +15,9 @@ import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 import createHistory from 'react-router/lib/createMemoryHistory';
 
 import createStore from './redux/create';
-import OldApiClient from './helpers/ApiClient';
 import ApiClient from 'api/ApiClient';
 import Html from './helpers/Html';
 import getRoutes from './routes';
-import CaptainMiddleware from './middleware/CaptainMiddleware';
 import ProductMiddleware from './middleware/ProductMiddleware';
 import csurf from 'csrf-protection';
 import {load as loadCsrfToken} from './redux/modules/csrf';
@@ -27,7 +25,7 @@ import ApiPath from 'api/ApiPath';
 import {checkoutSync} from './redux/modules/checkout';
 import Config from 'config';
 // api
-import {Order, QueryOrder, Notify} from 'api';
+import * as api from 'api';
 
 const pretty = new PrettyError();
 const app = new Express();
@@ -46,13 +44,24 @@ const csrfProtection = csurf({cookie: true, ignoredPath: ['/buy/checkout']})
 app.use(csrfProtection)
 
 // captain router, redirect request to captain server
-app.use(CaptainMiddleware);
 app.use(ProductMiddleware);
 
 // api
-app.use(ApiPath.ORDER, Order);
-app.use(ApiPath.QUERY, QueryOrder);
-app.use(ApiPath.NOTIFY, Notify);
+app.use(ApiPath.ORDER, api.Order);
+app.use(ApiPath.QUERY_ORDER, api.QueryOrder);
+app.use(ApiPath.NOTIFY, api.Notify);
+
+app.use(ApiPath.AUTH, api.Auth);
+app.use(ApiPath.LOGIN, api.Login);
+app.use(ApiPath.LOGOUT, api.Logout);
+app.use(ApiPath.SIGNUP, api.Signup);
+
+app.get(ApiPath.USER_INFO, api.QueryUserInfo);
+app.post(ApiPath.USER_INFO + '/:field', api.UpdateUserInfo);
+
+app.post(ApiPath.USER_ADDRESS, api.AddUserAddress);
+app.delete(ApiPath.USER_ADDRESS, api.DeleteUserAddress);
+app.put(ApiPath.USER_ADDRESS, api.UpdateUserAddress);
 
 app.use((req, res) => {
   console.log("*************In normal app use((req,res)=>{...})***************")
@@ -65,12 +74,11 @@ app.use((req, res) => {
     webpackIsomorphicTools.refresh();
   }
 
-  const client = new OldApiClient(req, res);
   const apiClient = new ApiClient(req,res);
   const history = createHistory(req.originalUrl);
   const initData = undefined;
 
-  const store = createStore(history, initData, {client: client, apiClient: apiClient});
+  const store = createStore(history, initData, {apiClient: apiClient});
 
   function hydrateOnClient() {
     res.send('<!doctype html>\n' +
@@ -98,7 +106,7 @@ app.use((req, res) => {
         store.dispatch(checkoutSync(req.body.productId, req.body.num));
       }
 
-      loadOnServer({...renderProps, store, helpers: {client}}).then(() => {
+      loadOnServer({...renderProps, store, helpers: {apiClient}}).then(() => {
           const component = (
           <Provider store={store} key="provider">
             <ReduxAsyncConnect {...renderProps} />

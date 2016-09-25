@@ -45,7 +45,7 @@ export default class Signup extends Component {
     const {authKey} = this.props;
     const username = this.refs.username;
     const password = this.refs.password;
-    this.props.signup(username.value, password.value, authKey);
+    this.props.signup({username: username.value, password: password.value}, authKey);
     // username.value = '';
     password.value = '';
   }
