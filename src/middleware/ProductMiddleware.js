@@ -2,7 +2,6 @@ import Express from 'express';
 import BodyParser from 'body-parser';
 import CookieParser from 'cookie-parser';
 import ApiPath from 'api/ApiPath';
-import ErrorMessage from '../error';
 import Cookies from '../cookies';
 import {queryProduct} from 'echo-common-tmp/api/product/product';
 
