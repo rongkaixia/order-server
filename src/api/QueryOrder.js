@@ -12,8 +12,12 @@ function validateQueryInput(req) {
   return new Promise((resolve, reject) => {
     if (!req) {
       reject("an query request is required");
-    } else if (!Validation.isString(req.orderId) || Validation.isEmpty(req.orderId)) {
+    } else if (!Validation.isString(req.body.orderId) || Validation.isEmpty(req.body.orderId)) {
       reject("orderId(string) is required");
+    } else if (!req.session) {
+      reject("session is required");
+    } else if (!req.session.access_token) {
+      reject("token is required");
     } else {
       resolve();
     }
@@ -23,7 +27,7 @@ function validateQueryInput(req) {
 exports = module.exports = function(req, res) {
   console.log('handle query request: ' + JSON.stringify(req.body));
   // check input
-  validateQueryInput(req.body)
+  validateQueryInput(req)
   .then(() => {
     // construct signup request
     let client = new protos.gold.OrderService(host + ':' + port, grpc.credentials.createInsecure());
@@ -40,7 +44,7 @@ exports = module.exports = function(req, res) {
         let header = new protos.common.ResponseHeader();
         header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
         header.setResultDescription(JSON.stringify(err));
-        result = new protos.gold.OrderResponse().setHeader(header)
+        result = new protos.gold.OrderResponse().setHeader(header).toRaw();
       }else {
         console.log("recieve query response from gold server: " + JSON.stringify(response));
         result = response;
@@ -52,13 +56,13 @@ exports = module.exports = function(req, res) {
     let header = new protos.common.ResponseHeader();
     header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);
     header.setResultDescription(err);
-    res.json(header);
+    res.json(header.toRaw());
   })
   .catch((err) => {
     console.log(err);
     let header = new protos.common.ResponseHeader();
     header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
     header.setResultDescription(JSON.stringify(err));
-    res.json(header);
+    res.json(header.toRaw());
   })
 }

@@ -21,6 +21,9 @@ module.exports = Object.assign({
   mainDomain: 'echomoment.cn',
   mainDomainAbsPath: 'http://echomoment.cn:4000',
   orderDomain: 'order.echomoment.cn:4000',
+  mongo: {
+    url: 'mongodb://localhost:27017/app-session'
+  },
   app: {
     title: 'jade-web-server',
     description: 'All the modern best practices in one example.',

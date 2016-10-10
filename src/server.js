@@ -28,6 +28,16 @@ import Config from 'config';
 import * as api from 'api';
 
 const pretty = new PrettyError();
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+
+// mongo options
+const mongoOptions = {url: Config.mongo.url};
+
+// cookie options
+const cookieOptions = {path: '/', httpOnly: true, secure: false, 
+                       maxAge: null, domain: Config.mainDomain};
+// app and server
 const app = new Express();
 const server = new http.Server(app);
 
@@ -38,6 +48,13 @@ app.use(BodyParser.urlencoded({ extended: true })); // for parsing application/x
 app.use(compression());
 app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
 app.use(Express.static(path.join(__dirname, '..', 'static')));
+app.use(session({
+    secret: 'foo',
+    cookie: cookieOptions,
+    saveUninitialized: false, // don't create session until something stored 
+    resave: false, //don't save session if unmodified
+    store: new MongoStore(mongoOptions)
+}));
 
 // csrf protection
 const csrfProtection = csurf({cookie: true, ignoredPath: ['/buy/checkout']})

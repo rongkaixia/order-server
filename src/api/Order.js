@@ -17,29 +17,33 @@ function validateOrderInput(req) {
   return new Promise((resolve, reject) => {
     if (!req) {
       reject("an order request is required");
-    } else if (Validation.isEmpty(req.userId) || !Validation.isString(req.userId)) {
-      reject("userId(string) is required");
-    } else if (Validation.isEmpty(req.title) || !Validation.isString(req.title)) {
-      reject("title(string) is required");
-    } else if (Validation.isEmpty(req.productId) || !Validation.isString(req.productId)) {
-      reject("productId(string) is required");
-    } else if (Validation.isEmpty(req.num) || !Validation.isInteger(req.num)) {
-      reject("num(int) is required");
-    } else if (Validation.isEmpty(req.payMethod) || !Validation.isString(req.payMethod)) {
-      reject("payMethod(string) is required");
-    } else if (Validation.isEmpty(req.deliverMethod) || !Validation.isString(req.deliverMethod)) {
-      reject("deliverMethod(string) is required");
-    } else if (Validation.isEmpty(req.recipientsName) || !Validation.isString(req.recipientsName)) {
-      reject("recipientsName(string) is required");
-    } else if (Validation.isEmpty(req.recipientsPhone) || !Validation.isString(req.recipientsPhone)) {
-      reject("recipientsPhone(string) is required");
-    } else if (Validation.isEmpty(req.recipientsAddress) || !Validation.isString(req.recipientsAddress)) {
-      reject("recipientsAddress(string) is required");
-    } else if (!Validation.isString(req.comment)) {
-      reject("comment(string) is required");
-    } else if (req.payMethod != PAY_METHOD_ONLINE && req.payMethod != PAY_METHOD_COD) {
+    } else if (!req.session) {
+      reject("session is required");
+    } else if (!req.session.access_token) {
+      reject("token is required");
+    } else if (Validation.isEmpty(req.body.userId) || !Validation.isString(req.body.userId)) {
+      reject("userId(string) is req.bodyuired");
+    } else if (Validation.isEmpty(req.body.title) || !Validation.isString(req.body.title)) {
+      reject("title(string) is req.bodyuired");
+    } else if (Validation.isEmpty(req.body.productId) || !Validation.isString(req.body.productId)) {
+      reject("productId(string) is req.bodyuired");
+    } else if (Validation.isEmpty(req.body.num) || !Validation.isInteger(req.body.num)) {
+      reject("num(int) is req.bodyuired");
+    } else if (Validation.isEmpty(req.body.payMethod) || !Validation.isString(req.body.payMethod)) {
+      reject("payMethod(string) is req.bodyuired");
+    } else if (Validation.isEmpty(req.body.deliverMethod) || !Validation.isString(req.body.deliverMethod)) {
+      reject("deliverMethod(string) is req.bodyuired");
+    } else if (Validation.isEmpty(req.body.recipientsName) || !Validation.isString(req.body.recipientsName)) {
+      reject("recipientsName(string) is req.bodyuired");
+    } else if (Validation.isEmpty(req.body.recipientsPhone) || !Validation.isString(req.body.recipientsPhone)) {
+      reject("recipientsPhone(string) is req.bodyuired");
+    } else if (Validation.isEmpty(req.body.recipientsAddress) || !Validation.isString(req.body.recipientsAddress)) {
+      reject("recipientsAddress(string) is req.bodyuired");
+    } else if (!Validation.isString(req.body.comment)) {
+      reject("comment(string) is req.bodyuired");
+    } else if (req.body.payMethod != PAY_METHOD_ONLINE && req.body.payMethod != PAY_METHOD_COD) {
       reject("payMethod MUST be ONLINE or COD");
-    } else if (req.deliverMethod != DELIVER_METHOD_EXPRESS && req.deliverMethod != DELIVER_METHOD_DTD) {
+    } else if (req.body.deliverMethod != DELIVER_METHOD_EXPRESS && req.body.deliverMethod != DELIVER_METHOD_DTD) {
       reject("deliverMethod MUST be EXPRESS or DTD");
     } else {
       resolve();
@@ -51,7 +55,7 @@ exports = module.exports = function(req, res) {
   console.log('handle order request: ' + JSON.stringify(req.body));
 
   // check input
-  validateOrderInput(req.body)
+  validateOrderInput(req)
   .then(() => {
     // construct signup request
     console.log(host);
@@ -90,7 +94,7 @@ exports = module.exports = function(req, res) {
         let header = new protos.common.ResponseHeader();
         header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
         header.setResultDescription(JSON.stringify(err));
-        result = new protos.gold.OrderResponse().setHeader(header)
+        result = new protos.gold.OrderResponse().setHeader(header).toRaw();
       }else {
         console.log("recieve order response from gold server: " + JSON.stringify(response));
         result = response;
@@ -104,13 +108,13 @@ exports = module.exports = function(req, res) {
     let header = new protos.common.ResponseHeader();
     header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);
     header.setResultDescription(err);
-    res.json(header);
+    res.json(header.toRaw());
   })
   .catch((err) => {
     console.log(err);
     let header = new protos.common.ResponseHeader();
     header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
     header.setResultDescription(JSON.stringify(err));
-    res.json(header);
+    res.json(header.toRaw());
   })
 }

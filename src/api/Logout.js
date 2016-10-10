@@ -9,18 +9,6 @@ let protos = protoDescriptor.com.echo.protocol;
 let host = Config.captainHost;
 let port = Config.captainPort;
 
-// clear cookie function
-let clearCookie = (req, res) => {
-  if (req.cookies && req.cookies[Cookies.username])
-    res.clearCookie(Cookies.username, { domain: '.' + Config.mainDomain});
-  if (req.cookies && req.cookies[Cookies.session])
-    res.clearCookie(Cookies.session, { domain: '.' + Config.mainDomain});
-  if (req.cookies && req.cookies[Cookies.userID])
-    res.clearCookie(Cookies.userID, { domain: '.' + Config.mainDomain});
-  if (req.cookies && (req.cookies[Cookies.loggedIn] == 'true' || req.cookies[Cookies.loggedIn] == true))
-    res.cookie(Cookies.loggedIn, false, { domain: '.' + Config.mainDomain});
-}
-
 function validateLogoutInput(req) {
   return new Promise((resolve, reject) => {
     if (!req) {
@@ -33,14 +21,43 @@ function validateLogoutInput(req) {
 
 exports = module.exports = function(req, res) {
   console.log('handle logout request: ' + JSON.stringify(req.body));
+  let token = null;
+  if (!req.sessionID) {
+    let header = new protos.common.ResponseHeader();
+    header.setResult(protos.common.ResultCode.SUCCESS);
+    header.setResultDescription('ok');
+    res.json(header.toRaw());
+    return;
+  }
   // check input
   validateLogoutInput(req)
   .then(() => {
+    return new Promise((resolve, reject) => {
+      console.log("clear session with id: " + JSON.stringify(req.sessionID));
+      token = req.session.access_token;
+      req.session.destroy(function(err) {
+        if (err) {
+          reject("cannot destroy session")
+        } else {
+          resolve()
+        }
+      })
+    })
+  }
+  ,(err) => {
+    let header = new protos.common.ResponseHeader();
+    header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);
+    header.setResultDescription(err);
+    res.json(header.toRaw());
+    return;
+  })
+  .then(() => {
+    console.log('send logout request to Captain Server...');
     // construct signup request
     let client = new protos.captain.CaptainService(host + ':' + port, grpc.credentials.createInsecure());
 
     let request = new protos.captain.LogoutRequest();
-    request.setToken(req.cookies[Cookies.session]);
+    request.setToken(token);
 
     // send request to backend server
     client.logout(request, (err, response)=>{
@@ -50,30 +67,19 @@ exports = module.exports = function(req, res) {
         let header = new protos.common.ResponseHeader();
         header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
         header.setResultDescription(JSON.stringify(err));
-        result = new protos.captain.LoginResponse().setHeader(header)
+        result = new protos.captain.LoginResponse().setHeader(header).toRaw();
       }else {
         console.log("recieve logout response from captain server: " + JSON.stringify(response));
         result = response;
       }
-      if (result.header.result == "SUCCESS") {
-        console.log("clear session cookies")
-        clearCookie(req, res);
-      }
       res.json(Object.assign({},result.header,result))
     })
-  }
-  ,(err) => {
-    let header = new protos.common.ResponseHeader();
-    header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);
-    header.setResultDescription(err);
-    res.json(header);
-    return;
   })
   .catch((err) => {
     console.log(err);
     let header = new protos.common.ResponseHeader();
     header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
     header.setResultDescription(JSON.stringify(err));
-    res.json(header);
+    res.json(header.toRaw());
   })
 }

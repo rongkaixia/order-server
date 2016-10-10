@@ -9,13 +9,6 @@ let protos = protoDescriptor.com.echo.protocol;
 let host = Config.captainHost;
 let port = Config.captainPort;
 
-let setCookie = (res, {username, token, userId}) => {
-  res.cookie(Cookies.username, username, { domain: '.' + Config.mainDomain});
-  res.cookie(Cookies.session, token, { domain: '.' + Config.mainDomain});
-  res.cookie(Cookies.userID, userId, { domain: '.' + Config.mainDomain});
-  res.cookie(Cookies.loggedIn, true, { domain: '.' + Config.mainDomain});
-}
-
 // TODO: client.signup(request, (err, response)=>{ 返回中的reponse.header跟protos构造的header不太一样
 // 的考虑怎么解决
 function validateSignupInput(req) {
@@ -33,10 +26,7 @@ function validateSignupInput(req) {
 }
 
 exports = module.exports = function(req, res) {
-  Validation.isString(req.password);
   console.log('handle signup request: ' + JSON.stringify(req.body));
-  console.log(Validation.empty(req.body.password))
-  console.log(Validation.isString(req.body.password))
   // check input
   validateSignupInput(req.body)
   .then(() => {
@@ -55,7 +45,7 @@ exports = module.exports = function(req, res) {
         let header = new protos.common.ResponseHeader();
         header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
         header.setResultDescription(JSON.stringify(err));
-        result = new protos.captain.LoginResponse().setHeader(header)
+        result = new protos.captain.LoginResponse().setHeader(header).toRaw();
       }else {
         console.log("recieve signup response from captain server: " + JSON.stringify(response));
         result = response;
@@ -63,9 +53,9 @@ exports = module.exports = function(req, res) {
       // if (result.header.result == protos.common.ResultCode.SUCCESS) {
       if (result.header.result == "SUCCESS") {
         console.log("set user session cookie")
-        setCookie(res, {username: result.username, 
-                        token: result.token, 
-                        userId: result.user_id});
+        req.session.access_token = result.token;
+        req.session.username = result.username;
+        req.session.user_id = result.user_id;
       }
       res.json(Object.assign({},result.header,result))
     })
@@ -75,13 +65,13 @@ exports = module.exports = function(req, res) {
     let header = new protos.common.ResponseHeader();
     header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);
     header.setResultDescription(err);
-    res.json(header);
+    res.json(header.toRaw());
   })
   .catch((err) => {
     console.log(err);
     let header = new protos.common.ResponseHeader();
     header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
     header.setResultDescription(JSON.stringify(err));
-    res.json(header);
+    res.json(header.toRaw());
   })
 }

@@ -28,7 +28,9 @@ function validateInput(req) {
   return new Promise((resolve, reject) => {
     if (!req) {
       reject("an auth request is required");
-    } else if (!req.cookies || !req.cookies[Cookies.session]) {
+    } else if (!req.session) {
+      reject("session is required");
+    } else if (!req.session.access_token) {
       reject("token is required");
     } else if (Validation.empty(req.params.field)) {
       reject("update field is required");
@@ -52,7 +54,7 @@ exports = module.exports = function(req, res) {
     let client = new protos.captain.CaptainService(host + ':' + port, grpc.credentials.createInsecure());
 
     let request = new protos.captain.UpdateUserInfoRequest();
-    let token = (req.cookies && req.cookies[Cookies.session]) ? req.cookies[Cookies.session] : ''; 
+    let token = req.session.access_token;
     request.setToken(token);
     if (req.params.field == UPDATE_FIELD_USERNAME) {
       request.setUsername(req.body.value);
@@ -74,7 +76,7 @@ exports = module.exports = function(req, res) {
         let header = new protos.common.ResponseHeader();
         header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
         header.setResultDescription(JSON.stringify(err));
-        result = new protos.captain.LoginResponse().setHeader(header)
+        result = new protos.captain.LoginResponse().setHeader(header).toRaw();
       }else {
         console.log("recieve updateUserInfo response from captain server: " + JSON.stringify(response));
         result = response;
@@ -87,13 +89,13 @@ exports = module.exports = function(req, res) {
     let header = new protos.common.ResponseHeader();
     header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);
     header.setResultDescription(err);
-    res.json(header);
+    res.json(header.toRaw());
   })
   .catch((err) => {
     console.log(err);
     let header = new protos.common.ResponseHeader();
     header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
     header.setResultDescription(JSON.stringify(err));
-    res.json(header);
+    res.json(header.toRaw());
   })
 }

@@ -55,15 +55,15 @@ exports = module.exports = function(req, res) {
         let header = new protos.common.ResponseHeader();
         header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
         header.setResultDescription(JSON.stringify(err));
-        result = new protos.captain.LoginResponse().setHeader(header)
+        result = new protos.captain.LoginResponse().setHeader(header).toRaw();
       }else {
         console.log("recieve login response from captain server: " + JSON.stringify(response));
         result = response;
       }
       if (result.header.result == "SUCCESS") {
-        setCookie(res, {username: result.username, 
-                        token: result.token, 
-                        userId: result.user_id});
+        req.session.access_token = result.token;
+        req.session.username = result.username;
+        req.session.user_id = result.user_id;
       }
       res.json(Object.assign({},result.header,result))
     })
@@ -74,13 +74,13 @@ exports = module.exports = function(req, res) {
     let header = new protos.common.ResponseHeader();
     header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);
     header.setResultDescription(err);
-    res.json(header);
+    res.json(header.toRaw());
   })
   .catch((err) => {
     console.log(err);
     let header = new protos.common.ResponseHeader();
     header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
     header.setResultDescription(JSON.stringify(err));
-    res.json(header);
+    res.json(header.toRaw());
   })
 }

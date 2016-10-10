@@ -9,17 +9,6 @@ let protos = protoDescriptor.com.echo.protocol;
 let host = Config.captainHost;
 let port = Config.captainPort;
 
-let clearCookie = (req, res) => {
-  if (req.cookies && req.cookies[Cookies.username])
-    res.clearCookie(Cookies.username, { domain: '.' + Config.mainDomain});
-  if (req.cookies && req.cookies[Cookies.session])
-    res.clearCookie(Cookies.session, { domain: '.' + Config.mainDomain});
-  if (req.cookies && req.cookies[Cookies.userID])
-    res.clearCookie(Cookies.userID, { domain: '.' + Config.mainDomain});
-  if (req.cookies && (req.cookies[Cookies.loggedIn] == 'true' || req.cookies[Cookies.loggedIn] == true))
-    res.cookie(Cookies.loggedIn, false, { domain: '.' + Config.mainDomain});
-}
-
 function validateAuthInput(req) {
   return new Promise((resolve, reject) => {
     if (!req) {
@@ -32,6 +21,23 @@ function validateAuthInput(req) {
 
 exports = module.exports = function(req, res) {
   console.log('handle auth request: ' + JSON.stringify(req.body));
+  console.log('req.session: ' + JSON.stringify(req.session));
+  let header = new protos.common.ResponseHeader();
+  let result = {};
+  if (req.session.access_token && req.session.username && req.session.user_id) {
+    header.setResult(protos.common.ResultCode.SUCCESS);
+    result = {user_id: req.session.user_id, username: req.session.username}
+  } else {
+    header.setResult(protos.common.ResultCode.SUCCESS);
+  }
+  console.log("auth result: " + JSON.stringify(Object.assign({}, header.toRaw(), result)))
+  res.json(Object.assign({}, header.toRaw(), result))
+}
+
+/*
+exports = module.exports = function(req, res) {
+  console.log('handle auth request: ' + JSON.stringify(req.body));
+  console.log('req.session: ' + JSON.stringify(req.session));
   // check input
   validateAuthInput(req)
   .then(() => {
@@ -77,3 +83,4 @@ exports = module.exports = function(req, res) {
     res.json(header);
   })
 }
+*/

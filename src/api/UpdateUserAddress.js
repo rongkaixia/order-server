@@ -13,7 +13,9 @@ function validateInput(req) {
   return new Promise((resolve, reject) => {
     if (!req) {
       reject("an auth request is required");
-    } else if (!req.cookies || !req.cookies[Cookies.session]) {
+    } else if (!req.session) {
+      reject("session is required");
+    } else if (!req.session.access_token) {
       reject("token is required");
     } else if (Validation.empty(req.body.addressId)) {
       reject("addressId(string) is required");
@@ -37,7 +39,7 @@ exports = module.exports = function(req, res) {
     let client = new protos.captain.CaptainService(host + ':' + port, grpc.credentials.createInsecure());
 
     let request = new protos.captain.UpdateUserAddressRequest();
-    let token = (req.cookies && req.cookies[Cookies.session]) ? req.cookies[Cookies.session] : ''; 
+    let token = req.session.access_token; 
     request.setToken(token);
     request.setAddressId(req.body.addressId);
     if (!Validation.empty(req.body.recipientsName)) request.setRecipientsName(req.body.recipientsName);
