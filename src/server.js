@@ -80,6 +80,21 @@ app.post(ApiPath.USER_ADDRESS, api.AddUserAddress);
 app.delete(ApiPath.USER_ADDRESS, api.DeleteUserAddress);
 app.put(ApiPath.USER_ADDRESS, api.UpdateUserAddress);
 
+// load redux store middleware
+app.use((req, res, next) => {
+  const apiClient = new ApiClient(req,res);
+  const history = createHistory(req.originalUrl);
+  const initData = undefined;
+
+  const store = createStore(history, initData, {apiClient: apiClient});
+
+  // load csrf token to store
+  store.dispatch(loadCsrfToken(req.csrfToken()));
+  req.history = history;
+  req.reduxStore = store;
+  next();
+})
+
 app.use((req, res) => {
   console.log("*************In normal app use((req,res)=>{...})***************")
   console.log("req.originalUrl: " + req.originalUrl)
@@ -91,11 +106,8 @@ app.use((req, res) => {
     webpackIsomorphicTools.refresh();
   }
 
-  const apiClient = new ApiClient(req,res);
-  const history = createHistory(req.originalUrl);
-  const initData = undefined;
-
-  const store = createStore(history, initData, {apiClient: apiClient});
+  const history = req.history;
+  const store = req.reduxStore;
 
   function hydrateOnClient() {
     res.send('<!doctype html>\n' +
@@ -123,7 +135,7 @@ app.use((req, res) => {
         store.dispatch(checkoutSync(req.body.productId, req.body.num));
       }
 
-      loadOnServer({...renderProps, store, helpers: {apiClient}}).then(() => {
+      loadOnServer({...renderProps, store, helpers: {req}}).then(() => {
           const component = (
           <Provider store={store} key="provider">
             <ReduxAsyncConnect {...renderProps} />
@@ -143,6 +155,7 @@ app.use((req, res) => {
   });
 });
 
+// start server
 if (Config.port) {
   server.listen(Config.port, (err) => {
     if (err) {

@@ -138,6 +138,22 @@ export function checkoutSync(productId, num) {
   }
 }
 
+/**
+ * isOrderInfoLoad action
+ * 用于检查orderId对应的order info是否已经load到store中，避免checkout页面到payment页面是还需重新
+ * load一遍order info
+ *
+ * @param   {string}  orderId  order id
+ *
+ */
+export function isOrderInfoLoad(orderId, state) {
+  if (state && state.checkout && 
+      state.checkout.orderInfo && state.checkout.orderInfo.order_id == orderId)
+    return true;
+  else
+    return false;
+}
+
 export function pricing(pricingReq, authKey) {
   let postData = {...pricingReq, ...{_csrf: authKey}};
   return {

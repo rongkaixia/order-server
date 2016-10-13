@@ -144,7 +144,7 @@ export default class UserCenter extends Component {
     console.log('nextProps: ' + JSON.stringify(nextProps.checkout));
     if (this.props.checkout && nextProps.checkout) {
       if (!this.props.checkout.orderSuccess && nextProps.checkout.orderSuccess) {
-        this.props.replace('/buy/payment');
+        this.props.replace('/buy/payment/' + nextProps.checkout.orderInfo.order_id);
       } else if (nextProps.checkout.orderError) {
         let err = nextProps.checkout.orderErrorDesc;
         this.setState({submitError: '订单提交失败，请稍后再试。' + '(' + JSON.stringify(err) + ')', 

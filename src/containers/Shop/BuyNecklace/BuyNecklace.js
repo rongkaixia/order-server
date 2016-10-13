@@ -34,16 +34,55 @@ export default class UserCenter extends Component {
     redirectTo: PropTypes.func.isRequired
   };
 
+  state = {
+    currentChoices: null,
+    validateFormError: null,
+    num: 1
+  };
+
+  increaseNum() {
+    let num = this.state.num + 1;
+    this.setState({num: num});
+  }
+
+  decreaseNum() {
+    let num = Math.max(0, this.state.num - 1);
+    this.setState({num: num});
+  }
+
+  setChoices(name, value, event) {
+    let newChoices = this.state.currentChoices;
+    if (!newChoices) newChoices = {};
+    newChoices[name] = value;
+    this.setState({currentChoices: newChoices});
+  }
+
+  handleSubmit(event) {
+    const {necklace, location} = this.props;
+    var id = location.pathname.split("/").reverse()[0]
+    let item = necklace[id];
+    const currentChoices = this.state.currentChoices;
+    item.choices.forEach((choice) => {
+      if (!currentChoices || !currentChoices[choice.name]) {
+        event.preventDefault();
+        this.setState({validateFormError: "请选择 " + choice.display_name})
+        return;
+      }
+    })
+  }
+
   renderChoice(choice) {
     const styles = require('./BuyNecklace.scss');
+    const currentChoices = this.state.currentChoices;
     const option = choice.value.map((v) => {
+      let active = currentChoices && currentChoices[choice.name] === v; 
       return (
-        <Button bsSize="large">{v}</Button>
+        <Button bsSize="large" active={active} onClick={this.setChoices.bind(this, choice.name, v)}>{v}</Button>
       );
     })
     return (
       <div>
-        <p className={styles.subTitle}>{choice.name}</p>
+        <p className={styles.subTitle}>{choice.display_name}</p>
         <ButtonToolbar>
           {option}
         </ButtonToolbar>
@@ -51,13 +90,18 @@ export default class UserCenter extends Component {
       </div>
     );
   }
+
   renderItem(item) {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
     const styles = require('./BuyNecklace.scss');
     const imagePath = require('../../../../static/diaozhui.png');
     const {authKey} = this.props;
-    const choices = item.choices.map((choice) => {
+    const {currentChoices, num, validateFormError} = this.state;
+    const choicesSection = item.choices.map((choice) => {
       return this.renderChoice(choice);
+    })
+    const choicesInput = item.choices.map((choice) => {
+      return (<input name={choice.name} type="hidden" value={currentChoices && currentChoices[choice.name]} />)
     })
     return (
       <div className={styles.gridItem + " container"}>
@@ -67,25 +111,27 @@ export default class UserCenter extends Component {
         <div className={styles.productSelectionArea}>
           <p className={styles.introductionTitle}>{item.name}</p>
           <p className={styles.introductionSummary}>{item.name}</p>
-          {choices}
+          {choicesSection}
           <p className={styles.subTitle}>{"选择数量"}</p>
           <ButtonGroup>
-            <Button bsSize="large">-</Button>
-            <Button bsSize="large">0</Button>
-            <Button bsSize="large">+</Button>
+            <Button bsSize="large" onClick={this.decreaseNum.bind(this)}>-</Button>
+            <Button bsSize="large">{num}</Button>
+            <Button bsSize="large" onClick={this.increaseNum.bind(this)}>+</Button>
           </ButtonGroup>
           <p className={styles.chooseOptionComment}></p>
-          <form action={"http://" + Config.orderDomain + "/buy/checkout"} method="post">
+          <form id="shop-form" action={"http://" + Config.orderDomain + "/buy/checkout"} 
+          method="post" onSubmit={this.handleSubmit.bind(this)}>
             <input name="productId" type="hidden" value={'0000001'} />
-            <input name="num" type="hidden" value={1} />
+            <input name="num" type="hidden" value={num} />
             <input name="_csrf" type="hidden" value={authKey} />
+            {choicesInput}
             <Button bsSize="large" bsStyle="info" type="submit">立即购买</Button>
           </form>
+          {validateFormError && <div>{validateFormError}</div>}
         </div>
       </div>
     );
   }
-            // <input type="submit" value="Post" />
 
   render() {
     const styles = require('./BuyNecklace.scss');

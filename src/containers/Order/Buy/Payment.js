@@ -35,11 +35,25 @@ const ORDER_STATE = {
 // TODO: 增加错误展示界面，监听loadInfo的错误
 /* eslint-disable */ 
 @asyncConnect([{
-  promise: ({store: {dispatch, getState}, helpers: {client}}) => {
-    return dispatch(userAction.loadInfo());
+  promise: ({store: {dispatch, getState}, helpers: {}}) => {
+    const promises = [];
+    // load order info if need
+    const state = getState();
+    console.log("================Payment promise===========")
+    console.log("state: " + JSON.stringify(state));
+    if (!state.checkout.orderInfo || !state.checkout.orderInfo.order_id) {
+      const orderId = state.routing.location.pathname.split("/").reverse()[0]
+      const csrf = state.csrf._csrf;
+      console.log("orderId: " + orderId);
+      console.log("authKey: " + csrf);
+      promises.push(dispatch(checkoutAction.query({orderId: orderId}, csrf)));
+    }
+    promises.push(dispatch(userAction.loadInfo()));
+    return Promise.all(promises);
   }
 }])
-@connect((state => ({user: state.userInfo.user,
+@connect((state => ({location: state.routing.location,
+                    user: state.userInfo.user,
                     checkout: state.checkout,
                     authKey: state.csrf._csrf})),
         {...checkoutAction,
@@ -60,7 +74,7 @@ export default class UserCenter extends Component {
     key: 1,
     payModalIsOpen: false,
     resubmitting: false,
-    invalidArgument: false,
+    invalidOrder: false,
     unauthorizedRequest: false,
     countdown: null
   };
@@ -70,21 +84,19 @@ export default class UserCenter extends Component {
     let self = this;
     this.queryOrderStateInterval = null;
     this.countdownInterval = null;
-    // check invalid post data
-    if(!this.props.checkout.orderInfo || !this.props.checkout.orderInfo.order_id) {
-      console.log("invalid argument.");
-      console.log("redirecting to /");
-      this.setState({invalidArgument: true, countdown: 5});
-      if (!__SERVER__) {
-        this.countdownInterval = setInterval(() => {
-          self.setState({countdown: self.state.countdown - 1});
-          if (self.state.countdown <= 0) {
-            clearInterval();
-            self.props.replace(Config.mainDomainAbsPath + '/account/order');
-          }
-        }, 1000)
-      }
+
+    // check invalid order id
+    if (!this.props.checkout.orderInfo || !this.props.checkout.orderInfo.order_id) {
+      this.setState({invalidOrder: true, countdown: 5});
+      this.countdownInterval = setInterval(() => {
+        self.setState({countdown: self.state.countdown - 1});
+        if (self.state.countdown <= 0) {
+          clearInterval();
+          self.props.replace(Config.mainDomainAbsPath + '/account/order');
+        }
+      }, 1000)
     }
+
     // check resubmit form
     if(this.props.checkout && 
       this.props.checkout.orderInfo && 
@@ -262,17 +274,17 @@ export default class UserCenter extends Component {
 
   render() {
     const styles = require('./Payment.scss');
-    const {resubmitting, invalidArgument, countdown} = this.state;
+    const {resubmitting, invalidOrder, countdown} = this.state;
     if (resubmitting) {
       return (
         <div className={'container'}>
         <h4>{'请勿重复支付，正在跳转到我的订单页面...' + countdown + 's'}</h4>
         </div>
       );
-    } else if(invalidArgument) {
+    } else if(invalidOrder) {
       return (
         <div className={'container'}>
-        <h4>{'非法参数，正在跳转到我的订单页面...' + countdown + 's'}</h4>
+        <h4>{'订单不存在，正在跳转到我的订单页面...' + countdown + 's'}</h4>
         </div>
       );
     }

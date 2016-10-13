@@ -78,7 +78,7 @@ export default (store) => {
           <Route path="coupon" component={AccountCoupon}/>
         </Route>
         <Route path="buy/checkout" component={Checkout}/>
-        <Route path="buy/payment" component={Payment}/>
+        <Route path="buy/payment/:id" component={Payment}/>
       </Route>
       <Route path="necklace" component={Necklace}/>
       <Route path="shop/buy-necklace/:id" component={BuyNecklace}/>
