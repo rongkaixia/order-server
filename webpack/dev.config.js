@@ -103,12 +103,10 @@ module.exports = {
   progress: true,
   resolve: {
     root: [
-      path.resolve('./lib'),
-      path.resolve('../lib')
+      path.resolve('./lib/echo-node-modules')
     ],
     modulesDirectories: [
       'src',
-      'lib',
       'node_modules',
     ],
     extensions: ['', '.json', '.js', '.jsx']

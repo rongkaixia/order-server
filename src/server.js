@@ -24,6 +24,7 @@ import {load as loadCsrfToken} from './redux/modules/csrf';
 import ApiPath from 'api/ApiPath';
 import {checkoutSync} from './redux/modules/checkout';
 import Config from 'config';
+
 // api
 import * as api from 'api';
 
@@ -31,8 +32,15 @@ const pretty = new PrettyError();
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
+// mango
+var mango = require('mango');
+// mango.options['module root'] = '/Users/rk/Desktop/share_folder/order-server/'
+mango.importModels('models');
+mango.mongo = Config.mongo.product_url;
+mango.start();
+
 // mongo options
-const mongoOptions = {url: Config.mongo.url};
+const mongoSessionOptions = {url: Config.mongo.session_url};
 
 // cookie options
 const cookieOptions = {path: '/', httpOnly: true, secure: false, 
@@ -53,7 +61,7 @@ app.use(session({
     cookie: cookieOptions,
     saveUninitialized: false, // don't create session until something stored 
     resave: false, //don't save session if unmodified
-    store: new MongoStore(mongoOptions)
+    store: new MongoStore(mongoSessionOptions)
 }));
 
 // csrf protection

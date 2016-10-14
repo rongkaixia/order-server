@@ -40,7 +40,7 @@
     "start-prod": {
       "command": "node ./bin/server.js",
       "env": {
-        "NODE_PATH": "./src:./lib",
+        "NODE_PATH": "./src:./lib:./lib/echo-node-modules",
         "NODE_ENV": "production",
         "PORT": 8090,
         "CAPTAIN_HOST": "localhost",
@@ -50,7 +50,7 @@
     "start-dev": {
       "command": "node ./bin/server.js",
       "env": {
-        "NODE_PATH": "./src:./lib",
+        "NODE_PATH": "./src:./lib:./lib/echo-node-modules",
         "NODE_ENV": "development",
         "PORT": 4000,
         "CAPTAIN_HOST": "localhost",
@@ -61,7 +61,7 @@
       "command": "node webpack/webpack-dev-server.js",
       "env": {
         "UV_THREADPOOL_SIZE": 100,
-        "NODE_PATH": "./src:./lib",
+        "NODE_PATH": "./src:./lib:./lib/echo-node-modules",
         "PORT": 4000,
         "CAPTAIN_HOST": "localhost",
         "CAPTAIN_PORT": 19876
