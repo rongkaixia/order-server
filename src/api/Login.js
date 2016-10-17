@@ -2,20 +2,10 @@ import Config from '../Config';
 import Cookies from '../cookies';
 import * as Validation from 'utils/Validation';
 
-var path = require('path');
 let grpc = require('grpc');
-let protoDescriptor = grpc.load(path.resolve('lib/echo-common/protobuf/captain.proto'));
-let protos = protoDescriptor.com.echo.protocol;
+let protos = require('./protocol');
 let host = Config.captainHost;
 let port = Config.captainPort;
-
-let setCookie = (res, {username, token, userId}) => {
-  res.cookie(Cookies.username, username, { domain: '.' + Config.mainDomain});
-  res.cookie(Cookies.session, token, { domain: '.' + Config.mainDomain});
-  res.cookie(Cookies.userID, userId, { domain: '.' + Config.mainDomain});
-  res.cookie(Cookies.loggedIn, true, { domain: '.' + Config.mainDomain});
-}
-
 
 function validateLoginInput(req) {
   return new Promise((resolve, reject) => {

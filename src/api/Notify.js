@@ -1,10 +1,8 @@
 import Config from '../Config';
 import * as Validation from 'utils/Validation';
 
-var path = require('path');
 let grpc = require('grpc');
-let protoDescriptor = grpc.load(path.resolve('lib/echo-common/protobuf/gold.proto'));
-let protos = protoDescriptor.com.echo.protocol;
+let protos = require('./protocol');
 let host = Config.goldHost;
 let port = Config.goldPort;
 

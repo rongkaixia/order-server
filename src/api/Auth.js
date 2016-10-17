@@ -2,10 +2,11 @@ import Config from '../Config';
 import Cookies from '../cookies';
 import * as Validation from 'utils/Validation';
 
-var path = require('path');
+// var path = require('path');
 let grpc = require('grpc');
-let protoDescriptor = grpc.load(path.resolve('lib/echo-common/protobuf/captain.proto'));
-let protos = protoDescriptor.com.echo.protocol;
+// let protoDescriptor = grpc.load(path.resolve('lib/echo-common/protobuf/captain.proto'));
+// let protos = protoDescriptor.com.echo.protocol;
+let protos = require('./protocol');
 let host = Config.captainHost;
 let port = Config.captainPort;
 
