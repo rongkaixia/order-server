@@ -35,14 +35,22 @@ const DELIVER_METHOD_DTD = 'DTD';
 /* eslint-disable */ 
 @asyncConnect([{
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
+    const globalState = getState();
+    const promises = [];
+    let id = globalState.checkout && globalState.checkout.productId
+
+    if (id && !shopAction.isProductLoaded(id, globalState)) {
+      promises.push(dispatch(shopAction.loadProductInfo(id)));
+    }
+
+    return Promise.all(promises);
+  }
+},{
+  promise: ({store: {dispatch, getState}, helpers: {client}}) => {
     const state = getState();
     if (state.checkout && state.checkout.productId && state.checkout.num) {
       return dispatch(checkoutAction.pricing({}, state.csrf._csrf))
     }
-  }
-},{
-  promise: ({store: {dispatch, getState}, helpers: {client}}) => {
-    return dispatch(shopAction.loadNecklace());
   }
 },{
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
@@ -51,7 +59,7 @@ const DELIVER_METHOD_DTD = 'DTD';
 }])
 @connect((state => ({user: state.userInfo.user,
                     checkout: state.checkout,
-                    necklace: state.shop.products.necklace,
+                    necklaces: state.shop.productsByType.necklace,
                     authKey: state.csrf._csrf})),
         {...checkoutAction, 
         loadInfo: userAction.loadInfo,
@@ -63,7 +71,7 @@ const DELIVER_METHOD_DTD = 'DTD';
 export default class UserCenter extends Component {
   static propTypes = {
     user: PropTypes.object,
-    necklace: PropTypes.object,
+    necklaces: PropTypes.object,
     authKey: PropTypes.object,
     order: PropTypes.func.isRequired,
     redirectTo: PropTypes.func.isRequired
@@ -390,7 +398,7 @@ export default class UserCenter extends Component {
 
   render() {
     const styles = require('./Checkout.scss');
-    const {necklace, checkout} = this.props;
+    const {necklaces, checkout} = this.props;
     const {resubmitting, invalidArgument, countdown} = this.state;
     if (resubmitting) {
       return (
@@ -406,7 +414,7 @@ export default class UserCenter extends Component {
       );
     }
     var id = checkout.productId;
-    let item = necklace[id];
+    let item = necklaces[id];
     let itemView = null;
     if (item) {
       itemView = this.renderItem(item);

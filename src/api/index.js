@@ -13,4 +13,4 @@ export AddUserAddress from './AddUserAddress';
 export UpdateUserAddress from './UpdateUserAddress';
 export DeleteUserAddress from './DeleteUserAddress';
 
-// export QueryProductInfo from './product/QueryProductInfo';
+export QueryProductInfo from './product/QueryProductInfo';

@@ -23,15 +23,17 @@ import Config from 'config';
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
     let globalState = getState();
     const promises = [];
+    console.log("globalState: " + JSON.stringify(globalState))
+    var id = globalState.routing.location.pathname.split("/").reverse()[0]
 
-    if (!shopAction.isNecklaceLoad(globalState)) {
-      promises.push(dispatch(shopAction.loadNecklace()));
+    if (!shopAction.isProductLoaded(id, globalState)) {
+      promises.push(dispatch(shopAction.loadProductInfo(id)));
     }
 
     return Promise.all(promises);
   }
 }])
-@connect((state => ({necklaces: state.shop.productsByType['necklace'],
+@connect((state => ({necklaces: state.shop.productsByType.necklace,
                     authKey: state.csrf._csrf})),
         {redirectTo: routeActions.push})
 export default class UserCenter extends Component {
@@ -102,8 +104,9 @@ export default class UserCenter extends Component {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
     const styles = require('./BuyNecklace.scss');
     const imagePath = require('../../../../static/diaozhui.png');
-    const {authKey} = this.props;
+    const {authKey, location} = this.props;
     const {currentChoices, num, validateFormError} = this.state;
+    const productId = location.pathname.split("/").reverse()[0]
     const choicesSection = item.choices.map((choice) => {
       return this.renderChoice(choice);
     })
@@ -128,7 +131,7 @@ export default class UserCenter extends Component {
           <p className={styles.chooseOptionComment}></p>
           <form id="shop-form" action={"http://" + Config.orderDomain + "/buy/checkout"} 
           method="post" onSubmit={this.handleSubmit.bind(this)}>
-            <input name="productId" type="hidden" value={'0000001'} />
+            <input name="productId" type="hidden" value={productId} />
             <input name="num" type="hidden" value={num} />
             <input name="_csrf" type="hidden" value={authKey} />
             {choicesInput}

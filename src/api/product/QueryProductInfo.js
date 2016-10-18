@@ -1,5 +1,8 @@
 import * as Validation from 'utils/Validation';
 
+let grpc = require('grpc');
+let protos = require('../protocol');
+
 let mango = require('mango');
 const productCollectionName = "product";
 
@@ -29,11 +32,11 @@ exports = module.exports = function(req, res) {
     // construct query
     let query = null
     if (req.query.id) {
-      query = mango.collection[productCollectionName].model.findById(req.query.id);
+      query = mango.collections[productCollectionName].model.find({_id: req.query.id});
     } else if (req.query.type) {
-      query = mango.collection[productCollectionName].model.find({type: req.query.type});
+      query = mango.collections[productCollectionName].model.find({type: req.query.type});
     } else {
-      query = mango.collection[productCollectionName].model.find();
+      query = mango.collections[productCollectionName].model.find();
     }
 
     // do query
@@ -51,7 +54,7 @@ exports = module.exports = function(req, res) {
           header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);
           header.setResultDescription("cannot find products by given query")
         }
-        res.json(Object.assign({}, header, result))
+        res.json(Object.assign({}, header.toRaw(), {products: result}))
       }
     })
   }

@@ -34,7 +34,7 @@ const MongoStore = require('connect-mongo')(session);
 
 // mango
 let mango = require('mango');
-// mango.options['module root'] = '/Users/rk/Desktop/share_folder/order-server/src'
+mango.options['module root'] = '/Users/rk/Desktop/share_folder/order-server/src'
 mango.importModels('models');
 mango.mongo = Config.mongo.product_url;
 mango.start();
@@ -71,7 +71,7 @@ app.use(ProductMiddleware);
 
 // api
 app.use(ApiPath.ORDER, api.Order);
-app.use(ApiPath.QUERY_ORDER, api.QueryOrder);
+app.use(ApiPath.ORDER_INFO, api.QueryOrder);
 app.use(ApiPath.NOTIFY, api.Notify);
 
 app.use(ApiPath.AUTH, api.Auth);
@@ -86,7 +86,7 @@ app.post(ApiPath.USER_ADDRESS, api.AddUserAddress);
 app.delete(ApiPath.USER_ADDRESS, api.DeleteUserAddress);
 app.put(ApiPath.USER_ADDRESS, api.UpdateUserAddress);
 
-// app.get(ApiPath.PRODUCT_INFO, api.QueryProductInfo)
+app.get(ApiPath.PRODUCT_INFO, api.QueryProductInfo)
 
 // load redux store middleware
 app.use((req, res, next) => {

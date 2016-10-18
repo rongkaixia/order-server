@@ -16,14 +16,14 @@ import * as shopAction from 'redux/modules/shop';
     let globalState = getState();
     const promises = [];
 
-    if (!shopAction.isNecklaceLoad(globalState)) {
+    if (!shopAction.isNecklaceLoaded(globalState)) {
       promises.push(dispatch(shopAction.loadNecklace()));
     }
 
     return Promise.all(promises);
   }
 }])
-@connect((state => ({necklaces: state.shop.productsByType['necklace']})),
+@connect((state => ({necklaces: state.shop.productsByType.necklace})),
         {redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
@@ -40,12 +40,12 @@ export default class UserCenter extends Component {
     return (
       <div className={styles.gridItem}>
         <div className="col-md-3">
-          <a className="block" href={"/necklaces/" + item.id}>
+          <a className="block" href={"/necklaces/" + item._id}>
             <Image alt="150x150 pull-xs-left" src={imagePath} responsive rounded/>
           </a>
           <p>{item.name}</p>
           <span>
-              <Link className="btn btn-success" to={"/shop/buy-necklaces/" + item.id}>购买</Link>
+              <Link className="btn btn-success" to={"/shop/buy-necklace/" + item._id}>购买</Link>
           </span>
         </div>
       </div>
@@ -56,13 +56,13 @@ export default class UserCenter extends Component {
     const styles = require('./Necklace.scss');
     const {necklaces} = this.props;
     let items = [];
-    console.log("necklaces: " + JSON.stringify(necklaces))
-    // if (necklaces) {
-    //   Object.keys(necklaces).forEach((id) => {
-    //     let item = necklaces[id];
-    //     items.push(this.renderItem(item));;
-    //   })
-    // }
+    // console.log("necklaces: " + JSON.stringify(necklaces))
+    if (necklaces) {
+      Object.keys(necklaces).forEach((id) => {
+        let item = necklaces[id];
+        items.push(this.renderItem(item));;
+      })
+    }
 
     return (
       <div className={styles.necklacePage + ' container'}>
