@@ -13,14 +13,21 @@ import * as shopAction from 'redux/modules/shop';
 /* eslint-disable */ 
 @asyncConnect([{
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
-    return dispatch(shopAction.loadNecklace());
+    let globalState = getState();
+    const promises = [];
+
+    if (!shopAction.isNecklaceLoad(globalState)) {
+      promises.push(dispatch(shopAction.loadNecklace()));
+    }
+
+    return Promise.all(promises);
   }
 }])
-@connect((state => ({necklace: state.shop.products.necklace})),
+@connect((state => ({necklaces: state.shop.productsByType['necklace']})),
         {redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
-    necklace: PropTypes.object,
+    necklaces: PropTypes.object,
     redirectTo: PropTypes.func.isRequired
   };
 
@@ -33,12 +40,12 @@ export default class UserCenter extends Component {
     return (
       <div className={styles.gridItem}>
         <div className="col-md-3">
-          <a className="block" href={"/necklace/" + item.id}>
+          <a className="block" href={"/necklaces/" + item.id}>
             <Image alt="150x150 pull-xs-left" src={imagePath} responsive rounded/>
           </a>
           <p>{item.name}</p>
           <span>
-              <Link className="btn btn-success" to={"/shop/buy-necklace/" + item.id}>购买</Link>
+              <Link className="btn btn-success" to={"/shop/buy-necklaces/" + item.id}>购买</Link>
           </span>
         </div>
       </div>
@@ -47,14 +54,15 @@ export default class UserCenter extends Component {
 
   render() {
     const styles = require('./Necklace.scss');
-    const {necklace} = this.props;
+    const {necklaces} = this.props;
     let items = [];
-    if (necklace) {
-      Object.keys(necklace).forEach((id) => {
-        let item = necklace[id];
-        items.push(this.renderItem(item));;
-      })
-    }
+    console.log("necklaces: " + JSON.stringify(necklaces))
+    // if (necklaces) {
+    //   Object.keys(necklaces).forEach((id) => {
+    //     let item = necklaces[id];
+    //     items.push(this.renderItem(item));;
+    //   })
+    // }
 
     return (
       <div className={styles.necklacePage + ' container'}>

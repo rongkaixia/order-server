@@ -21,15 +21,22 @@ import Config from 'config';
 })
 @asyncConnect([{
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
-    return dispatch(shopAction.loadNecklace());
+    let globalState = getState();
+    const promises = [];
+
+    if (!shopAction.isNecklaceLoad(globalState)) {
+      promises.push(dispatch(shopAction.loadNecklace()));
+    }
+
+    return Promise.all(promises);
   }
 }])
-@connect((state => ({necklace: state.shop.products.necklace,
+@connect((state => ({necklaces: state.shop.productsByType['necklace'],
                     authKey: state.csrf._csrf})),
         {redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
-    necklace: PropTypes.object,
+    necklaces: PropTypes.object,
     authKey: PropTypes.object,
     redirectTo: PropTypes.func.isRequired
   };
@@ -58,9 +65,9 @@ export default class UserCenter extends Component {
   }
 
   handleSubmit(event) {
-    const {necklace, location} = this.props;
+    const {necklaces, location} = this.props;
     var id = location.pathname.split("/").reverse()[0]
-    let item = necklace[id];
+    let item = necklaces[id];
     const currentChoices = this.state.currentChoices;
     item.choices.forEach((choice) => {
       if (!currentChoices || !currentChoices[choice.name]) {
@@ -135,9 +142,9 @@ export default class UserCenter extends Component {
 
   render() {
     const styles = require('./BuyNecklace.scss');
-    const {necklace, location} = this.props;
+    const {necklaces, location} = this.props;
     var id = location.pathname.split("/").reverse()[0]
-    let item = necklace[id];
+    let item = necklaces[id];
     let itemView = null;
     if (item) {
       itemView = this.renderItem(item);
