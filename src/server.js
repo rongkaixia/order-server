@@ -33,18 +33,13 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
 // mango
-var mango = require('mango');
-// mango.options['module root'] = '/Users/rk/Desktop/share_folder/order-server/'
+let mango = require('mango');
+// mango.options['module root'] = '/Users/rk/Desktop/share_folder/order-server/src'
 mango.importModels('models');
 mango.mongo = Config.mongo.product_url;
 mango.start();
 
-// mongo options
-const mongoSessionOptions = {url: Config.mongo.session_url};
 
-// cookie options
-const cookieOptions = {path: '/', httpOnly: true, secure: false, 
-                       maxAge: null, domain: Config.mainDomain};
 // app and server
 const app = new Express();
 const server = new http.Server(app);
@@ -56,6 +51,9 @@ app.use(BodyParser.urlencoded({ extended: true })); // for parsing application/x
 app.use(compression());
 app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
 app.use(Express.static(path.join(__dirname, '..', 'static')));
+const mongoSessionOptions = {url: Config.mongo.session_url};
+const cookieOptions = {path: '/', httpOnly: true, secure: false, 
+                       maxAge: null, domain: Config.mainDomain};
 app.use(session({
     secret: 'foo',
     cookie: cookieOptions,
@@ -87,6 +85,8 @@ app.post(ApiPath.USER_INFO + '/:field', api.UpdateUserInfo);
 app.post(ApiPath.USER_ADDRESS, api.AddUserAddress);
 app.delete(ApiPath.USER_ADDRESS, api.DeleteUserAddress);
 app.put(ApiPath.USER_ADDRESS, api.UpdateUserAddress);
+
+// app.get(ApiPath.PRODUCT_INFO, api.QueryProductInfo)
 
 // load redux store middleware
 app.use((req, res, next) => {

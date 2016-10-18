@@ -6,7 +6,8 @@ const LOAD_PRODUCT_FAIL = 'redux-example/product/LOAD_INF_FAIL';
 
 const initialState = {
   loaded: false,
-  products: {}
+  productsByType: {},
+  productsById: {}
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -18,30 +19,33 @@ export default function reducer(state = initialState, action = {}) {
         loading: true
       };
     case LOAD_PRODUCT_SUCCESS:
-      let products = state.products;
+      let productsById = state.productsById;
+      let productsByType = state.productsByType;
       action.data.forEach((item) => {
         let data = {};
         data[item.id] = item;
-        if (products[item.type] === undefined) {
-          products[item.type] = {};
+        Object.assign(productsById, data)
+        if (!productsByType[item.type]) {
+          productsByType[item.type] = {};
         }
-        Object.assign(products[item.type], data);
+        Object.assign(productsByType[item.type], data);
       })
       return {
         ...state,
         loading: false,
         loaded: true,
-        products: products,
+        productsByType: productsByType,
+        productsById: productsById,
         loadInfoError: false,
-        loadInfoErrorDesc: action.errorDescription
+        loadInfoErrorDesc: action.result_description
       };
     case LOAD_PRODUCT_FAIL:
       return {
         ...state,
         loading: false,
         loaded: false,
-        loadInfoError: action.errorCode,
-        loadInfoErrorDesc: action.errorDescription
+        loadInfoError: action.result,
+        loadInfoErrorDesc: action.result_description
       };
 
     default:
@@ -54,21 +58,33 @@ export default function reducer(state = initialState, action = {}) {
  *
  * @param   {string}  type  ring, necklace, earring
  */
-export function loadInfo(path) {
+function loadInfo(path) {
   return {
     types: [LOAD_PRODUCT, LOAD_PRODUCT_SUCCESS, LOAD_PRODUCT_FAIL],
     promise: ({apiClient}) => apiClient.get(path ? ApiPath.QUERY_PRODUCT + '/' + path : ApiPath.QUERY_PRODUCT)
   };
 }
 
-export function loadNecklace(id) {
-  return loadInfo(id ? 'necklace/' + id : 'necklace');
+export function isProductLoad(id, globalState) {
+  return globalState.shop && globalState.shop.productsById && globalState.shop.productsById[id];
 }
 
-export function loadEarring(id) {
-  return loadInfo(id ? 'earring/' + id : 'earring');
+export function loadProductInfo(id) {
+  return loadInfo(ApiPath.PRODUCT_INFO + '?id=' + id);
+}
+
+export function loadNecklace() {
+  return loadInfo(ApiPath.PRODUCT_INFO + '?type=necklace');
+}
+
+export function isNecklaceLoad(globalState) {
+  return globalState.shop && globalState.shop.productsByType && globalState.shop.productsByType['necklace'];
+}
+
+export function loadEarring() {
+  return loadInfo(ApiPath.PRODUCT_INFO + '?type=earring');
 }
 
 export function loadRing(id) {
-  return loadInfo(id ? 'ring/' + id : 'ring');
+  return loadInfo(ApiPath.PRODUCT_INFO + '?type=ring');
 }

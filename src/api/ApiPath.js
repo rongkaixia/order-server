@@ -1,5 +1,5 @@
 module.exports = {
-  QUERY_ORDER: '/api/query',
+  ORDER_INFO: '/api/order_info',
   ORDER: '/api/order',
   PAY: '/api/pay',
   NOTIFY: '/api/notify',
@@ -13,5 +13,5 @@ module.exports = {
   AUTH: '/api/auth',
   USER_INFO: '/api/user_info',
   USER_ADDRESS: '/api/user_address',
-  QUERY_PRODUCT: '/api/query_product'
+  PRODUCT_INFO: '/api/product_info'
 };
