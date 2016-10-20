@@ -25,7 +25,7 @@ import {AddressCard} from 'containers';
   }
 }])
 @connect((state => ({user: state.userInfo.user,
-                    necklace: state.shop.products.necklace})),
+                    necklace: state.shop.productsByType.necklace})),
         {redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
@@ -115,7 +115,7 @@ export default class UserCenter extends Component {
   render() {
     const styles = require('./Order.scss');
     const {necklace} = this.props;
-    let item = necklace['0000001'];
+    let item = necklace['5805b7367e5012d47ef7e1cc'];
     let itemView = null;
     if (item) {
       itemView = this.renderItem(item);

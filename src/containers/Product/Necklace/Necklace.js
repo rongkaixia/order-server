@@ -13,14 +13,7 @@ import * as shopAction from 'redux/modules/shop';
 /* eslint-disable */ 
 @asyncConnect([{
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
-    let globalState = getState();
-    const promises = [];
-
-    if (!shopAction.isNecklaceLoaded(globalState)) {
-      promises.push(dispatch(shopAction.loadNecklace()));
-    }
-
-    return Promise.all(promises);
+    return dispatch(shopAction.loadNecklace());
   }
 }])
 @connect((state => ({necklaces: state.shop.productsByType.necklace})),

@@ -77,10 +77,6 @@ export function loadNecklace() {
   return loadInfo(ApiPath.PRODUCT_INFO + '?type=necklace');
 }
 
-export function isNecklaceLoaded(globalState) {
-  return globalState.shop && globalState.shop.productsByType && globalState.shop.productsByType['necklace'];
-}
-
 export function loadEarring() {
   return loadInfo(ApiPath.PRODUCT_INFO + '?type=earring');
 }
