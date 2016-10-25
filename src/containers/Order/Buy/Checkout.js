@@ -49,7 +49,8 @@ const DELIVER_METHOD_DTD = 'DTD';
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
     const state = getState();
     if (state.checkout && state.checkout.productId && state.checkout.num) {
-      return dispatch(checkoutAction.pricing({}, state.csrf._csrf))
+      let pricingReq = {id: state.checkout.productId, num: state.checkout.num};
+      return dispatch(checkoutAction.pricing(pricingReq, state.csrf._csrf))
     }
   }
 },{
@@ -228,7 +229,7 @@ export default class UserCenter extends Component {
       let req = {userId: user.user_id,
                 title: 'buy',
                 productId: checkout.productId,
-                num: 1,
+                num: checkout.num,
                 payMethod: payMethod,
                 deliverMethod: deliverMethod,
                 recipientsName: selectedAddress.recipientsName,
@@ -274,7 +275,7 @@ export default class UserCenter extends Component {
   renderItem(item) {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
     const styles = require('./Checkout.scss');
-    const {user} = this.props;
+    const {user, checkout} = this.props;
     const imagePath = item.images.thumbnail;
     const selectedAddress = this.state.selectedAddress;
     const payMethod = this.state.payMethod;
@@ -374,9 +375,9 @@ export default class UserCenter extends Component {
                 <div className={styles.itemDesc}>
                   <p>{item.name}</p>
                 </div>
-                <span className={styles.subtotal}>1799</span>
-                <span className={styles.num}>1</span>
-                <span className={styles.price}>1799</span>
+                <span className={styles.subtotal}>{checkout.realPayAmt}</span>
+                <span className={styles.num}>{checkout.num}</span>
+                <span className={styles.price}>{checkout.realPrice}</span>
               </div>
               <div className={styles.summary}>
                 <div className={styles.total}>

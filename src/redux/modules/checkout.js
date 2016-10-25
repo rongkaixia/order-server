@@ -32,7 +32,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         productId: action.productId,
-        num: action.num
+        num: Number(action.num)
       }
     case PRICING:
       console.log("PRICING")
@@ -120,7 +120,6 @@ export default function reducer(state = initialState, action = {}) {
   }
 }
 
-
 /**
  * checkout action
  * 用户post要购买的product id跟数量num，用户post请求到服务器，服务器调用该action记录用户
@@ -154,21 +153,30 @@ export function isOrderInfoLoad(orderId, state) {
     return false;
 }
 
+/**
+ * pricing action, 批价请求
+ *
+ * @param   {object}  pricingReq
+ * pricingReq format
+ * {
+ * id: string, product id,
+ * num: int, number,
+ * }
+ * 
+ * @param   {string}  authKey   csrf token
+ *
+ * @return  {promise}
+ */
 export function pricing(pricingReq, authKey) {
   let postData = {...pricingReq, ...{_csrf: authKey}};
   return {
     types: [PRICING, PRICE_SUCCESS, PRICE_FAIL],
-    promise: () => {
-      return Promise.resolve({
-        price: 1000,
-        real_price: 1000,
-        discount: 0.0,
-        pay_amt: 0.0,
-        real_pay_amt: 2000
-      })
-    }
+    promise: ({apiClient}) => apiClient.post(ApiPath.PRICING, {
+      data: postData
+    })
   };
 }
+
 /**
  * order action, 下单请求
  *

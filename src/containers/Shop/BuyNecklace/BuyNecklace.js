@@ -23,21 +23,26 @@ import Config from 'config';
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
     let globalState = getState();
     const promises = [];
-    console.log("globalState: " + JSON.stringify(globalState))
     var id = globalState.routing.location.pathname.split("/").reverse()[0]
 
+    // load product info
     if (!shopAction.isProductLoaded(id, globalState)) {
       promises.push(dispatch(shopAction.loadProductInfo(id)));
     }
 
+    // pricing with num=1
+    let pricingReq = {id: id, num: 1};
+    promises.push(dispatch(shopAction.pricing(pricingReq, globalState.csrf._csrf)))
     return Promise.all(promises);
   }
 }])
-@connect((state => ({necklaces: state.shop.productsByType.necklace,
+@connect((state => ({shop: state.shop,
+                    necklaces: state.shop.productsByType.necklace,
                     authKey: state.csrf._csrf})),
-        {redirectTo: routeActions.push})
+        {...shopAction, redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
+    shop: PropTypes.object,
     necklaces: PropTypes.object,
     authKey: PropTypes.object,
     redirectTo: PropTypes.func.isRequired
@@ -52,11 +57,17 @@ export default class UserCenter extends Component {
   increaseNum() {
     let num = this.state.num + 1;
     this.setState({num: num});
+    const productId = location.pathname.split("/").reverse()[0]
+    let pricingReq = {id: productId, num: num};
+    this.props.pricing(pricingReq, this.props.authKey)
   }
 
   decreaseNum() {
-    let num = Math.max(0, this.state.num - 1);
+    let num = Math.max(1, this.state.num - 1);
     this.setState({num: num});
+    const productId = location.pathname.split("/").reverse()[0]
+    let pricingReq = {id: productId, num: num};
+    this.props.pricing(pricingReq, this.props.authKey)
   }
 
   setChoices(name, value, event) {
@@ -104,7 +115,7 @@ export default class UserCenter extends Component {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
     const styles = require('./BuyNecklace.scss');
     const imagePath = require('../../../../static/diaozhui.png');
-    const {authKey, location} = this.props;
+    const {shop, authKey, location} = this.props;
     const {currentChoices, num, validateFormError} = this.state;
     const productId = location.pathname.split("/").reverse()[0]
     const choicesSection = item.choices.map((choice) => {
@@ -129,6 +140,7 @@ export default class UserCenter extends Component {
             <Button bsSize="large" onClick={this.increaseNum.bind(this)}>+</Button>
           </ButtonGroup>
           <p className={styles.chooseOptionComment}></p>
+          <p>{shop.realPayAmt}</p>
           <form id="shop-form" action={"http://" + Config.orderDomain + "/buy/checkout"} 
           method="post" onSubmit={this.handleSubmit.bind(this)}>
             <input name="productId" type="hidden" value={productId} />

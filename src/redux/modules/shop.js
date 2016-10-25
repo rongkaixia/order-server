@@ -4,6 +4,10 @@ const LOAD_PRODUCT = 'redux-example/product/LOAD_PRODUCT';
 const LOAD_PRODUCT_SUCCESS = 'redux-example/product/LOAD_PRODUCT_SUCCESS';
 const LOAD_PRODUCT_FAIL = 'redux-example/product/LOAD_INF_FAIL';
 
+const PRICING = 'redux-example/product/PRICING';
+const PRICE_SUCCESS = 'redux-example/product/PRICE_SUCCESS';
+const PRICE_FAIL = 'redux-example/product/PRICE_FAIL';
+
 const initialState = {
   loaded: false,
   productsByType: {},
@@ -47,7 +51,31 @@ export default function reducer(state = initialState, action = {}) {
         loadInfoError: action.result,
         loadInfoErrorDesc: action.result_description
       };
-
+    case PRICING:
+      console.log("PRICING")
+      return {
+        ...state,
+        pricing: true
+      }
+    case PRICE_SUCCESS:
+      console.log("PRICE_SUCCESS")
+      return {
+        ...state,
+        pricing: false,
+        priceSuccess: true,
+        price: action.price,
+        realPrice: action.real_price,
+        payAmt: action.pay_amt,
+        realPayAmt: action.real_pay_amt
+      };
+    case PRICE_FAIL:
+      console.log("PRICE_FAIL")
+      return {
+        ...state,
+        pricing: false,
+        priceError: action.result,
+        priceErrorDesc: action.result_description
+      };
     default:
       return state;
   }
@@ -83,4 +111,28 @@ export function loadEarring() {
 
 export function loadRing(id) {
   return loadInfo(ApiPath.PRODUCT_INFO + '?type=ring');
+}
+
+/**
+ * pricing action, 批价请求
+ *
+ * @param   {object}  pricingReq
+ * pricingReq format
+ * {
+ * id: string, product id,
+ * num: int, number,
+ * }
+ * 
+ * @param   {string}  authKey   csrf token
+ *
+ * @return  {promise}
+ */
+export function pricing(pricingReq, authKey) {
+  let postData = {...pricingReq, ...{_csrf: authKey}};
+  return {
+    types: [PRICING, PRICE_SUCCESS, PRICE_FAIL],
+    promise: ({apiClient}) => apiClient.post(ApiPath.PRICING, {
+      data: postData
+    })
+  };
 }

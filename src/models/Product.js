@@ -3,11 +3,9 @@ var Mango  = require('mango')
 let Types = Mango.Types;
 let product = new Mango.Collection("product")
 
-
-  // let tmp = {
-  //   id: "0000001",
-  //   type: "necklace",
+  // let p1 = new Product({
   //   name: "经典 - 18k白金翡翠吊坠",
+  //   type: "necklace",
   //   type_name: "吊坠",
   //   brief_desc: ["精选心型18K翡翠吊坠", "18k白金、18k黄金", "吊坠大小 - 1.8cm * 0.5cm * 0.2cm"], // 简要描述，用于购买页展示
   //   choices: [
@@ -23,21 +21,25 @@ let product = new Mango.Collection("product")
   //     thumbnail: 'http://localhost:4000/dist' + "/static/diaozhui80x80.jpg", //商品小图，用于订单中展示等
   //     gallery: {}, //商品gallery，多张
   //     banner: {} // banner图片，用于商品详细页面
-  //   }
-  // }
+  //   },
+  //   price: 1750, // 商品原始单价
+  //   real_price: 1750 // 商品实际单价，促销等情况
+  // })
 
 product.addSchema({
-	// _id: Types.String,
-	type: Types.String,
-	name: Types.String,
-	type_name: Types.String,
-	brief_desc: [Types.String],
-	choices: [Types.Mixed],
-	specs: [Types.Mixed],
-	images: {hero_image: Types.String,
-					thumbnail: Types.String,
-					gallery: Types.String,
-					banner: Types.String}
+  // id: Types.String,
+  type: Types.String,
+  name: Types.String,
+  type_name: Types.String,
+  brief_desc: [Types.String],
+  choices: [Types.Mixed],
+  specs: [Types.Mixed],
+  price: Types.Number, // 商品原始单价
+  real_price: Types.Number, // 商品实际单价，促销等情况
+  images: {hero_image: Types.String,
+          thumbnail: Types.String,
+          gallery: Types.Mixed,
+          banner: Types.Mixed}
 })
 
 /**

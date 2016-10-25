@@ -67,7 +67,7 @@ const csrfProtection = csurf({cookie: true, ignoredPath: ['/buy/checkout']})
 app.use(csrfProtection)
 
 // captain router, redirect request to captain server
-app.use(ProductMiddleware);
+// app.use(ProductMiddleware);
 
 // api
 app.use(ApiPath.ORDER, api.Order);
@@ -87,6 +87,7 @@ app.delete(ApiPath.USER_ADDRESS, api.DeleteUserAddress);
 app.put(ApiPath.USER_ADDRESS, api.UpdateUserAddress);
 
 app.get(ApiPath.PRODUCT_INFO, api.QueryProductInfo)
+app.post(ApiPath.PRICING, api.Pricing)
 
 // load redux store middleware
 app.use((req, res, next) => {
