@@ -75,52 +75,51 @@ export default class UserCenter extends Component {
     this.setState({orderSwitch: newState});
   }
 
-  renderItem(item) {
-      // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
-    const {user} = this.props;
+  renderOrderItem(item) {
     const styles = require('./Order.scss');
     const imagePath = require('../../../../static/diaozhui80X80.jpg');
-    let addressCards = [];
-    if (user.addresses) {
-      user.addresses.forEach((address) => {
-        addressCards.push(
-          <AddressCard address={address}/>
-        );
-      })
-    }
-    addressCards.push(
-      <AddressCard />
-    );
+    return (
+      <div className={styles.item}>
+        <div className={styles.itemThump}>
+          <a href="http://www.smartisan.com/shop/#/t2" title="Smartisan T2（黑色，16GB）" target="_blank"> 
+            <img src={imagePath}/> 
+          </a>
+        </div>
+        <div className={styles.itemDesc}>
+          <p>{item.name}</p>
+        </div>
+      </div>
+    )
+  }
 
+  renderOrder(order) {
+      // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
+    const {user, products} = this.props;
+    const styles = require('./Order.scss');
+    const item = products[order.product_id];
+    let orderState = "";
+    if (order.state == ORDER_STATE.UNPAY || order.state == ORDER_STATE.PAY_ERROR) {
+      orderState = "待支付";
+    } else if(order.state == ORDER_STATE.DELIVER_CONFIRM) {
+      orderState = "已完成"
+    } else if(order.state == ORDER_STATE.REFUND_CONFIRM) {
+      orderState = "已退款"
+    } else if(order.state == ORDER_STATE.CANCELLED) {
+      orderState = "已关闭"
+    } else if(order.state == ORDER_STATE.DELIVER || order.state == ORDER_STATE.PAY_SUCCESS) {
+      orderState = "待收货"
+    }
+    console.log(order);
+    let itemsView = this.renderOrderItem(item);
     return (
       <div className={styles.order + " clearfix"}>
         <div className={styles.header + " clearfix"}>
-          <h4 className={styles.status}>{"待支付"}</h4>
-          <p className={styles.time}>{"下单时间：2016年3月1号 订单号：20228819433487920"}</p>
-          <p className={styles.total}>{"订单金额：2799"}</p>
+          <h4 className={styles.status}>{orderState}</h4>
+          <p className={styles.time}>{"下单时间：2016年3月1号 订单号：" + order.order_id}</p>
+          <p className={styles.total}>{"订单金额：" + order.real_pay_amt}</p>
         </div>
         <div className={styles.items + " clearfix"}>
-          <div className={styles.item}>
-            <div className={styles.itemThump}>
-              <a href="http://www.smartisan.com/shop/#/t2" title="Smartisan T2（黑色，16GB）" target="_blank"> 
-                <img src={imagePath}/> 
-              </a>
-            </div>
-            <div className={styles.itemDesc}>
-              <p>{item.name}</p>
-            </div>
-          </div>
-          <div className={styles.item}>
-            <div className={styles.itemThump}>
-              <a href="http://www.smartisan.com/shop/#/t2" title="Smartisan T2（黑色，16GB）" target="_blank"> 
-                <img src={imagePath}/> 
-              </a>
-            </div>
-            <div className={styles.itemDesc}>
-              <p>{item.name}</p>
-            </div>
-          </div>
-
+          {itemsView}
           <div className={styles.operation}>
             <Button bsSize="normal" bsStyle={"warning"} href="/buy/payment">立即支付</Button>
           </div>
@@ -139,22 +138,42 @@ export default class UserCenter extends Component {
     const {orderSwitch} = this.state;
     const styles = require('./Order.scss');
     const {products, orders} = this.props;
-    let item = products[orders[0].product_id];
-    let itemView = null;
-    if (item) {
-      itemView = this.renderItem(item);
+    let selectedOrders = null;
+    if (orderSwitch === ORDER_SWITCH.ALL) {
+      selectedOrders = orders;
     }
+    else if (orderSwitch == ORDER_SWITCH.UNPAY) {
+      selectedOrders = orders.filter(elem => {
+        return elem.state == ORDER_STATE.UNPAY || elem.state == ORDER_STATE.PAY_ERROR;
+      })
+    }
+    else if (orderSwitch == ORDER_SWITCH.DELIVER) {
+      selectedOrders = orders.filter(elem => {
+        return elem.state == ORDER_STATE.DELIVER || elem.state == ORDER_STATE.PAY_SUCCESS
+      })
+    } else {
+      selectedOrders = orders.filter(elem => {
+        return elem.state == ORDER_STATE.DELIVER_CONFIRM || 
+               elem.state == ORDER_STATE.REFUND_CONFIRM ||
+               elem.state == ORDER_STATE.CANCELLED
+      })
+    }
+    let orderView = selectedOrders.map(order =>{return this.renderOrder(order)})
     return (
       <div className={styles.orderBox}>
         <div className={styles.section + " " + " clearfix"}>
           <div className={styles.sectionHeader + " clearfix"}>
-              <span className={styles.item} active={orderSwitch === ORDER_SWITCH.ALL ? true : false}>全部订单</span>
-              <span className={styles.item + " " + styles.active}>待支付订单</span>
-              <span className={styles.item}>待收货订单</span>
-              <span className={styles.item}>已完成订单</span>
+              <span className={styles.item + " " + (orderSwitch === ORDER_SWITCH.ALL ? styles.active : "")}
+              onClick={this.switchOrderState.bind(this, ORDER_SWITCH.ALL)}>全部订单</span>
+              <span className={styles.item + " " + (orderSwitch === ORDER_SWITCH.UNPAY ? styles.active : "")}
+              onClick={this.switchOrderState.bind(this, ORDER_SWITCH.UNPAY)}>待支付订单</span>
+              <span className={styles.item + " " + (orderSwitch === ORDER_SWITCH.DELIVER ? styles.active : "")}
+              onClick={this.switchOrderState.bind(this, ORDER_SWITCH.DELIVER)}>待收货订单</span>
+              <span className={styles.item + " " + (orderSwitch === ORDER_SWITCH.COMPELETE ? styles.active : "")}
+              onClick={this.switchOrderState.bind(this, ORDER_SWITCH.COMPELETE)}>已完成订单</span>
           </div>
           <div className={styles.sectionBody + " clearfix"}>
-          {itemView}
+          {orderView}
           </div>
         </div>
       </div>
