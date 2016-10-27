@@ -110,6 +110,7 @@
     "lru-memoize": "^1.0.0",
     "map-props": "^1.0.0",
     "mongoose": "^4.5.8",
+    "mongoose-double": "0.0.1",
     "multireducer": "^2.0.0",
     "path-to-regexp": "^1.5.3",
     "piping": "^0.3.0",

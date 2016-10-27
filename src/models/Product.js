@@ -34,8 +34,8 @@ product.addSchema({
   brief_desc: [Types.String],
   choices: [Types.Mixed],
   specs: [Types.Mixed],
-  price: Types.Number, // 商品原始单价
-  real_price: Types.Number, // 商品实际单价，促销等情况
+  price: Types.Double, // 商品原始单价
+  real_price: Types.Double, // 商品实际单价，促销等情况
   images: {hero_image: Types.String,
           thumbnail: Types.String,
           gallery: Types.Mixed,
