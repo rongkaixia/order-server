@@ -1,9 +1,8 @@
-import Config from '../Config';
-import Cookies from '../cookies';
+import Config from '../../Config';
 import * as Validation from 'utils/Validation';
 
 let grpc = require('grpc');
-let protos = require('./protocol');
+let protos = require('../protocol');
 let host = Config.captainHost;
 let port = Config.captainPort;
 

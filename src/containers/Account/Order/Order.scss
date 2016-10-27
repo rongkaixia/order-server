@@ -47,8 +47,19 @@
     font-size: 18px;
     font-weight: normal;
     border-right: 1px solid #E1E1E1;
+    .active {
+    color: #ff6700;
+    }
 }
 
+.section .sectionHeader .item {
+    &.active {
+        color: #ff6700;
+    }
+    &:hover {
+        color: #ff6700;
+    }
+}
 .section .sectionBody {
     float: left;
     margin-top: 20px;
@@ -59,6 +70,7 @@
     padding: 0 0 0 0px;
     font-size: 14px;
     width: 100%;
+    margin-bottom: 24px;
 }
 
 .order .header {

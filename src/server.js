@@ -81,6 +81,7 @@ app.use(ApiPath.SIGNUP, api.Signup);
 
 app.get(ApiPath.USER_INFO, api.QueryUserInfo);
 app.post(ApiPath.USER_INFO + '/:field', api.UpdateUserInfo);
+app.get(ApiPath.USER_ORDERS, api.QueryUserOrders);
 
 app.post(ApiPath.USER_ADDRESS, api.AddUserAddress);
 app.delete(ApiPath.USER_ADDRESS, api.DeleteUserAddress);

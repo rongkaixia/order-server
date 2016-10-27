@@ -1,16 +1,17 @@
-import Config from '../Config';
-import Cookies from '../cookies';
+import Config from '../../Config';
 import * as Validation from 'utils/Validation';
 
 let grpc = require('grpc');
-let protos = require('./protocol');
+let protos = require('../protocol');
 let host = Config.captainHost;
 let port = Config.captainPort;
 
-function validateLoginInput(req) {
+// TODO: client.signup(request, (err, response)=>{ 返回中的reponse.header跟protos构造的header不太一样
+// 的考虑怎么解决
+function validateSignupInput(req) {
   return new Promise((resolve, reject) => {
     if (!req) {
-      reject("an login request is required");
+      reject("an signup request is required");
     } else if (!Validation.isString(req.username) || Validation.empty(req.username)) {
       reject("username(string) is required");
     } else if (!Validation.isString(req.password) || Validation.empty(req.password)) {
@@ -22,45 +23,42 @@ function validateLoginInput(req) {
 }
 
 exports = module.exports = function(req, res) {
-  console.log(Validation);
-  console.log('handle login request: ' + JSON.stringify(req.body));
+  console.log('handle signup request: ' + JSON.stringify(req.body));
   // check input
-  validateLoginInput(req.body)
+  validateSignupInput(req.body)
   .then(() => {
     // construct signup request
     let client = new protos.captain.CaptainService(host + ':' + port, grpc.credentials.createInsecure());
 
-    // grpc的bug，request中有oneof field的话去调用service会错误
-    let request = {phonenum: req.body.username, password: req.body.password};
-    // let request = new protos.captain.LoginRequest();
-    // request.setPhonenum(req.body.username);
-    // request.setPassword(req.body.password);
-    // console.log(request);
+    let request = new protos.captain.SignupRequest();
+    request.setPhonenum(req.body.username);
+    request.setPassword(req.body.password);
 
     // send request to backend server
-    client.login(request, (err, response)=>{
+    client.signup(request, (err, response)=>{
       let result = {};
       if (err) {
-        console.log("send login request to Captain Server error: " + JSON.stringify(err));
+        console.log("send signup request to Captain Server error: " + JSON.stringify(err));
         let header = new protos.common.ResponseHeader();
         header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
         header.setResultDescription(JSON.stringify(err));
         result = new protos.captain.LoginResponse().setHeader(header).toRaw();
       }else {
-        console.log("recieve login response from captain server: " + JSON.stringify(response));
+        console.log("recieve signup response from captain server: " + JSON.stringify(response));
         result = response;
       }
+      // if (result.header.result == protos.common.ResultCode.SUCCESS) {
       if (result.header.result == "SUCCESS") {
+        console.log("set user session cookie")
         req.session.access_token = result.token;
         req.session.username = result.username;
         req.session.user_id = result.user_id;
       }
       res.json(Object.assign({},result.header,result))
     })
-  }
-  ,(err) => {
-    console.log(err);
-    console.log("validateLoginInput error: " + JSON.stringify(err));
+  },
+  (err) => {
+    console.log("validateSignupInput error: " + err);
     let header = new protos.common.ResponseHeader();
     header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);
     header.setResultDescription(err);
