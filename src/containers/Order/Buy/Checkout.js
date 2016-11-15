@@ -60,7 +60,7 @@ const DELIVER_METHOD_DTD = 'DTD';
 }])
 @connect((state => ({user: state.userInfo.user,
                     checkout: state.checkout,
-                    necklaces: state.shop.productsByType.necklace,
+                    products: state.shop.productsById,
                     authKey: state.csrf._csrf})),
         {...checkoutAction, 
         loadInfo: userAction.loadInfo,
@@ -72,7 +72,8 @@ const DELIVER_METHOD_DTD = 'DTD';
 export default class UserCenter extends Component {
   static propTypes = {
     user: PropTypes.object,
-    necklaces: PropTypes.object,
+    checkout: PropTypes.object,
+    products: PropTypes.object,
     authKey: PropTypes.object,
     order: PropTypes.func.isRequired,
     redirectTo: PropTypes.func.isRequired
@@ -399,7 +400,7 @@ export default class UserCenter extends Component {
 
   render() {
     const styles = require('./Checkout.scss');
-    const {necklaces, checkout} = this.props;
+    const {products, checkout} = this.props;
     const {resubmitting, invalidArgument, countdown} = this.state;
     if (resubmitting) {
       return (
@@ -415,7 +416,7 @@ export default class UserCenter extends Component {
       );
     }
     var id = checkout.productId;
-    let item = necklaces[id];
+    let item = products[id];
     let itemView = null;
     if (item) {
       itemView = this.renderItem(item);

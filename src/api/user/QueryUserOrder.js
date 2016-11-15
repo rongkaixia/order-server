@@ -30,21 +30,7 @@ exports = module.exports = function(req, res) {
     // construct signup request
     let client = new protos.gold.OrderService(host + ':' + port, grpc.credentials.createInsecure());
 
-    let request = new protos.gold.QueryOrderWithUserRequest();
-    let apiFunc = client.queryOrderWithUser;
-    if (req.query.id) {
-      request = new protos.gold.QueryOrderRequest();
-      request.setOrderId(req.query.id);
-      apiFunc = client.queryOrder;
-    } else {
-      let userId = req.session.user_id;
-      console.log(JSON.stringify(userId));
-      console.log(typeof userId);
-      request.setUserId(userId);
-    }
-
-    // send request to backend server
-    client.queryOrderWithUser(request, (err, response)=>{
+    let handleFunc = (err, response)=>{
       let result = {};
       if (err) {
         console.log(err);
@@ -55,10 +41,29 @@ exports = module.exports = function(req, res) {
         result = new protos.gold.OrderResponse().setHeader(header).toRaw();
       }else {
         console.log("recieve query response from gold server: " + JSON.stringify(response));
+        if (req.query.id) {
+          let orderInfo = response.order_info;
+          response.order_info = [orderInfo];
+        }
         result = response;
       }
       res.json(Object.assign({},result.header,result))
-    })
+    }
+
+    // send request to backend server
+    let request = new protos.gold.QueryOrderWithUserRequest();
+    if (req.query.id) {
+      console.log("req.query.id: " + req.query.id);
+      request = new protos.gold.QueryOrderRequest();
+      request.setOrderId(req.query.id);
+      client.queryOrder(request, handleFunc);
+    } else {
+      let userId = req.session.user_id;
+      console.log(JSON.stringify(userId));
+      console.log(typeof userId);
+      request.setUserId(userId);
+      client.queryOrderWithUser(request, handleFunc);
+    }
   }
   ,(err) => {
     let header = new protos.common.ResponseHeader();
