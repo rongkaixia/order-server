@@ -110,23 +110,40 @@ export default class UserCenter extends Component {
       orderState = "待收货"
     }
     console.log(order);
+    const createAt = new Date(Number(order.create_at)).toString();
     let itemsView = this.renderOrderItem(item);
     return (
       <div className={styles.order + " clearfix"}>
         <div className={styles.header + " clearfix"}>
           <h4 className={styles.status}>{orderState}</h4>
-          <p className={styles.time}>{"下单时间：2016年3月1号 订单号：" + order.order_id}</p>
+          <p className={styles.time}>{"下单时间：" + createAt + " 订单号：" + order.order_id}</p>
           <p className={styles.total}>{"订单金额：" + order.real_pay_amt}</p>
         </div>
         <div className={styles.items + " clearfix"}>
           {itemsView}
+          {(order.state == ORDER_STATE.UNPAY || order.state == ORDER_STATE.PAY_ERROR) &&
           <div className={styles.operation}>
-            <Button bsSize="normal" bsStyle={"warning"} href="/buy/payment">立即支付</Button>
+            <Button bsSize="normal" bsStyle={"warning"} href={"/buy/payment/" + order.order_id}>立即支付</Button>
           </div>
-
+          }
+          {(order.state == ORDER_STATE.PAY_SUCCESS || order.state == ORDER_STATE.DELIVER) &&
+          <div className={styles.operation}>
+            <Button bsSize="normal" bsStyle={"warning"} href={"/buy/payment/" + order.order_id}>确认收货</Button>
+          </div>
+          }
           <div className={styles.operation}>
             <Button bsSize="normal" href="/account/order/detail/123c">订单详情</Button>
-          </div>              
+          </div>
+          {(order.state == ORDER_STATE.UNPAY || order.state == ORDER_STATE.PAY_ERROR) &&
+          <div className={styles.operation}>
+            <Button bsSize="normal" href="/account/order/detail/123c">取消订单</Button>
+          </div>
+          }
+          {(order.state == ORDER_STATE.PAY_SUCCESS || order.state == ORDER_STATE.DELIVER) &&
+          <div className={styles.operation}>
+            <Button bsSize="normal" href="/account/order/detail/123c">退款</Button>
+          </div>
+          }
         </div>
       </div>
     );

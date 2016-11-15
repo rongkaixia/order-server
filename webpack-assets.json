@@ -1,6 +1,6 @@
 {
   "javascript": {
-    "main": "http://localhost:4001/dist/main-916123ac97bb55e9a03e.js"
+    "main": "http://localhost:4001/dist/main-7c0415cfc01096611b4f.js"
   },
   "styles": {},
   "assets": {
@@ -17,7 +17,6 @@
     "./src/containers/Account/phone.png": "http://localhost:4001/dist/src/containers/Account/phone.png",
     "./src/containers/Account/securityQuestion.png": "http://localhost:4001/dist/src/containers/Account/securityQuestion.png",
     "./static/diaozhui80X80.jpg": "http://localhost:4001/dist/static/diaozhui80X80.jpg",
-    "./static/diaozhui.png": "http://localhost:4001/dist/static/diaozhui.png",
     "./src/containers/Order/Buy/platform.png": "http://localhost:4001/dist/src/containers/Order/Buy/platform.png",
     "./src/containers/Order/Buy/PaySuccess.png": "http://localhost:4001/dist/src/containers/Order/Buy/PaySuccess.png",
     "./~/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.eot": "http://localhost:4001/dist/f4769f9bdb7466be65088239c12046d1.eot",

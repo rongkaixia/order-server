@@ -16,15 +16,33 @@ import * as userAction from 'redux/modules/userInfo';
 /* eslint-disable */ 
 @asyncConnect([{
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
-    return dispatch(shopAction.loadNecklace());
+    return dispatch(userAction.loadInfo());
   }
 },{
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
-    return dispatch(userAction.loadInfo());
+    const state = getState();
+    const orderId = state.routing.location.pathname.split("/").reverse()[0]
+    if (state.orders.orders.find(elem => elem.order_id == orderId)) {
+      console.log("Detail.js load order info for id " + orderId);
+    }
+    return dispatch(ordersAction.queryOrders()).then(() => {
+      const globalState = getState();
+      let productIds = new Set(globalState.orders.orders.map((order) => {
+        return order.product_id;
+      }))
+      const promises = [...productIds].map((id) => {
+        if (id && !shopAction.isProductLoaded(id, globalState))
+          return dispatch(shopAction.loadProductInfo(id));
+        else
+          return Promise.resolve();
+      })
+      return Promise.all(promises);
+    })
   }
 }])
 @connect((state => ({user: state.userInfo.user,
-                    necklace: state.shop.products.necklace})),
+                    orders: state.orders.orders,
+                    products: state.shop.productsById})),
         {redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {

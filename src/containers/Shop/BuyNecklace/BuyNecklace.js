@@ -114,7 +114,7 @@ export default class UserCenter extends Component {
   renderItem(item) {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
     const styles = require('./BuyNecklace.scss');
-    const imagePath = require('../../../../static/diaozhui.png');
+    const imagePath = item.images.hero_image;
     const {shop, authKey, location} = this.props;
     const {currentChoices, num, validateFormError} = this.state;
     const productId = location.pathname.split("/").reverse()[0]
