@@ -13,7 +13,7 @@ module.exports = {
   AUTH: '/api/auth',
   USER_INFO: '/api/user/user_info',
   USER_ADDRESS: '/api/user/user_address',
-  USER_ORDERS: '/api/user/user_orders',
+  USER_ORDER: '/api/user/user_order',
   PRODUCT_INFO: '/api/product/product_info',
   PRICING: '/api/product/pricing'
 };

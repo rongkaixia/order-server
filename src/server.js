@@ -70,9 +70,9 @@ app.use(csrfProtection)
 // app.use(ProductMiddleware);
 
 // api
-app.use(ApiPath.ORDER, api.Order);
-app.use(ApiPath.ORDER_INFO, api.QueryOrder);
-app.use(ApiPath.NOTIFY, api.Notify);
+app.post(ApiPath.ORDER, api.Order);
+app.post(ApiPath.NOTIFY, api.Notify);
+app.use(ApiPath.ORDER_INFO, api.QueryOrderInfo);
 
 app.use(ApiPath.AUTH, api.Auth);
 app.use(ApiPath.LOGIN, api.Login);
@@ -81,7 +81,7 @@ app.use(ApiPath.SIGNUP, api.Signup);
 
 app.get(ApiPath.USER_INFO, api.QueryUserInfo);
 app.post(ApiPath.USER_INFO + '/:field', api.UpdateUserInfo);
-app.get(ApiPath.USER_ORDERS, api.QueryUserOrders);
+app.get(ApiPath.USER_ORDER, api.QueryUserOrder);
 
 app.post(ApiPath.USER_ADDRESS, api.AddUserAddress);
 app.delete(ApiPath.USER_ADDRESS, api.DeleteUserAddress);

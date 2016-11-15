@@ -43,10 +43,8 @@ const ORDER_STATE = {
     console.log("state: " + JSON.stringify(state));
     if (!state.checkout.orderInfo || !state.checkout.orderInfo.order_id) {
       const orderId = state.routing.location.pathname.split("/").reverse()[0]
-      const csrf = state.csrf._csrf;
       console.log("orderId: " + orderId);
-      console.log("authKey: " + csrf);
-      promises.push(dispatch(checkoutAction.query({orderId: orderId}, csrf)));
+      promises.push(dispatch(checkoutAction.query({orderId: orderId})));
     }
     promises.push(dispatch(userAction.loadInfo()));
     return Promise.all(promises);

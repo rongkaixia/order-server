@@ -241,17 +241,12 @@ export function pay(payReq, authKey) {
  * orderId: string, order id
  * }
  * 
- * @param   {string}  authKey   csrf token
- *
  * @return  {promise}
  */
-export function query(queryReq, authKey) {
-  let postData = {...queryReq, ...{_csrf: authKey}};
+export function query({orderId}) {
   return {
     types: [QUERYING, QUERY_SUCCESS, QUERY_FAIL],
-    promise: ({apiClient}) => apiClient.post(ApiPath.ORDER_INFO, {
-      data: postData
-    })
+    promise: ({apiClient}) => apiClient.get(ApiPath.ORDER_INFO + '?id=' + orderId)
   };
 }
 

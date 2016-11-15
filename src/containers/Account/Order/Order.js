@@ -40,7 +40,7 @@ const ORDER_SWITCH = {
   }
 },{
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
-    return dispatch(ordersAction.queryOrders()).then(() => {
+    return dispatch(ordersAction.queryOrder()).then(() => {
       const globalState = getState();
       let productIds = new Set(globalState.orders.orders.map((order) => {
         return order.product_id;

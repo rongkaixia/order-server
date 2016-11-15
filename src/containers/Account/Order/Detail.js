@@ -25,7 +25,7 @@ import * as userAction from 'redux/modules/userInfo';
     if (state.orders.orders.find(elem => elem.order_id == orderId)) {
       console.log("Detail.js load order info for id " + orderId);
     }
-    return dispatch(ordersAction.queryOrders()).then(() => {
+    return dispatch(ordersAction.queryOrder()).then(() => {
       const globalState = getState();
       let productIds = new Set(globalState.orders.orders.map((order) => {
         return order.product_id;

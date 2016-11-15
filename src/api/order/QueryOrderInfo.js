@@ -10,8 +10,8 @@ function validateQueryInput(req) {
   return new Promise((resolve, reject) => {
     if (!req) {
       reject("an query request is required");
-    } else if (!Validation.isString(req.body.orderId) || Validation.isEmpty(req.body.orderId)) {
-      reject("orderId(string) is required");
+    } else if (!Validation.isString(req.query.id) || Validation.isEmpty(req.query.id)) {
+      reject("id(string) is required");
     } else if (!req.session) {
       reject("session is required");
     } else if (!req.session.access_token) {
@@ -23,7 +23,7 @@ function validateQueryInput(req) {
 }
 
 exports = module.exports = function(req, res) {
-  console.log('handle query request: ' + JSON.stringify(req.body));
+  console.log('handle query request: ' + JSON.stringify(req.query));
   // check input
   validateQueryInput(req)
   .then(() => {
@@ -31,7 +31,7 @@ exports = module.exports = function(req, res) {
     let client = new protos.gold.OrderService(host + ':' + port, grpc.credentials.createInsecure());
 
     let request = new protos.gold.QueryOrderRequest();
-    request.setOrderId(req.body.orderId);
+    request.setOrderId(req.query.id);
 
     // send request to backend server
     client.queryOrder(request, (err, response)=>{

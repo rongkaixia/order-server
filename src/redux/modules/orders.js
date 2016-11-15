@@ -35,13 +35,19 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 /**
- * query user order action，查询用户所有订单
- * 
+ * query user order action，查询用户订单信息
+ *
+ * @param   {string}  orderId, 订单号，如果订单号为空则查询用户所有订单
  * @return  {promise}
  */
-export function queryOrders() {
+
+export function queryOrder(orderId) {
+  let path = ApiPath.USER_ORDER;
+  if (orderId) {
+    path += "?id=" + orderId;
+  }
   return {
     types: [QUERYING, QUERY_SUCCESS, QUERY_FAIL],
-    promise: ({apiClient}) => apiClient.get(ApiPath.USER_ORDERS)
+    promise: ({apiClient}) => apiClient.get(path)
   };
 }
