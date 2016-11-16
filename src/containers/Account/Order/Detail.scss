@@ -78,31 +78,16 @@
 .section .sectionBody .process {
     width: 86%;
     margin: 30px auto 0;
-
-    ul {
-        margin-bottom: 5px;
-        .lineText {
-            background: #eee;
-            border-radius: 16px;
-        }
-    }
 }
 
-.section .sectionBody .process ul li:first-child {
-    margin-left: 0!important;
+.section .sectionBody .process ul {
+    margin-bottom: 5px;
 }
 
-.section .sectionBody ul.lineText li.active {
-    color: #fff;
-    background: #00c3f5;
+.section .sectionBody .process ul.lineText {
+    background: #eee;
     border-radius: 16px;
-}
-
-.section .sectionBody .process ul.lineText li {
-    font-size: 14px;
-    color: #999;
-    line-height: 32px;
-    text-align: center;
+    padding: 0px;
 }
 
 .section .sectionBody .process ul li {
@@ -112,6 +97,42 @@
     font-size: 12px;
     text-align: center;
     list-style: none;
+}
+
+.section .sectionBody .process ul li:first-child {
+    margin-left: 0!important;
+}
+
+.section .sectionBody .process ul.lineText li {
+    font-size: 14px;
+    color: #999;
+    line-height: 32px;
+    text-align: center;
+
+    &.active {
+        color: #fff;
+        background: #00c3f5;
+        border-radius: 16px;
+    }
+}
+.section .sectionBody .status {
+    margin-top: 25px;
+}
+
+.section .sectionBody .status .goPay {
+    width: 95%;
+    padding: 20px 2.5%;
+    background: #fef2e8;
+    border: 1px solid #ea5245;
+    margin-bottom: 20px;
+}
+
+.section .sectionBody .status .left {
+    float: left!important;
+}
+
+.section .sectionBody .status .right {
+    float: right!important;
 }
 
 .shoppingList {

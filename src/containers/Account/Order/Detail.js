@@ -88,16 +88,34 @@ export default class UserCenter extends Component {
       <div className={styles.orderDetailBox}>
         <div className={styles.section}>
           <div className={styles.sectionHeader + " clearfix"}>
-            <h3 className={styles.title}>{"订单状态"}</h3>
+            <h3 className={styles.title}>{"订单详情"}</h3>
           </div>
           <div className={styles.sectionBody + " clearfix"}>
             <div className={styles.process}>
               <ul className={styles.lineText + " clearfix"}>
-                <li className="active">提交订单</li>
+                <li className={styles.active}>提交订单</li>
                 <li className="">买家已付款</li>
-                <li className="">发货中</li>
+                <li className="">待收货</li>
                 <li className="">交易完成</li>
               </ul>
+            </div>
+            <div className={styles.status}>
+              <div className={styles.goPay + " clearfix"}>
+                <div className={styles.left}>
+                  <p>
+                    <span>订单状态: 未支付</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span>订单金额: 999</span>
+                  </p>
+                  <p>
+                    19小时42分钟22秒 内未付款，将自动取消订单。
+                  </p>
+                </div>
+                <div className={styles.right}>
+                  <Button bsSize="normal" bsStyle={"warning"} href={"/buy/payment/" + order.order_id}>立即支付</Button>
+                  <Button bsSize="normal" href="/account/order/detail/123c">取消订单</Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
