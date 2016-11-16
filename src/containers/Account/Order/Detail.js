@@ -80,9 +80,90 @@ export default class UserCenter extends Component {
     const {user, products} = this.props;
     const styles = require('./Detail.scss');
     const imagePath = require('../../../../static/diaozhui80X80.jpg');
+    const product = products[order.product_id];
+    console.log("================products==============")
+    console.log(order.product_id);
+    console.log(JSON.stringify(products));
     return (
       <div className={styles.orderDetailBox}>
-        <p>{order.order_id}</p>
+        <div className={styles.section}>
+          <div className={styles.sectionHeader + " clearfix"}>
+            <h3 className={styles.title}>{"订单状态"}</h3>
+          </div>
+          <div className={styles.sectionBody + " clearfix"}>
+            <div className={styles.process}>
+              <ul className={styles.lineText + " clearfix"}>
+                <li className="active">提交订单</li>
+                <li className="">买家已付款</li>
+                <li className="">发货中</li>
+                <li className="">交易完成</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.section}>
+          <div className={styles.sectionHeader + " clearfix"}>
+            <h3 className={styles.title}>{"收货地址"}</h3>
+          </div>
+          <div className={styles.sectionBody + " clearfix"}>
+            <p>{"收货人：" + order.recipients_name}</p>
+            <p>{"地址：" + order.recipients_address}</p>
+            <p>{"电话：" + order.recipients_phone}</p>
+          </div>
+        </div>
+        <div className={styles.section + " " + styles.sectionOptions + " clearfix"}>
+          <div className={styles.sectionHeader}>
+            <h3 className={styles.title}>{"配送方式"}</h3>
+          </div>
+          <div className={styles.sectionBody + " clearfix"}>
+            <p>快递配送（免运费）</p>
+          </div>
+        </div>
+        <div className={styles.section + " " + styles.sectionOptions + " clearfix"}>
+          <div className={styles.sectionHeader}>
+            <h3 className={styles.title}>{"备注"}</h3>
+          </div>
+          <div className={styles.sectionBody + " clearfix"}>
+            <p>{order.comment}</p>
+          </div>
+        </div>
+        <div className={styles.section + " " + " clearfix"}
+        name='shoppingList'
+        id='shoppingList'>
+          <div className={styles.sectionHeader + " clearfix"}>
+            <h3 className={styles.title}>{"购物清单"}</h3>
+          </div>
+          <div className={styles.sectionBody + " clearfix"}>
+            <div className={styles.shoppingList}>
+              <div className={styles.title}>
+                <span className={styles.name}>商品</span>
+                <span className={styles.subtotal}>小计</span>
+                <span className={styles.num}>数量</span>
+                <span className={styles.price}>单价</span>
+              </div>
+              <div className={styles.items}>
+                <div className={styles.itemThump}>
+                  <a href="http://www.smartisan.com/shop/#/t2" title="Smartisan T2（黑色，16GB）" target="_blank"> 
+                    <img src={imagePath}/> 
+                  </a>
+                </div>
+                <div className={styles.itemDesc}>
+                  <p>{product.name}</p>
+                </div>
+                <span className={styles.subtotal}>{order.real_pay_amt}</span>
+                <span className={styles.num}>{order.num}</span>
+                <span className={styles.price}>{order.real_price}</span>
+              </div>
+              <div className={styles.summary}>
+                <div className={styles.total}>
+                  <p>{"商品总计：1799.00"}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     );
   }

@@ -75,10 +75,50 @@
     padding: 3px;
 }
 
+.section .sectionBody .process {
+    width: 86%;
+    margin: 30px auto 0;
+
+    ul {
+        margin-bottom: 5px;
+        .lineText {
+            background: #eee;
+            border-radius: 16px;
+        }
+    }
+}
+
+.section .sectionBody .process ul li:first-child {
+    margin-left: 0!important;
+}
+
+.section .sectionBody ul.lineText li.active {
+    color: #fff;
+    background: #00c3f5;
+    border-radius: 16px;
+}
+
+.section .sectionBody .process ul.lineText li {
+    font-size: 14px;
+    color: #999;
+    line-height: 32px;
+    text-align: center;
+}
+
+.section .sectionBody .process ul li {
+    float: left;
+    width: 15%;
+    margin-left: 13.3333%;
+    font-size: 12px;
+    text-align: center;
+    list-style: none;
+}
+
 .shoppingList {
     padding: 0 0 0 0px;
     font-size: 14px;
 }
+
 .shoppingList .title {
     height: 38px;
     padding: 0 24px;

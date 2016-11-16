@@ -132,7 +132,7 @@ export default class UserCenter extends Component {
           </div>
           }
           <div className={styles.operation}>
-            <Button bsSize="normal" href={"/account/detail/" + order.order_id}>订单详情</Button>
+            <Button bsSize="normal" href={"/account/order/detail/" + order.order_id}>订单详情</Button>
           </div>
           {(order.state == ORDER_STATE.UNPAY || order.state == ORDER_STATE.PAY_ERROR) &&
           <div className={styles.operation}>

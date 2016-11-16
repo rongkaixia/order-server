@@ -72,7 +72,7 @@ export default (store) => {
         <Route path="account" component={UserCenter}>
           <IndexRoute component={UserCenterHome}/>
           <Route path="order" component={AccountOrder}/>
-          <Route path="detail/:id" component={OrderDetail}/>
+          <Route path="order/detail/:id" component={OrderDetail}/>
           <Route path="info" component={AccountInfo}/>
           <Route path="address" component={AccountAddress}/>
           <Route path="coupon" component={AccountCoupon}/>
