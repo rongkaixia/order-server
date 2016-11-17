@@ -229,8 +229,7 @@ export default class UserCenter extends Component {
     }else {
       let req = {userId: user.user_id,
                 title: 'buy',
-                productId: checkout.productId,
-                num: checkout.num,
+                products: [{productId: checkout.productId, num: checkout.num}],
                 payMethod: payMethod,
                 deliverMethod: deliverMethod,
                 recipientsName: selectedAddress.recipientsName,

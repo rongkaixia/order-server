@@ -184,9 +184,7 @@ export function pricing(pricingReq, authKey) {
  * orderReq format
  * {
  * userId: string, user id,
- * titile: string, title,
- * productId: string, product id,
- * num: int, number,
+ * products [{productId: string, product id, num: int, number}, ...],
  * payMethod: string, 'ONLINE' or 'COD',
  * deliverMethod: string, 'EXPRESS' or 'DTD',
  * recipientsName: string, recipients_name,
