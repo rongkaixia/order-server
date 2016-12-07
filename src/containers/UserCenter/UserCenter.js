@@ -14,12 +14,6 @@ import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 
 // TODO: 增加错误展示界面，监听loadInfo的错误
 /* eslint-disable */ 
-@asyncConnect([{
-  promise: ({store: {dispatch, getState}, helpers: {client}}) => {
-    return dispatch(userAction.loadInfo());
-    // return loadInfo();
-  }
-}])
 @connect((state => ({user: state.userInfo.user})),
         {redirectTo: routeActions.push})
 export default class UserCenter extends Component {
@@ -62,38 +56,17 @@ export default class UserCenter extends Component {
         </div>
     );
   }
-  // componentWillReceiveProps(nextProps) {
-  //   const {signingUp, signupError, signupErrorDesc} = nextProps;
-  //   if (!signingUp && !signupError) {
-  //     console.log('signup success');
-  //     // login
-  //     this.props.redirectTo('/login');
-  //   }
-  // }
-
-  // handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const username = this.refs.username;
-  //   const password = this.refs.password;
-  //   this.props.signup(username.value, password.value);
-  //   // username.value = '';
-  //   password.value = '';
-  // }
 
   render() {
     const styles = require('./UserCenter.scss');
-    const {user} = this.props;
     const leftPanel = this.renderLeftPannel();
-    // const userInfoPanel = this.renderUserInfoPanel(user);
-    // const userOrderPanel = this.renderUserOrderPanel(user);
     return (
       <div className={styles.userCenterPage + ' container'}>
         <h1>User Center</h1>
         <div className={styles.leftPanel}>
           {leftPanel}
         </div>
-        {user && 
-        <div className={styles.rightPanel}>
+        {<div className={styles.rightPanel}>
           {this.props.children}
         </div>}
       </div>

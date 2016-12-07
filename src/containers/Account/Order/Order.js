@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -12,7 +13,6 @@ import * as shopAction from 'redux/modules/shop';
 import * as userAction from 'redux/modules/userInfo';
 import * as ordersAction from 'redux/modules/orders'; 
 import {AddressCard} from 'containers';
-
 
 const ORDER_STATE = {
   UNPAY: 'UNPAY',
@@ -29,7 +29,8 @@ const ORDER_SWITCH = {
   ALL: 'ALL',
   UNPAY: 'UNPAY',
   DELIVER: 'DELIVER',
-  COMPELETE: 'COMPELETE'
+  COMPELETE: 'COMPELETE',
+  CANCELLED: 'CANCELLED'
 }
 
 // TODO: 增加错误展示界面，监听loadInfo的错误
@@ -42,8 +43,8 @@ const ORDER_SWITCH = {
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
     return dispatch(ordersAction.queryOrder()).then(() => {
       const globalState = getState();
-      let productIds = new Set(globalState.orders.orders.map((order) => {
-        return order.product_id;
+      let productIds = new Set(_.flatMap(globalState.orders.orders, (order) => {
+        return order.products.map(e => {return e.product_id});
       }))
       const promises = [...productIds].map((id) => {
         if (id && !shopAction.isProductLoaded(id, globalState))
@@ -96,7 +97,6 @@ export default class UserCenter extends Component {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
     const {user, products} = this.props;
     const styles = require('./Order.scss');
-    const item = products[order.product_id];
     let orderState = "";
     if (order.state == ORDER_STATE.UNPAY || order.state == ORDER_STATE.PAY_ERROR) {
       orderState = "待支付";
@@ -111,7 +111,11 @@ export default class UserCenter extends Component {
     }
     console.log(order);
     const createAt = new Date(Number(order.create_at)).toString();
-    let itemsView = this.renderOrderItem(item);
+    let itemsView = order.products.map(prod => {
+      const item = products[prod.product_id];
+      return this.renderOrderItem(item);
+    })
+    let tmp = [itemsView, itemsView]
     return (
       <div className={styles.order + " clearfix"}>
         <div className={styles.header + " clearfix"}>
@@ -120,7 +124,7 @@ export default class UserCenter extends Component {
           <p className={styles.total}>{"订单金额：" + order.real_pay_amt}</p>
         </div>
         <div className={styles.items + " clearfix"}>
-          {itemsView}
+          {tmp}
           {(order.state == ORDER_STATE.UNPAY || order.state == ORDER_STATE.PAY_ERROR) &&
           <div className={styles.operation}>
             <Button bsSize="normal" bsStyle={"warning"} href={"/buy/payment/" + order.order_id}>立即支付</Button>
@@ -158,21 +162,21 @@ export default class UserCenter extends Component {
     let selectedOrders = null;
     if (orderSwitch === ORDER_SWITCH.ALL) {
       selectedOrders = orders;
-    }
-    else if (orderSwitch == ORDER_SWITCH.UNPAY) {
+    } else if (orderSwitch == ORDER_SWITCH.UNPAY) {
       selectedOrders = orders.filter(elem => {
         return elem.state == ORDER_STATE.UNPAY || elem.state == ORDER_STATE.PAY_ERROR;
       })
-    }
-    else if (orderSwitch == ORDER_SWITCH.DELIVER) {
+    } else if (orderSwitch == ORDER_SWITCH.DELIVER) {
       selectedOrders = orders.filter(elem => {
         return elem.state == ORDER_STATE.DELIVER || elem.state == ORDER_STATE.PAY_SUCCESS
       })
+    } else if (orderSwitch == ORDER_SWITCH.CANCELLED) {
+      selectedOrders = orders.filter(elem => {
+        return elem.state == ORDER_STATE.CANCELLED
+      })
     } else {
       selectedOrders = orders.filter(elem => {
-        return elem.state == ORDER_STATE.DELIVER_CONFIRM || 
-               elem.state == ORDER_STATE.REFUND_CONFIRM ||
-               elem.state == ORDER_STATE.CANCELLED
+        return elem.state == ORDER_STATE.DELIVER_CONFIRM || elem.state == ORDER_STATE.REFUND_CONFIRM
       })
     }
     let orderView = selectedOrders.map(order =>{return this.renderOrder(order)})
@@ -188,6 +192,8 @@ export default class UserCenter extends Component {
               onClick={this.switchOrderState.bind(this, ORDER_SWITCH.DELIVER)}>待收货订单</span>
               <span className={styles.item + " " + (orderSwitch === ORDER_SWITCH.COMPELETE ? styles.active : "")}
               onClick={this.switchOrderState.bind(this, ORDER_SWITCH.COMPELETE)}>已完成订单</span>
+              <span className={styles.item + " " + (orderSwitch === ORDER_SWITCH.CANCELLED ? styles.active : "")}
+              onClick={this.switchOrderState.bind(this, ORDER_SWITCH.CANCELLED)}>已关闭订单</span>
           </div>
           <div className={styles.sectionBody + " clearfix"}>
           {orderView}

@@ -180,11 +180,14 @@
 .shoppingList .items {
     padding: 0 24px;
     border-bottom: 1px solid #E1E1E1;
-    height: 120px;
 }
 
-.shoppingList .items .itemThump {
-    margin-top: 20px;
+.shoppingList .item {
+    height: 100px;
+}
+
+.shoppingList .item .itemThump {
+    margin-top: 10px;
     //border: 1px solid #F0F0F0;
     width: 78px;
     height: 78px;
@@ -192,36 +195,36 @@
     float: left;
 }
 
-.shoppingList .items .itemDesc {
+.shoppingList .item .itemDesc {
     width: 315px;
     margin-left: 21px;
-    line-height: 110px;
+    line-height: 90px;
     float: left;
 }
 
-.shoppingList .items span{
+.shoppingList .item span{
     float: right;
     text-align: center;
 }
 
-.shoppingList .items .subtotal {
+.shoppingList .item .subtotal {
     width: 152px;
     padding-right: 30px;
-    line-height: 110px;
+    line-height: 90px;
     text-align: right;
 }
 
-.shoppingList .items .num {
+.shoppingList .item .num {
     width: 152px;
     padding-right: 30px;
-    line-height: 110px;
+    line-height: 90px;
     text-align: right;
 }
 
-.shoppingList .items .price {
+.shoppingList .item .price {
     width: 152px;
     padding-right: 30px;
-    line-height: 110px;
+    line-height: 90px;
     text-align: right;
 }
 
@@ -234,7 +237,7 @@
 .shoppingList .summary .total{
     width: 152px;
     padding-right: 30px;
-    line-height: 110px;
+    line-height: 90px;
     text-align: right;
     float: right;
 }

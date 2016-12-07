@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -26,14 +27,14 @@ import * as ordersAction from 'redux/modules/orders';
     const orderId = globalState.routing.location.pathname.split("/").reverse()[0]
     console.log("==============next promises=============")
     console.log(JSON.stringify(globalState));
+    // new Promise((resolve, reject) => {})
     if (!globalState.orders.orders ||
         !globalState.orders.orders.find(elem => elem.order_id == orderId)) {
       console.log("Detail.js load order info for id " + orderId);
       return dispatch(ordersAction.queryOrder(orderId)).then(() => {
         const globalState = getState();
-        let productIds = new Set(globalState.orders.orders.map((order) => {
-          return order.product_id;
-        }))
+        const order = globalState.orders.orders.find(elem => elem.order_id == orderId)
+        let productIds = order.products.map(e => {return e.product_id});
         const promises = [...productIds].map((id) => {
           if (id && !shopAction.isProductLoaded(id, globalState))
             return dispatch(shopAction.loadProductInfo(id));
@@ -47,10 +48,14 @@ import * as ordersAction from 'redux/modules/orders';
       const order = globalState.orders.orders.find(elem => elem.order_id == orderId)
       console.log("=============order==============")
       console.log(JSON.stringify(order))
-      if (order.product_id && !shopAction.isProductLoaded(order.product_id, globalState))
-        return dispatch(shopAction.loadProductInfo(order.product_id));
-      else
-        return Promise.resolve();
+      let productIds = order.products.map(e => {return e.product_id});
+      const promises = [...productIds].map((id) => {
+        if (id && !shopAction.isProductLoaded(id, globalState))
+          return dispatch(shopAction.loadProductInfo(id));
+        else
+          return Promise.resolve();
+      })
+      return Promise.all(promises);
     }
   }
 }])
@@ -80,9 +85,8 @@ export default class UserCenter extends Component {
     const {user, products} = this.props;
     const styles = require('./Detail.scss');
     const imagePath = require('../../../../static/diaozhui80X80.jpg');
-    const product = products[order.product_id];
     console.log("================products==============")
-    console.log(order.product_id);
+    console.log(order.products);
     console.log(JSON.stringify(products));
     return (
       <div className={styles.orderDetailBox}>
@@ -161,17 +165,33 @@ export default class UserCenter extends Component {
                 <span className={styles.price}>单价</span>
               </div>
               <div className={styles.items}>
-                <div className={styles.itemThump}>
-                  <a href="http://www.smartisan.com/shop/#/t2" title="Smartisan T2（黑色，16GB）" target="_blank"> 
-                    <img src={imagePath}/> 
-                  </a>
+                <div className={styles.item}>
+                  <div className={styles.itemThump}>
+                    <a href="http://www.smartisan.com/shop/#/t2" title="Smartisan T2（黑色，16GB）" target="_blank"> 
+                      <img src={imagePath}/> 
+                    </a>
+                  </div>
+                  <div className={styles.itemDesc}>
+                    <p>{"product.name"}</p>
+                  </div>
+                  <span className={styles.subtotal}>{order.real_pay_amt}</span>
+                  <span className={styles.num}>{order.num}</span>
+                  <span className={styles.price}>{order.real_price}</span>
                 </div>
-                <div className={styles.itemDesc}>
-                  <p>{product.name}</p>
+                <div className={styles.item}>
+                  <div className={styles.itemThump}>
+                    <a href="http://www.smartisan.com/shop/#/t2" title="Smartisan T2（黑色，16GB）" target="_blank"> 
+                      <img src={imagePath}/> 
+                    </a>
+                  </div>
+                  <div className={styles.itemDesc}>
+                    <p>{"product.name"}</p>
+                  </div>
+                  <span className={styles.subtotal}>{order.real_pay_amt}</span>
+                  <span className={styles.num}>{order.num}</span>
+                  <span className={styles.price}>{order.real_price}</span>
                 </div>
-                <span className={styles.subtotal}>{order.real_pay_amt}</span>
-                <span className={styles.num}>{order.num}</span>
-                <span className={styles.price}>{order.real_price}</span>
+
               </div>
               <div className={styles.summary}>
                 <div className={styles.total}>
