@@ -13,6 +13,27 @@ import * as shopAction from 'redux/modules/shop';
 import * as userAction from 'redux/modules/userInfo';
 import * as ordersAction from 'redux/modules/orders'; 
 
+const ORDER_STATE = {
+  UNPAY: 'UNPAY',
+  PAY_SUCCESS: 'PAY_SUCCESS',
+  PAY_ERROR: 'PAY_ERROR',
+  DELIVER: 'DELIVER',
+  DELIVER_CONFIRM: 'DELIVER_CONFIRM',
+  REFUND: 'REFUND',
+  REFUND_CONFIRM: 'REFUND_CONFIRM',
+  CANCELLED: 'CANCELLED'
+}
+
+const ORDER_STATE_DISPLAY = {
+  UNPAY: '未支付',
+  PAY_SUCCESS: '支付成功',
+  PAY_ERROR: '支付失败',
+  DELIVER: '待收货',
+  DELIVER_CONFIRM: '交易完成',
+  REFUND: '退款中',
+  REFUND_CONFIRM: '退款成功',
+  CANCELLED: '已关闭'
+}
 
 // TODO: 增加错误展示界面，监听loadInfo的错误
 /* eslint-disable */ 
@@ -73,13 +94,97 @@ export default class UserCenter extends Component {
     redirectTo: PropTypes.func.isRequired
   };
 
-  renderChoice(item) {
-    const styles = require('./Detail.scss');
-    return (
-      <div>
-      </div>
-    );
+  state = {
+    expireInMs: null
+  };
+
+  componentDidMount(){
+    console.log("componentDidMount");
+    let self = this;
+    this.countdownInterval = null;
+
+    const {orders, location} = this.props;
+    const orderId = location.pathname.split("/").reverse()[0];
+    const order = orders.find(elem => elem.order_id == orderId)
+
+    if (order.state == ORDER_STATE.UNPAY || order.state == ORDER_STATE.PAY_ERROR) {
+      console.log(order.expire_at)
+      const expireInMs = new Date(Number(order.expire_at)).getTime() - new Date().getTime();
+      console.log(this.state.expireInMs)
+      console.log(expireInMs)
+      console.log(this.countdownInterval)
+      if (this.state.expireInMs === null && expireInMs > 0 && !this.countdownInterval) {
+        console.log("===============setExpireCountdownInterval==============")
+        console.log(expireInMs)
+        self.setState({expireInMs: expireInMs});
+        self.countdownInterval = setInterval(() => {
+          console.log("=============countdownInterval============")
+          self.setState({expireInMs: self.state.expireInMs - 1000});
+          if (self.state.expireInMs <= 0) {
+            clearInterval();
+          }
+        }, 1000)
+      }
+    }
   }
+
+  componentWillUnmount() {
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval);
+    }
+  }
+
+  getExpireTimeString(expireInMs) {
+    let s = "";
+    const MS_IN_ONE_DAY = 24 * 60 * 60 * 1000
+    const MS_IN_ONE_HOUR = 60 * 60 * 1000
+    const MS_IN_ONE_MINUTE = 60 * 1000
+    const MS_IN_ONE_SECOND = 1000
+    let t = expireInMs
+    while ( t >= MS_IN_ONE_SECOND) {
+      if (t >= MS_IN_ONE_DAY) {
+        let n = Math.floor(t / MS_IN_ONE_DAY)
+        s = s + n + "天"
+        t -= n * MS_IN_ONE_DAY
+      } else if ( t >= MS_IN_ONE_HOUR) {
+        let n = Math.floor(t / MS_IN_ONE_HOUR)
+        s = s + n + "小时"
+        t -= n * MS_IN_ONE_HOUR
+      } else if ( t >= MS_IN_ONE_MINUTE) {
+        let n = Math.floor(t / MS_IN_ONE_MINUTE)
+        s = s + n + "分钟"
+        t -= n * MS_IN_ONE_MINUTE
+      } else {
+        let n = Math.floor(t / MS_IN_ONE_SECOND)
+        s = s + n + "秒"
+        t -= n * MS_IN_ONE_SECOND
+      }
+    }
+    return s;
+  }
+
+  renderItem(item) {
+    const styles = require('./Detail.scss');
+    const imagePath = require('../../../../static/diaozhui80X80.jpg');
+    const product = this.props.products[item.product_id]
+    const {user, products} = this.props;
+    return (
+      <div className={styles.item}>
+        <div className={styles.itemThump}>
+          <a href="http://www.smartisan.com/shop/#/t2" title="Smartisan T2（黑色，16GB）" target="_blank"> 
+            <img src={imagePath}/> 
+          </a>
+        </div>
+        <div className={styles.itemDesc}>
+          <p>{product.name}</p>
+        </div>
+        <span className={styles.subtotal}>{item.total}</span>
+        <span className={styles.num}>{item.num}</span>
+        <span className={styles.price}>{item.real_price}</span>
+      </div>
+    )
+  }
+
   renderOrder(order) {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
     const {user, products} = this.props;
@@ -88,6 +193,9 @@ export default class UserCenter extends Component {
     console.log("================products==============")
     console.log(order.products);
     console.log(JSON.stringify(products));
+    let itemsView = order.products.map(item => {
+      return this.renderItem(item);
+    })
     return (
       <div className={styles.orderDetailBox}>
         <div className={styles.section}>
@@ -107,13 +215,15 @@ export default class UserCenter extends Component {
               <div className={styles.goPay + " clearfix"}>
                 <div className={styles.left}>
                   <p>
-                    <span>订单状态: 未支付</span>
+                    <span>订单状态: {ORDER_STATE_DISPLAY[order.state]}</span>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span>订单金额: 999</span>
+                    <span>订单金额: {order.real_pay_amt}</span>
                   </p>
+                  {(order.state == ORDER_STATE.UNPAY || order.state == ORDER_STATE.PAY_ERROR) && this.state.expireInMs &&
                   <p>
-                    19小时42分钟22秒 内未付款，将自动取消订单。
+                    {this.getExpireTimeString(this.state.expireInMs) + " 内未付款，将自动取消订单。"}
                   </p>
+                  }
                 </div>
                 <div className={styles.right}>
                   <Button bsSize="normal" bsStyle={"warning"} href={"/buy/payment/" + order.order_id}>立即支付</Button>
@@ -165,37 +275,11 @@ export default class UserCenter extends Component {
                 <span className={styles.price}>单价</span>
               </div>
               <div className={styles.items}>
-                <div className={styles.item}>
-                  <div className={styles.itemThump}>
-                    <a href="http://www.smartisan.com/shop/#/t2" title="Smartisan T2（黑色，16GB）" target="_blank"> 
-                      <img src={imagePath}/> 
-                    </a>
-                  </div>
-                  <div className={styles.itemDesc}>
-                    <p>{"product.name"}</p>
-                  </div>
-                  <span className={styles.subtotal}>{order.real_pay_amt}</span>
-                  <span className={styles.num}>{order.num}</span>
-                  <span className={styles.price}>{order.real_price}</span>
-                </div>
-                <div className={styles.item}>
-                  <div className={styles.itemThump}>
-                    <a href="http://www.smartisan.com/shop/#/t2" title="Smartisan T2（黑色，16GB）" target="_blank"> 
-                      <img src={imagePath}/> 
-                    </a>
-                  </div>
-                  <div className={styles.itemDesc}>
-                    <p>{"product.name"}</p>
-                  </div>
-                  <span className={styles.subtotal}>{order.real_pay_amt}</span>
-                  <span className={styles.num}>{order.num}</span>
-                  <span className={styles.price}>{order.real_price}</span>
-                </div>
-
+                {itemsView}
               </div>
               <div className={styles.summary}>
                 <div className={styles.total}>
-                  <p>{"商品总计：1799.00"}</p>
+                  <p>{"商品总计：" + order.real_pay_amt}</p>
                 </div>
               </div>
             </div>
@@ -212,14 +296,14 @@ export default class UserCenter extends Component {
     const orderId = location.pathname.split("/").reverse()[0];
     const order = orders.find(elem => elem.order_id == orderId)
 
-    let itemView = null;
+    let view = null;
     if (order) {
-      itemView = this.renderOrder(order);
+      view = this.renderOrder(order);
     }
 
     return (
       <div className={'container'}>
-        {itemView}
+        {view}
       </div>
     );
   }
