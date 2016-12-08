@@ -108,6 +108,8 @@ export default class UserCenter extends Component {
       orderState = "已关闭"
     } else if(order.state == ORDER_STATE.DELIVER || order.state == ORDER_STATE.PAY_SUCCESS) {
       orderState = "待收货"
+    } else if(order.state == ORDER_STATE.REFUND) {
+      orderState == "退款中"
     }
     console.log(order);
     const createAt = new Date(Number(order.create_at)).toString();

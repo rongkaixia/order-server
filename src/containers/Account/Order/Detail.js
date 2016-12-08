@@ -185,6 +185,62 @@ export default class UserCenter extends Component {
     )
   }
 
+  renderOrderStatus(order) {
+    const styles = require('./Detail.scss');
+    return (
+      <div className={styles.status}>
+        {(order.state == ORDER_STATE.UNPAY || order.state == ORDER_STATE.PAY_ERROR) && this.state.expireInMs &&
+        <div className={styles.goPay + " clearfix"}>
+          <div className={styles.left}>
+            <p>
+              <span>订单状态: {ORDER_STATE_DISPLAY[order.state]}</span>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <span>订单金额: {order.real_pay_amt}</span>
+            </p>
+            {(order.state == ORDER_STATE.UNPAY || order.state == ORDER_STATE.PAY_ERROR) && this.state.expireInMs &&
+            <p>
+              {this.getExpireTimeString(this.state.expireInMs) + " 内未付款，将自动取消订单。"}
+            </p>
+            }
+          </div>
+          <div className={styles.right}>
+            <Button bsSize="normal" bsStyle={"warning"} href={"/buy/payment/" + order.order_id}>立即支付</Button>
+            <Button bsSize="normal" href="/account/order/detail/123c">取消订单</Button>
+          </div>
+        </div>}
+
+        {(order.state == ORDER_STATE.DELIVER || order.state == ORDER_STATE.PAY_SUCCESS) &&
+        <div className={styles.goPay + " clearfix"}>
+          <div className={styles.left}>
+            <p>
+              <span>订单状态: {ORDER_STATE_DISPLAY[order.state]}</span>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <span>订单金额: {order.real_pay_amt}</span>
+            </p>
+          </div>
+          <div className={styles.right}>
+            <Button bsSize="normal" bsStyle={"warning"} href={"/buy/payment/" + order.order_id}>确认收货</Button>
+          </div>
+        </div>}
+
+        {(order.state == ORDER_STATE.DELIVER_CONFIRM ||
+          order.state == ORDER_STATE.REFUND ||
+          order.state == ORDER_STATE.REFUND_CONFIRM ||
+          order.state == ORDER_STATE.CANCELLED) &&
+        <div className={styles.goPay + " clearfix"}>
+          <div className={styles.left}>
+            <p>
+              <span>订单状态: {ORDER_STATE_DISPLAY[order.state]}</span>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <span>订单金额: {order.real_pay_amt}</span>
+            </p>
+          </div>
+        </div>}
+
+      </div>
+    )
+  }
+
   renderOrder(order) {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
     const {user, products} = this.props;
@@ -193,9 +249,22 @@ export default class UserCenter extends Component {
     console.log("================products==============")
     console.log(order.products);
     console.log(JSON.stringify(products));
+    const orderStatusView = this.renderOrderStatus(order)
     let itemsView = order.products.map(item => {
       return this.renderItem(item);
     })
+
+    // } else if(order.state == ORDER_STATE.DELIVER_CONFIRM) {
+    //   orderState = "已完成"
+    // } else if(order.state == ORDER_STATE.REFUND_CONFIRM) {
+    //   orderState = "已退款"
+    // } else if(order.state == ORDER_STATE.CANCELLED) {
+    //   orderState = "已关闭"
+    // } else if(order.state == ORDER_STATE.DELIVER || order.state == ORDER_STATE.PAY_SUCCESS) {
+    //   orderState = "待收货"
+    // }
+
+
     return (
       <div className={styles.orderDetailBox}>
         <div className={styles.section}>
@@ -211,26 +280,7 @@ export default class UserCenter extends Component {
                 <li className="">交易完成</li>
               </ul>
             </div>
-            <div className={styles.status}>
-              <div className={styles.goPay + " clearfix"}>
-                <div className={styles.left}>
-                  <p>
-                    <span>订单状态: {ORDER_STATE_DISPLAY[order.state]}</span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span>订单金额: {order.real_pay_amt}</span>
-                  </p>
-                  {(order.state == ORDER_STATE.UNPAY || order.state == ORDER_STATE.PAY_ERROR) && this.state.expireInMs &&
-                  <p>
-                    {this.getExpireTimeString(this.state.expireInMs) + " 内未付款，将自动取消订单。"}
-                  </p>
-                  }
-                </div>
-                <div className={styles.right}>
-                  <Button bsSize="normal" bsStyle={"warning"} href={"/buy/payment/" + order.order_id}>立即支付</Button>
-                  <Button bsSize="normal" href="/account/order/detail/123c">取消订单</Button>
-                </div>
-              </div>
-            </div>
+            {orderStatusView}
           </div>
         </div>
 
