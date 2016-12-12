@@ -1,8 +1,8 @@
 import ApiPath from 'api/ApiPath';
 
-const QUERYING = 'redux-example/orders/QUERYING';
-const QUERY_SUCCESS = 'redux-example/orders/QUERY_SUCCESS';
-const QUERY_FAIL = 'redux-example/orders/QUERY_FAIL';
+const QUERYING = 'redux-example/order/QUERYING';
+const QUERY_SUCCESS = 'redux-example/order/QUERY_SUCCESS';
+const QUERY_FAIL = 'redux-example/order/QUERY_FAIL';
 
 const initialState = {
 };

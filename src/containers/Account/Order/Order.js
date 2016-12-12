@@ -11,7 +11,7 @@ import Button from 'react-bootstrap/lib/Button';
 import { routeActions } from 'react-router-redux';
 import * as shopAction from 'redux/modules/shop';
 import * as userAction from 'redux/modules/userInfo';
-import * as ordersAction from 'redux/modules/orders'; 
+import * as ordersAction from 'redux/modules/order'; 
 import {AddressCard} from 'containers';
 
 const ORDER_STATE = {
@@ -43,7 +43,7 @@ const ORDER_SWITCH = {
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
     return dispatch(ordersAction.queryOrder()).then(() => {
       const globalState = getState();
-      let productIds = new Set(_.flatMap(globalState.orders.orders, (order) => {
+      let productIds = new Set(_.flatMap(globalState.order.orders, (order) => {
         return order.products.map(e => {return e.product_id});
       }))
       const promises = [...productIds].map((id) => {
@@ -57,7 +57,7 @@ const ORDER_SWITCH = {
   }
 }])
 @connect((state => ({user: state.userInfo.user,
-                    orders: state.orders.orders,
+                    orders: state.order.orders,
                     products: state.shop.productsById})),
         {redirectTo: routeActions.push})
 export default class UserCenter extends Component {

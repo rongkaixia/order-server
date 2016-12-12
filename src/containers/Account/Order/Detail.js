@@ -11,7 +11,7 @@ import Button from 'react-bootstrap/lib/Button';
 import { routeActions } from 'react-router-redux';
 import * as shopAction from 'redux/modules/shop';
 import * as userAction from 'redux/modules/userInfo';
-import * as ordersAction from 'redux/modules/orders'; 
+import * as ordersAction from 'redux/modules/order'; 
 
 const ORDER_STATE = {
   UNPAY: 'UNPAY',
@@ -49,12 +49,12 @@ const ORDER_STATE_DISPLAY = {
     console.log("==============next promises=============")
     console.log(JSON.stringify(globalState));
     // new Promise((resolve, reject) => {})
-    if (!globalState.orders.orders ||
-        !globalState.orders.orders.find(elem => elem.order_id == orderId)) {
+    if (!globalState.order.orders ||
+        !globalState.order.orders.find(elem => elem.order_id == orderId)) {
       console.log("Detail.js load order info for id " + orderId);
       return dispatch(ordersAction.queryOrder(orderId)).then(() => {
         const globalState = getState();
-        const order = globalState.orders.orders.find(elem => elem.order_id == orderId)
+        const order = globalState.order.orders.find(elem => elem.order_id == orderId)
         let productIds = order.products.map(e => {return e.product_id});
         const promises = [...productIds].map((id) => {
           if (id && !shopAction.isProductLoaded(id, globalState))
@@ -66,7 +66,7 @@ const ORDER_STATE_DISPLAY = {
       })
     } else {
       console.log("==============asdfasdf promises=============")
-      const order = globalState.orders.orders.find(elem => elem.order_id == orderId)
+      const order = globalState.order.orders.find(elem => elem.order_id == orderId)
       console.log("=============order==============")
       console.log(JSON.stringify(order))
       let productIds = order.products.map(e => {return e.product_id});
@@ -81,7 +81,7 @@ const ORDER_STATE_DISPLAY = {
   }
 }])
 @connect((state => ({user: state.userInfo.user,
-                    orders: state.orders.orders,
+                    orders: state.order.orders,
                     products: state.shop.productsById,
                     location: state.routing.location})),
         {redirectTo: routeActions.push})
@@ -253,17 +253,6 @@ export default class UserCenter extends Component {
     let itemsView = order.products.map(item => {
       return this.renderItem(item);
     })
-
-    // } else if(order.state == ORDER_STATE.DELIVER_CONFIRM) {
-    //   orderState = "已完成"
-    // } else if(order.state == ORDER_STATE.REFUND_CONFIRM) {
-    //   orderState = "已退款"
-    // } else if(order.state == ORDER_STATE.CANCELLED) {
-    //   orderState = "已关闭"
-    // } else if(order.state == ORDER_STATE.DELIVER || order.state == ORDER_STATE.PAY_SUCCESS) {
-    //   orderState = "待收货"
-    // }
-
 
     return (
       <div className={styles.orderDetailBox}>
