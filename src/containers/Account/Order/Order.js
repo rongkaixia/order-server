@@ -73,7 +73,10 @@ const customStyles = {
                     authKey: state.csrf._csrf,
                     orders: state.order.orders,
                     products: state.shop.productsById})),
-        {refundAction: ordersAction.refund,
+        {deliverAction: ordersAction.deliver,
+         deliverConfirmAction: ordersAction.deliverConfirm,
+         refundAction: ordersAction.refund,
+         refundConfirmAction: ordersAction.refundConfirm,
          cancelOrderAction: ordersAction.cancel,
          queryOrderAction: ordersAction.queryOrder,
          redirectTo: routeActions.push})
@@ -92,7 +95,10 @@ export default class UserCenter extends Component {
     cancelOrderError: null,
     orderIdToBeRefunded: null,
     refundOrderModalIsOpen: false,
-    refundOrderError: null
+    refundOrderError: null,
+    orderIdToBeConfirm: null,
+    deliverConfirmOrderModalIsOpen: false,
+    deliverConfirmOrderError: null
   };
 
   switchOrderState(newState) {
@@ -123,6 +129,48 @@ export default class UserCenter extends Component {
     this.setState({refundOrderModalIsOpen: false,
                    refundOrderError: null,
                    orderIdToBeRefunded: null});
+  }
+
+  openDeliverConfirmOrderModel = (orderId, event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    this.setState({deliverConfirmOrderModalIsOpen: true, orderIdToBeConfirm: orderId});
+  }
+
+  closeDeliverConfirmOrderModel = (event) => {
+    // event.preventDefault();
+    this.setState({deliverConfirmOrderModalIsOpen: false,
+                   deliverConfirmOrderError: null,
+                   orderIdToBeConfirm: null});
+  }
+
+  // TODO: 测试发货接口，后续删除
+  handleDeliver(orderId) {
+    const {authKey} = this.props;
+    this.props.deliverAction({orderId: orderId}, authKey)
+    .then(() => {
+      return this.props.queryOrderAction()
+    })
+    .catch( err => {
+      console.log("handleDeliver error: " + JSON.stringify(err))
+    })
+  }
+
+  handleDeliverConfirm(orderId) {
+    const {authKey} = this.props;
+    this.props.deliverConfirmAction({orderId: orderId}, authKey)
+    .then(() => {
+      return this.props.queryOrderAction()
+    })
+    .then(() => {
+      this.setState({deliverConfirmOrderModalIsOpen: false,
+                     deliverConfirmOrderError: null,
+                     orderIdToBeConfirm: null});
+    })
+    .catch( err => {
+      console.log("handleDeliverConfirm error: " + JSON.stringify(err))
+      this.setState({deliverConfirmOrderError: JSON.stringify(err)})
+    })  
   }
 
   handleRefund(orderId) {
@@ -177,6 +225,30 @@ export default class UserCenter extends Component {
             </div>
             }
             {cancelOrderError && <div>{'删除订单失败，请稍后重试。'}</div>}
+          </div>
+        </Modal>
+      </div>
+    );
+  }
+
+  renderDeliverConfirmOrderModal() {
+    const {authKey} =  this.props;
+    const {deliverConfirmOrderError, orderIdToBeConfirm} = this.state;
+    return (
+      <div>
+        <Modal
+          isOpen={this.state.deliverConfirmOrderModalIsOpen}
+          onRequestClose={this.closeDeliverConfirmOrderModel}
+          style={customStyles} >
+          <div>
+            <h4 ref="subtitle">收货 <button style={{float: 'right'}} onClick={this.closeDeliverConfirmOrderModel}>X</button></h4>
+            {!deliverConfirmOrderError  && 
+            <div>
+              <div>确定收货吗？</div>
+              <button className="btn btn-success" onClick={this.handleDeliverConfirm.bind(this, orderIdToBeConfirm)}>确定</button>
+            </div>
+            }
+            {deliverConfirmOrderError && <div>{'确定收货失败，请稍后重试。'}</div>}
           </div>
         </Modal>
       </div>
@@ -263,9 +335,15 @@ export default class UserCenter extends Component {
             <Button bsSize="normal" bsStyle={"warning"} href={"/buy/payment/" + order.order_id}>立即支付</Button>
           </div>
           }
+          {(order.state == ORDER_STATE.PAY_SUCCESS) &&
+          <div className={styles.operation}>
+            <Button bsSize="normal" onClick={this.handleDeliver.bind(this, order.order_id)}>测试发货</Button>
+          </div>
+          }
           {(order.state == ORDER_STATE.PAY_SUCCESS || order.state == ORDER_STATE.DELIVER) &&
           <div className={styles.operation}>
-            <Button bsSize="normal" bsStyle={"warning"} href={"/buy/payment/" + order.order_id}>确认收货</Button>
+            <Button bsSize="normal" bsStyle={"warning"} 
+            onClick={this.openDeliverConfirmOrderModel.bind(this, order.order_id)}>确认收货</Button>
           </div>
           }
           <div className={styles.operation}>
@@ -315,6 +393,7 @@ export default class UserCenter extends Component {
       })
     }
     let orderView = selectedOrders.map(order =>{return this.renderOrder(order)})
+    let deliverConfirmModal = this.renderDeliverConfirmOrderModal();
     let refundModal = this.renderRefundOrderModal();
     let cancelModal = this.renderCancelOrderModal();
     return (
@@ -335,6 +414,7 @@ export default class UserCenter extends Component {
           <div className={styles.sectionBody + " clearfix"}>
           {orderView}
           </div>
+          {deliverConfirmModal}
           {refundModal}
           {cancelModal}
         </div>

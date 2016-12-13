@@ -186,7 +186,7 @@ export function deliver(deliverReq, authKey) {
     })
   };
 }
-export function rdeliverConfirm(deliverConfirmReq, authKey) {
+export function deliverConfirm(deliverConfirmReq, authKey) {
   let postData = {...deliverConfirmReq, ...{_csrf: authKey}};
   return {
     types: [DELIVER_CONFIRMING, DELIVER_CONFIRM_SUCCESS, DELIVER_CONFIRM_FAIL],

@@ -73,6 +73,8 @@ app.use(csrfProtection)
 app.post(ApiPath.ORDER, api.Order);
 app.post(ApiPath.NOTIFY, api.Notify);
 app.get(ApiPath.ORDER_INFO, api.QueryOrderInfo);
+app.post(ApiPath.DELIVER, api.Deliver);
+app.post(ApiPath.DELIVER_CONFIRM, api.DeliverConfirm);
 app.post(ApiPath.REFUND, api.Refund);
 app.post(ApiPath.REFUND_CONFIRM, api.RefundConfirm);
 app.post(ApiPath.CANCEL, api.Cancel);
