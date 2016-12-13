@@ -3,6 +3,7 @@ import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
+import Modal from 'react-modal';
 import { asyncConnect } from 'redux-async-connect';
 import Image from 'react-bootstrap/lib/Image';
 import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
@@ -33,6 +34,18 @@ const ORDER_SWITCH = {
   CANCELLED: 'CANCELLED'
 }
 
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)'
+  }
+};
+
+
 // TODO: 增加错误展示界面，监听loadInfo的错误
 /* eslint-disable */ 
 @asyncConnect([{
@@ -57,9 +70,13 @@ const ORDER_SWITCH = {
   }
 }])
 @connect((state => ({user: state.userInfo.user,
+                    authKey: state.csrf._csrf,
                     orders: state.order.orders,
                     products: state.shop.productsById})),
-        {redirectTo: routeActions.push})
+        {refundAction: ordersAction.refund,
+         cancelOrderAction: ordersAction.cancel,
+         queryOrderAction: ordersAction.queryOrder,
+         redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
     user: PropTypes.object,
@@ -69,11 +86,124 @@ export default class UserCenter extends Component {
   };
 
   state = {
-    orderSwitch: ORDER_SWITCH.UNPAY
+    orderSwitch: ORDER_SWITCH.UNPAY,
+    orderIdToBeCancelled: null,
+    cancelOrderModalIsOpen: false,
+    cancelOrderError: null,
+    orderIdToBeRefunded: null,
+    refundOrderModalIsOpen: false,
+    refundOrderError: null
   };
 
   switchOrderState(newState) {
     this.setState({orderSwitch: newState});
+  }
+
+  openCancelOrderModal = (orderId, event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    this.setState({cancelOrderModalIsOpen: true, orderIdToBeCancelled: orderId});
+  }
+
+  closeCancelOrderModal = (event) => {
+    // event.preventDefault();
+    this.setState({cancelOrderModalIsOpen: false,
+                   cancelOrderError: null,
+                   orderIdToBeCancelled: null});
+  }
+
+  openRefundOrderModel = (orderId, event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    this.setState({refundOrderModalIsOpen: true, orderIdToBeRefunded: orderId});
+  }
+
+  closeRefundOrderModel = (event) => {
+    // event.preventDefault();
+    this.setState({refundOrderModalIsOpen: false,
+                   refundOrderError: null,
+                   orderIdToBeRefunded: null});
+  }
+
+  handleRefund(orderId) {
+    const {authKey} = this.props;
+    this.props.refundAction({orderId: orderId}, authKey)
+    .then(() => {
+      return this.props.queryOrderAction()
+    })
+    .then(() => {
+      this.setState({refundOrderModalIsOpen: false,
+                     refundOrderError: null,
+                     orderIdToBeRefunded: null});
+    })
+    .catch( err => {
+      console.log("handleRefund error: " + JSON.stringify(err))
+      this.setState({refundOrderError: JSON.stringify(err)})
+    })
+  }
+
+  handleCancel(orderId) {
+    const {authKey} = this.props;
+    this.props.cancelOrderAction({orderId: orderId}, authKey)
+    .then(() => {
+      return this.props.queryOrderAction()
+    })
+    .then(() => {
+      this.setState({cancelOrderModalIsOpen: false,
+                     cancelOrderError: null,
+                     orderIdToBeCancelled: null});
+    })
+    .catch( err => {
+      console.log("handleCancel error: " + JSON.stringify(err))
+      this.setState({cancelOrderError: JSON.stringify(err)})
+    })
+  }
+
+  renderCancelOrderModal() {
+    const {authKey} =  this.props;
+    const {cancelOrderError, orderIdToBeCancelled} = this.state;
+    return (
+      <div>
+        <Modal
+          isOpen={this.state.cancelOrderModalIsOpen}
+          onRequestClose={this.closeCancelOrderModal}
+          style={customStyles} >
+          <div>
+            <h4 ref="subtitle">删除订单 <button style={{float: 'right'}} onClick={this.closeCancelOrderModal}>X</button></h4>
+            {!cancelOrderError  && 
+            <div>
+              <div>确定删除该订单吗？</div>
+              <button className="btn btn-success" onClick={this.handleCancel.bind(this, orderIdToBeCancelled)}>确定</button>
+            </div>
+            }
+            {cancelOrderError && <div>{'删除订单失败，请稍后重试。'}</div>}
+          </div>
+        </Modal>
+      </div>
+    );
+  }
+
+  renderRefundOrderModal() {
+    const {refundOrderError, orderIdToBeRefunded} = this.state;
+    return (
+      <div>
+        <Modal
+          isOpen={this.state.refundOrderModalIsOpen}
+          onRequestClose={this.closeRefundOrderModel}
+          style={customStyles} >
+          <div>
+            <h4 ref="subtitle">退款 <button style={{float: 'right'}} onClick={this.closeRefundOrderModel}>X</button></h4>
+            {!refundOrderError  && 
+            <div>
+              <div>确定申请退款吗？</div>
+              <button className="btn btn-success" onClick={this.handleRefund.bind(this, orderIdToBeRefunded)}>确定</button>
+            </div>
+            }
+            {refundOrderError && <div>{'申请退款失败，请稍后重试。'}</div>}
+          </div>
+        </Modal>
+      </div>
+    );
   }
 
   renderOrderItem(item) {
@@ -109,15 +239,16 @@ export default class UserCenter extends Component {
     } else if(order.state == ORDER_STATE.DELIVER || order.state == ORDER_STATE.PAY_SUCCESS) {
       orderState = "待收货"
     } else if(order.state == ORDER_STATE.REFUND) {
-      orderState == "退款中"
+      orderState = "退款中"
     }
     console.log(order);
+    console.log("===================ORDER_STATE=============");
+    console.log(orderState)
     const createAt = new Date(Number(order.create_at)).toString();
     let itemsView = order.products.map(prod => {
       const item = products[prod.product_id];
       return this.renderOrderItem(item);
     })
-    let tmp = [itemsView, itemsView]
     return (
       <div className={styles.order + " clearfix"}>
         <div className={styles.header + " clearfix"}>
@@ -126,7 +257,7 @@ export default class UserCenter extends Component {
           <p className={styles.total}>{"订单金额：" + order.real_pay_amt}</p>
         </div>
         <div className={styles.items + " clearfix"}>
-          {tmp}
+          {itemsView}
           {(order.state == ORDER_STATE.UNPAY || order.state == ORDER_STATE.PAY_ERROR) &&
           <div className={styles.operation}>
             <Button bsSize="normal" bsStyle={"warning"} href={"/buy/payment/" + order.order_id}>立即支付</Button>
@@ -142,12 +273,12 @@ export default class UserCenter extends Component {
           </div>
           {(order.state == ORDER_STATE.UNPAY || order.state == ORDER_STATE.PAY_ERROR) &&
           <div className={styles.operation}>
-            <Button bsSize="normal" href="/account/order/detail/123c">取消订单</Button>
+            <Button bsSize="normal" onClick={this.openCancelOrderModal.bind(this, order.order_id)}>取消订单</Button>
           </div>
           }
           {(order.state == ORDER_STATE.PAY_SUCCESS || order.state == ORDER_STATE.DELIVER) &&
           <div className={styles.operation}>
-            <Button bsSize="normal" href="/account/order/detail/123c">退款</Button>
+            <Button bsSize="normal" onClick={this.openRefundOrderModel.bind(this, order.order_id)}>退款</Button>
           </div>
           }
         </div>
@@ -170,11 +301,13 @@ export default class UserCenter extends Component {
       })
     } else if (orderSwitch == ORDER_SWITCH.DELIVER) {
       selectedOrders = orders.filter(elem => {
-        return elem.state == ORDER_STATE.DELIVER || elem.state == ORDER_STATE.PAY_SUCCESS
+        return elem.state == ORDER_STATE.DELIVER || 
+               elem.state == ORDER_STATE.PAY_SUCCESS
       })
     } else if (orderSwitch == ORDER_SWITCH.CANCELLED) {
       selectedOrders = orders.filter(elem => {
-        return elem.state == ORDER_STATE.CANCELLED
+        return elem.state == ORDER_STATE.CANCELLED ||
+               elem.state == ORDER_STATE.REFUND
       })
     } else {
       selectedOrders = orders.filter(elem => {
@@ -182,6 +315,8 @@ export default class UserCenter extends Component {
       })
     }
     let orderView = selectedOrders.map(order =>{return this.renderOrder(order)})
+    let refundModal = this.renderRefundOrderModal();
+    let cancelModal = this.renderCancelOrderModal();
     return (
       <div className={styles.orderBox}>
         <div className={styles.section + " " + " clearfix"}>
@@ -200,6 +335,8 @@ export default class UserCenter extends Component {
           <div className={styles.sectionBody + " clearfix"}>
           {orderView}
           </div>
+          {refundModal}
+          {cancelModal}
         </div>
       </div>
     )

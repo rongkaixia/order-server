@@ -10,7 +10,11 @@ function validateNotifyInput(req) {
   return new Promise((resolve, reject) => {
     if (!req) {
       reject("an notify request is required");
-    } else if (!Validation.isString(req.orderId) || Validation.isEmpty(req.orderId)) {
+    } else if (!req.session) {
+      reject("session is required");
+    } else if (!req.session.access_token) {
+      reject("token is required");
+    } else if (!Validation.isString(req.body.orderId) || Validation.isEmpty(req.body.orderId)) {
       reject("orderId(string) is required");
     } else {
       resolve();
@@ -21,7 +25,7 @@ function validateNotifyInput(req) {
 exports = module.exports = function(req, res) {
   console.log('handle notify request: ' + JSON.stringify(req.body));
   // check input
-  validateNotifyInput(req.body)
+  validateNotifyInput(req)
   .then(() => {
     // construct signup request
     let client = new protos.gold.OrderService(host + ':' + port, grpc.credentials.createInsecure());

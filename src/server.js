@@ -72,7 +72,10 @@ app.use(csrfProtection)
 // api
 app.post(ApiPath.ORDER, api.Order);
 app.post(ApiPath.NOTIFY, api.Notify);
-app.use(ApiPath.ORDER_INFO, api.QueryOrderInfo);
+app.get(ApiPath.ORDER_INFO, api.QueryOrderInfo);
+app.post(ApiPath.REFUND, api.Refund);
+app.post(ApiPath.REFUND_CONFIRM, api.RefundConfirm);
+app.post(ApiPath.CANCEL, api.Cancel);
 
 app.use(ApiPath.AUTH, api.Auth);
 app.use(ApiPath.LOGIN, api.Login);

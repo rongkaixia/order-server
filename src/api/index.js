@@ -1,6 +1,9 @@
 export QueryOrderInfo from './order/QueryOrderInfo';
 export Order from './order/Order';
 export Notify from './order/Notify';
+export Refund from './order/Refund';
+export RefundConfirm from './order/RefundConfirm';
+export Cancel from './order/Cancel';
 
 export Auth from './auth/Auth';
 export Login from './auth/Login';

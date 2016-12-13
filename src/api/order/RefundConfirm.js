@@ -6,7 +6,7 @@ let protos = require('../protocol');
 let host = Config.goldHost;
 let port = Config.goldPort;
 
-function validateCancelInput(req) {
+function validateRefundConfirmInput(req) {
   return new Promise((resolve, reject) => {
     if (!req) {
       reject("an cancel request is required");
@@ -23,27 +23,27 @@ function validateCancelInput(req) {
 }
 
 exports = module.exports = function(req, res) {
-  console.log('handle cancel request: ' + JSON.stringify(req.body));
+  console.log('handle refundConfirm request: ' + JSON.stringify(req.body));
   // check input
-  validateCancelInput(req)
+  validateRefundConfirmInput(req)
   .then(() => {
     // construct signup request
     let client = new protos.gold.OrderService(host + ':' + port, grpc.credentials.createInsecure());
 
-    let request = new protos.gold.CancelRequest();
+    let request = new protos.gold.RefundConfirmRequest();
     request.setOrderId(req.body.orderId);
 
     // send request to backend server
-    client.cancel(request, (err, response)=>{
+    client.refundConfirm(request, (err, response)=>{
       let result = {};
       if (err) {
-        console.log("send cancel request to Gold Server error: " + JSON.stringify(err));
+        console.log("send refundConfirm request to Gold Server error: " + JSON.stringify(err));
         let header = new protos.common.ResponseHeader();
         header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
         header.setResultDescription(JSON.stringify(err));
-        result = new protos.gold.CancelResponse().setHeader(header).toRaw();
+        result = new protos.gold.RefundConfirmResponse().setHeader(header).toRaw();
       }else {
-        console.log("recieve cancel response from gold server: " + JSON.stringify(response));
+        console.log("recieve refundConfirm response from gold server: " + JSON.stringify(response));
         result = response;
       }
       res.json(Object.assign({},result.header,result))

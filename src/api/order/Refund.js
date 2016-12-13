@@ -9,8 +9,12 @@ let port = Config.goldPort;
 function validateRefundInput(req) {
   return new Promise((resolve, reject) => {
     if (!req) {
-      reject("an refund request is required");
-    } else if (!Validation.isString(req.orderId) || Validation.isEmpty(req.orderId)) {
+      reject("an cancel request is required");
+    } else if (!req.session) {
+      reject("session is required");
+    } else if (!req.session.access_token) {
+      reject("token is required");
+    } else if (!Validation.isString(req.body.orderId) || Validation.isEmpty(req.body.orderId)) {
       reject("orderId(string) is required");
     } else {
       resolve();
@@ -21,7 +25,7 @@ function validateRefundInput(req) {
 exports = module.exports = function(req, res) {
   console.log('handle refund request: ' + JSON.stringify(req.body));
   // check input
-  validateRefundInput(req.body)
+  validateRefundInput(req)
   .then(() => {
     // construct signup request
     let client = new protos.gold.OrderService(host + ':' + port, grpc.credentials.createInsecure());
@@ -37,7 +41,7 @@ exports = module.exports = function(req, res) {
         let header = new protos.common.ResponseHeader();
         header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
         header.setResultDescription(JSON.stringify(err));
-        result = new protos.gold.OrderResponse().setHeader(header).toRaw();
+        result = new protos.gold.RefundResponse().setHeader(header).toRaw();
       }else {
         console.log("recieve refund response from gold server: " + JSON.stringify(response));
         result = response;

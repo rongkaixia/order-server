@@ -7,6 +7,7 @@ module.exports = {
   DELIVER_CONFIRM: '/api/order/deliver_confirm',
   REFUND: '/api/order/refund',
   REFUND_CONFIRM: '/api/order/refund_confirm',
+  CANCEL: '/api/order/cancel',
   SIGNUP: '/api/signup',
   LOGIN: '/api/login',
   LOGOUT: '/api/logout',

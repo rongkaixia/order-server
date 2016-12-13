@@ -81,6 +81,7 @@ const ORDER_STATE_DISPLAY = {
   }
 }])
 @connect((state => ({user: state.userInfo.user,
+                    authKey: state.csrf._csrf,
                     orders: state.order.orders,
                     products: state.shop.productsById,
                     location: state.routing.location})),
