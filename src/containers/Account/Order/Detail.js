@@ -353,9 +353,8 @@ export default class UserCenter extends Component {
 
   renderItem(item) {
     const styles = require('./Detail.scss');
-    const imagePath = require('../../../../static/diaozhui80X80.jpg');
     const product = this.props.products[item.product_id]
-    const {user, products} = this.props;
+    const imagePath = product.images.thumbnail;
     return (
       <div className={styles.item}>
         <div className={styles.itemThump}>
@@ -434,7 +433,6 @@ export default class UserCenter extends Component {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
     const {user, products} = this.props;
     const styles = require('./Detail.scss');
-    const imagePath = require('../../../../static/diaozhui80X80.jpg');
     console.log("================products==============")
     console.log(order.products);
     console.log(JSON.stringify(products));

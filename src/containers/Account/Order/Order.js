@@ -280,7 +280,8 @@ export default class UserCenter extends Component {
 
   renderOrderItem(item) {
     const styles = require('./Order.scss');
-    const imagePath = require('../../../../static/diaozhui80X80.jpg');
+    const imagePath = item.images.thumbnail;
+    
     return (
       <div className={styles.item}>
         <div className={styles.itemThump}>
