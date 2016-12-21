@@ -14,22 +14,13 @@ import * as userAction from 'redux/modules/userInfo';
 
 // TODO: 增加错误展示界面，监听loadInfo的错误
 /* eslint-disable */ 
-@asyncConnect([{
-  promise: ({store: {dispatch, getState}, helpers: {client}}) => {
-    return dispatch(shopAction.loadNecklace());
-  }
-},{
-  promise: ({store: {dispatch, getState}, helpers: {client}}) => {
-    return dispatch(userAction.loadInfo());
-  }
-}])
 @connect((state => ({user: state.userInfo.user,
-                    necklace: state.shop.products.necklace})),
+                    products: state.shop.productsById})),
         {redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
     user: PropTypes.object,
-    necklace: PropTypes.object,
+    products: PropTypes.object,
     redirectTo: PropTypes.func.isRequired
   };
 
@@ -88,12 +79,8 @@ export default class UserCenter extends Component {
 
   render() {
     const styles = require('./Cart.scss');
-    const {necklace} = this.props;
-    let item = necklace['0000001'];
     let itemView = null;
-    if (item) {
-      itemView = this.renderItem(item);
-    }
+    itemView = this.renderItem({name: "test"});
 
     return (
       <div className={'container'}>
