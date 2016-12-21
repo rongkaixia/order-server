@@ -19,5 +19,9 @@ export AddUserAddress from './user/AddUserAddress';
 export UpdateUserAddress from './user/UpdateUserAddress';
 export DeleteUserAddress from './user/DeleteUserAddress';
 
+export QueryCart from './cart/QueryCart'
+export UpdateCart from './cart/UpdateCart'
+export DeleteCart from './cart/DeleteCart'
+
 export QueryProductInfo from './product/QueryProductInfo';
 export Pricing from './product/Pricing';

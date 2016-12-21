@@ -30,20 +30,20 @@ exports = module.exports = function(req, res) {
     if (req.session && req.session.cart) {
       result = {data: req.session.cart}
     }
-    res.json(Object.assign({}, header, result))
+    res.json(Object.assign({}, header.toRaw(), result))
   }
   ,(err) => {
     console.log("validateInput error: " + err);
     let header = new protos.common.ResponseHeader();
     header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);
     header.setResultDescription(err);
-    res.json(header);
+    res.json(header.toRaw());
   })
   .catch((err) => {
     console.log(err);
     let header = new protos.common.ResponseHeader();
     header.setResult(protos.common.ResultCode.INTERNAL_SERVER_ERROR);
     header.setResultDescription(JSON.stringify(err));
-    res.json(header);
+    res.json(header.toRaw());
   })
 }

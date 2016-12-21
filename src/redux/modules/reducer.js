@@ -13,6 +13,7 @@ import widgets from './widgets';
 import shop from './shop';
 import checkout from './checkout';
 import order from './order';
+import cart from './cart';
 
 // console.log("formAuth: " + formAuth);
 // console.log("auth: " + auth);
@@ -26,6 +27,7 @@ export default combineReducers({
   shop,
   checkout,
   order,
+  cart,
   multireducer: multireducer({
     counter1: counter,
     counter2: counter,

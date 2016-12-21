@@ -11,6 +11,7 @@ import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import Button from 'react-bootstrap/lib/Button';
 import { routeActions } from 'react-router-redux';
 import * as shopAction from 'redux/modules/shop';
+import * as cartAction from 'redux/modules/cart';
 import Config from 'config';
 
 // TODO: 增加错误展示界面，监听loadInfo的错误
@@ -39,7 +40,7 @@ import Config from 'config';
 @connect((state => ({shop: state.shop,
                     necklaces: state.shop.productsByType.necklace,
                     authKey: state.csrf._csrf})),
-        {...shopAction, redirectTo: routeActions.push})
+        {...shopAction, ...cartAction, redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
     shop: PropTypes.object,
@@ -89,6 +90,12 @@ export default class UserCenter extends Component {
         return;
       }
     })
+  }
+
+  handleAddToCart(productId, num, event) {
+    const {authKey} = this.props;
+    return this.props.updateCart({productId: productId, num: num}, authKey)
+                     .then(() => { return this.props.loadCart()})
   }
 
   renderChoice(choice) {
@@ -148,6 +155,7 @@ export default class UserCenter extends Component {
             <input name="_csrf" type="hidden" value={authKey} />
             {choicesInput}
             <Button bsSize="large" bsStyle="info" type="submit">立即购买</Button>
+            <Button bsSize="large" onClick={this.handleAddToCart.bind(this, productId, num)}>加入购物车</Button>
           </form>
           {validateFormError && <div>{validateFormError}</div>}
         </div>

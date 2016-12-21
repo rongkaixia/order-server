@@ -9,13 +9,11 @@ let port = Config.captainPort;
 function validateInput(req) {
   return new Promise((resolve, reject) => {
     if (!req) {
-      reject("an updateCart request is required");
+      reject("an deleteCart request is required");
     } else if (!req.session) {
       reject("session is required");
     } else if (Validation.empty(req.body.productId) || !Validation.isString(req.body.productId)) {
       reject("productId(string) is required");
-    } else if (Validation.empty(req.body.num) && !Validation.isInteger(req.body.num)) {
-      reject("num(int) is required");
     }else {
       resolve();
     }
@@ -23,24 +21,18 @@ function validateInput(req) {
 }
 
 exports = module.exports = function(req, res) {
-  console.log('handle updateCart request: ' + JSON.stringify(req.body));
+  console.log('handle deleteCart request: ' + JSON.stringify(req.body));
   console.log(req.params);
   // check input
   validateInput(req)
   .then(() => {
     let header = new protos.common.ResponseHeader();
-    if (!req.session.cart) {
-      req.session.cart = [{productId: req.body.productId, num: req.body.num}];
-    } else {
-      let index = req.session.cart.findIndex(elem => {return elem.productId == req.body.productId})
-      if (index == -1) {
-        req.session.cart.push({productId: req.body.productId, num: req.body.num})
-      } else {
-        req.session.cart[index] = {productId: req.body.productId, num: req.body.num}
-      }
+    if (req.session.cart) {
+      let newCart = req.session.cart.filter(elem => {return elem.productId != req.body.productId})
+      req.session.cart = newCart
     }
     header.setResult(protos.common.ResultCode.SUCCESS);
-
+    
     res.json(header.toRaw());
     // // construct signup request
     // let client = new protos.captain.CaptainService(host + ':' + port, grpc.credentials.createInsecure());

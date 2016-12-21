@@ -15,6 +15,7 @@ module.exports = {
   USER_INFO: '/api/user/user_info',
   USER_ADDRESS: '/api/user/user_address',
   USER_ORDER: '/api/user/user_order',
+  USER_CART: '/api/user/user_cart',
   PRODUCT_INFO: '/api/product/product_info',
   PRICING: '/api/product/pricing'
 };
