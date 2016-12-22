@@ -81,7 +81,9 @@ export default function reducer(state = initialState, action = {}) {
   }
 }
 
-export function isLoaded(globalState) {
+export function isCartLoaded(globalState) {
+  console.log("isCartLoaded")
+  console.log(JSON.stringify(globalState))
   return globalState.cart && globalState.cart.loaded;
 }
 

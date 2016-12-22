@@ -10,17 +10,43 @@ import Button from 'react-bootstrap/lib/Button';
 import { routeActions } from 'react-router-redux';
 import * as shopAction from 'redux/modules/shop';
 import * as userAction from 'redux/modules/userInfo';
+import * as cartAction from 'redux/modules/cart';
 
 
 // TODO: 增加错误展示界面，监听loadInfo的错误
 /* eslint-disable */ 
+@asyncConnect([{
+  promise: ({store: {dispatch, getState}}) => {
+    let loadCartPromise = Promise.resolve()
+    if (!cartAction.isCartLoaded(getState())) {
+      loadCartPromise = dispatch(cartAction.loadCart())
+    }
+    return loadCartPromise.then(() => {
+      const globalState = getState();
+      if (globalState.cart && globalState.cart.data) {
+        let productIds = globalState.cart.data.map(e => {return e.productId});
+        const promises = [...productIds].map((id) => {
+          if (id && !shopAction.isProductLoaded(id, globalState))
+            return dispatch(shopAction.loadProductInfo(id));
+          else
+            return Promise.resolve();
+        })
+        return Promise.all(promises);
+      } else {
+        return Promise.resolve();
+      }
+    })
+  }
+}])
 @connect((state => ({user: state.userInfo.user,
-                    products: state.shop.productsById})),
+                     cart: state.cart.data,
+                     products: state.shop.productsById})),
         {redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
     user: PropTypes.object,
     products: PropTypes.object,
+    cart: PropTypes.object,
     redirectTo: PropTypes.func.isRequired
   };
 

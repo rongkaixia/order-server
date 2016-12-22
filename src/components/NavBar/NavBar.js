@@ -2,12 +2,14 @@ import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { IndexLink } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
+import { asyncConnect } from 'redux-async-connect';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
 import config from '../../config';
 import Querystring from 'querystring';
 
+/* eslint-disable */ 
 @connect(state => ({location: state.routing.location}))
 export default class NavBar extends Component {
   static propTypes = {
@@ -30,7 +32,11 @@ export default class NavBar extends Component {
   // }
 
   render() {
-    const {user, location} = this.props; // eslint-disable-line no-shadow
+    const {user, location, cart} = this.props; // eslint-disable-line no-shadow
+    let numCart = 0;
+    if (cart) {
+      numCart = cart.length;
+    }
     const styles = require('./NavBar.scss');
     let returnTo = '';
     if (location.pathname !== '/login' && location.pathname !== '/signup') {
@@ -76,6 +82,11 @@ export default class NavBar extends Component {
           </Nav>
           {user &&
           <p className={styles.loggedInMessage + ' navbar-text'}>Logged in as <strong>{user.username}</strong>.</p>}
+          <Nav>
+            <LinkContainer to="/cart">
+              <NavItem eventKey={3}>{"购物车(" + numCart + ")"}</NavItem>
+            </LinkContainer>
+          </Nav>
           <Nav pullRight>
             <NavItem eventKey={1} target="_blank" title="View on Github" href="https://github.com/erikras/react-redux-universal-hot-example">
               <i className="fa fa-github"/>

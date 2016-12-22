@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 // import { isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info';
 import { isLoaded as isAuthLoaded, load as loadAuth, logout } from 'redux/modules/auth';
+import { isCartLoaded, loadCart } from 'redux/modules/cart';
 import { InfoBar, NavBar, Footer } from 'components';
 import { routeActions } from 'react-router-redux';
 import config from '../../config';
@@ -20,6 +21,12 @@ import { asyncConnect } from 'redux-async-connect';
     // if (!isInfoLoaded(getState())) {
     //   promises.push(dispatch(loadInfo()));
     // }
+    const globalState = getState();
+    let c = isCartLoaded(globalState)
+    console.log("asyncConnect: " + c)
+    if (!isCartLoaded(globalState)) {
+      promises.push(dispatch(loadCart()))
+    }
     if (!isAuthLoaded(getState())) {
       promises.push(dispatch(loadAuth()));
     }
@@ -28,7 +35,8 @@ import { asyncConnect } from 'redux-async-connect';
   }
 }])
 @connect(
-  state => ({user: state.userInfo.user}),
+  state => ({user: state.userInfo.user,
+             cart: state.cart.data}),
   {logout, pushState: routeActions.push})
 export default class App extends Component {
   static propTypes = {
@@ -58,13 +66,13 @@ export default class App extends Component {
   };
 
   render() {
-    const {user, logout} = this.props;
+    const {user, logout, cart} = this.props;
     const styles = require('./App.scss');
 
     return (
       <div className={styles.app}>
         <Helmet {...config.app.head}/>
-        <NavBar user={user} logout={logout}/>
+        <NavBar user={user} logout={logout} cart={cart}/>
         <div className={styles.appContent}>
           {this.props.children}
         </div>
