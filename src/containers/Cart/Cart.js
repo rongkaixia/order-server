@@ -50,18 +50,44 @@ export default class UserCenter extends Component {
     redirectTo: PropTypes.func.isRequired
   };
 
-  renderChoice(item) {
-    const styles = require('./Cart.scss');
-    return (
-      <div>
-      </div>
-    );
-  }
   renderItem(item) {
+    const styles = require('./Cart.scss');
+    const product = this.props.products[item.productId]
+    const imagePath = product.images.thumbnail;
+    const subtotal = item.num * product.real_price;
+    return (
+      <div className={styles.item}>
+        <input className={styles.checkbox} name="Fruit" type="checkbox" value=""/>
+        <div className={styles.itemThump}>
+          <a href="http://www.smartisan.com/shop/#/t2" title="Smartisan T2（黑色，16GB）" target="_blank"> 
+            <img src={imagePath}/> 
+          </a>
+        </div>
+        <div className={styles.itemDesc}>
+          <p>{product.name}</p>
+        </div>
+        <span className={styles.operation}>删除</span>
+        <span className={styles.subtotal}>{subtotal}</span>
+        <span className={styles.num}>{item.num}</span>
+        <span className={styles.price}>{product.real_price}</span>
+      </div>
+    )
+  }
+
+  renderView(item) {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
-    const {user} = this.props;
+    const {user, products, cart} = this.props;
     const styles = require('./Cart.scss');
     const imagePath = require('../../../static/diaozhui80X80.jpg');
+    let total = 0.0
+    let itemView = cart.map(item => {
+      console.log(JSON.stringify(item))
+      console.log(JSON.stringify(products))
+      let product = products[item.productId]
+      console.log(JSON.stringify(product))
+      total += product.real_price * item.num
+      return this.renderItem(item);
+    })
     return (
       <div className={styles.checkoutBox}>
 
@@ -75,26 +101,14 @@ export default class UserCenter extends Component {
             <span className={styles.price}>单价</span>
           </div>
           <div className={styles.items}>
-            <input className={styles.checkbox} name="Fruit" type="checkbox" value=""/>
-            <div className={styles.itemThump}>
-              <a href="http://www.smartisan.com/shop/#/t2" title="Smartisan T2（黑色，16GB）" target="_blank"> 
-                <img src={imagePath}/> 
-              </a>
-            </div>
-            <div className={styles.itemDesc}>
-              <p>{item.name}</p>
-            </div>
-            <span className={styles.operation}>删除</span>
-            <span className={styles.subtotal}>1799</span>
-            <span className={styles.num}>1</span>
-            <span className={styles.price}>1799</span>
+          {itemView}
           </div>
           <div className={styles.summary}>
             <div className={styles.submitButton}>
               <Button bsSize="large" bsStyle={"warning"} href="/buy/checkout/123c">结算</Button>
             </div>
             <div className={styles.total}>
-              <span>{"商品总计：1799.00"}</span>
+              <span>{"商品总计：" + total.toString()}</span>
             </div>
           </div>
         </div>
@@ -106,7 +120,7 @@ export default class UserCenter extends Component {
   render() {
     const styles = require('./Cart.scss');
     let itemView = null;
-    itemView = this.renderItem({name: "test"});
+    itemView = this.renderView({name: "test"});
 
     return (
       <div className={'container'}>

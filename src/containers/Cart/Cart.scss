@@ -72,20 +72,23 @@
 .cart .items {
     padding: 0 24px;
     border-bottom: 1px solid #E1E1E1;
-    height: 120px;
 }
 
-.cart .items .checkbox {
+.cart .item {
+    height: 100px;
+}
+
+.cart .item .checkbox {
     margin-top: 20px;
     //border: 1px solid #F0F0F0;
     width: 78px;
     height: 78px;
-    line-height: 110px;
+    line-height: 90px;
     border-radius: 4px;
     float: left;
 }
 
-.cart .items .itemThump {
+.cart .item .itemThump {
     margin-top: 20px;
     //border: 1px solid #F0F0F0;
     width: 78px;
@@ -94,42 +97,42 @@
     float: left;
 }
 
-.cart .items .itemDesc {
+.cart .item .itemDesc {
     width: 315px;
     margin-left: 21px;
-    line-height: 110px;
+    line-height: 90px;
     float: left;
 }
 
-.cart .items span{
+.cart .item span{
     float: right;
     text-align: center;
 }
 
-.cart .items .operation {
+.cart .item .operation {
     width: 152px;
     padding-right: 30px;
-    line-height: 110px;
+    line-height: 90px;
     text-align: right;
 }
 
-.cart .items .subtotal {
+.cart .item .subtotal {
     width: 152px;
     padding-right: 30px;
-    line-height: 110px;
+    line-height: 90px;
     text-align: right;
 }
 
-.cart .items .num {
+.cart .item .num {
     width: 152px;
     padding-right: 30px;
-    line-height: 110px;
+    line-height: 90px;
     text-align: right;
 }
 
-.cart .items .price {
+.cart .item .price {
     padding-right: 30px;
-    line-height: 110px;
+    line-height: 90px;
     text-align: right;
 }
 
