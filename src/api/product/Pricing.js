@@ -55,7 +55,10 @@ exports = module.exports = function(req, res) {
 	          header.setResultDescription("内部错误，批价有问题");
           } else {
 	          header.setResult(protos.common.ResultCode.SUCCESS);
-	          result = {price: data.price,
+	          result = {product_id: req.body.id,
+                      num: req.body.num,
+                      choices: req.body.choices,
+                      price: data.price,
     	          			real_price: data.real_price,
     	          			discount: 0.0,
     	          			pay_amt: pay_amt,

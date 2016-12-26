@@ -21,7 +21,7 @@ import * as cartAction from 'redux/modules/cart';
     if (!cartAction.isCartLoaded(getState())) {
       loadCartPromise = dispatch(cartAction.loadCart())
     }
-    return loadCartPromise.then(() => {
+    return loadCartPromise.then(() => { // load product info
       const globalState = getState();
       if (globalState.cart && globalState.cart.data) {
         let productIds = globalState.cart.data.map(e => {return e.productId});
@@ -30,6 +30,17 @@ import * as cartAction from 'redux/modules/cart';
             return dispatch(shopAction.loadProductInfo(id));
           else
             return Promise.resolve();
+        })
+        return Promise.all(promises);
+      } else {
+        return Promise.resolve();
+      }
+    }).then(() => { // pricing
+      const globalState = getState();
+      if (globalState.cart && globalState.cart.data) {
+        const promises = globalState.cart.data.map(cartItem => {
+          let pricingReq = {id: cartItem.productId, num: cartItem.num, choices: cartItem.choices};
+          return dispatch(cartAction.pricing(pricingReq, globalState.csrf._csrf))
         })
         return Promise.all(promises);
       } else {
@@ -51,21 +62,6 @@ export default class UserCenter extends Component {
     redirectTo: PropTypes.func.isRequired
   };
 
-  state = {
-    payAmt: null, 
-    realPayAmt: null
-  };
-
-  componentWillMount(){
-    console.log("componentWillMount");
-    let self = this;
-    if (self.props.cart) {
-      self.props.cart.forEach(cartItem => {
-        this.props
-      })
-    }
-  }
-
   increaseNum() {
     let num = this.state.num + 1;
     this.setState({num: num});
@@ -86,7 +82,7 @@ export default class UserCenter extends Component {
     const styles = require('./Cart.scss');
     const product = this.props.products[item.productId]
     const imagePath = product.images.thumbnail;
-    const subtotal = item.num * product.real_price;
+    const subtotal = item.realPayAmt;
     let productName = product.name;
     Object.keys(item.choices).map(choiceName => {
       productName += "-" + choiceName + "(" + item.choices[choiceName] + ")";
@@ -123,11 +119,11 @@ export default class UserCenter extends Component {
     const imagePath = require('../../../static/diaozhui80X80.jpg');
     let total = 0.0
     let itemView = cart.map(item => {
-      console.log(JSON.stringify(item))
-      console.log(JSON.stringify(products))
+      // console.log(JSON.stringify(item))
+      // console.log(JSON.stringify(products))
       let product = products[item.productId]
-      console.log(JSON.stringify(product))
-      total += product.real_price * item.num
+      // console.log(JSON.stringify(product))
+      total += item.realPayAmt;
       return this.renderItem(item);
     })
     return (

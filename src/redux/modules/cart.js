@@ -80,6 +80,37 @@ export default function reducer(state = initialState, action = {}) {
         deleteError: action.result,
         deleteErrorDesc: action.result_description
       };
+    case PRICING:
+      return {
+        ...state,
+        pricing: true
+      }
+    case PRICE_SUCCESS:
+      let cartId = action.product_id;
+      Object.keys(action.choices).forEach(choiceName => {
+        cartId += "-" + choiceName + "(" + action.choices[choiceName] + ")"
+      })
+      let newCartData = state.data
+      let index = newCartData.findIndex(elem => {return elem.cartId == cartId})
+      if (index != -1) {
+        newCartData[index].price = action.price;
+        newCartData[index].realPrice = action.real_price;
+        newCartData[index].payAmt = action.pay_amt;
+        newCartData[index].realPayAmt = action.real_pay_amt;
+      }
+      return {
+        ...state,
+        pricing: false,
+        priceSuccess: true,
+        data: newCartData
+      };
+    case PRICE_FAIL:
+      return {
+        ...state,
+        pricing: false,
+        priceError: action.result,
+        priceErrorDesc: action.result_description
+      };
     default:
       return state;
   }

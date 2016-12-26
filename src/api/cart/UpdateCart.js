@@ -39,9 +39,9 @@ exports = module.exports = function(req, res) {
   // check input
   validateInput(req)
   .then(() => {
+    let currentTimeMs = Date.now();
     let header = new protos.common.ResponseHeader();
     let cartId = req.body.productId;
-    let currentTimeMs = Date.now();
     Object.keys(req.body.choices).forEach(choiceName => {
       cartId += "-" + choiceName + "(" + req.body.choices[choiceName] + ")"
     })
