@@ -12,6 +12,10 @@ const DELETE = 'redux-example/cart/DELETE';
 const DELETE_SUCCESS = 'redux-example/cart/DELETE_SUCCESS';
 const DELETE_FAIL = 'redux-example/cart/DELETE_FAIL';
 
+const PRICING = 'redux-example/cart/PRICING';
+const PRICE_SUCCESS = 'redux-example/cart/PRICE_SUCCESS';
+const PRICE_FAIL = 'redux-example/cart/PRICE_FAIL';
+
 const initialState = {
   loaded: false
 };
@@ -104,6 +108,7 @@ export function loadCart() {
  * updateReq format
  * {
  * productId: string, productId
+ * choices: Object, e.g, {choice1-name: choice1-value, choice2-name: choice2-value}
  * num: int, num
  * }
  * 
@@ -127,7 +132,7 @@ export function updateCart(updateReq, authKey) {
  * @param   {object}  deleteReq
  * deleteReq format
  * {
- * productId: string, productId
+ * cartId: string, cartId
  * }
  * 
  * @param   {string}  authKey   csrf token
@@ -139,6 +144,31 @@ export function deleteCart(deleteReq, authKey) {
   return {
     types: [DELETE, DELETE_SUCCESS, DELETE_FAIL],
     promise: ({apiClient}) => apiClient.post(ApiPath.USER_CART, {
+      data: postData
+    })
+  };
+}
+
+/**
+ * pricing action, 批价请求
+ *
+ * @param   {object}  pricingReq
+ * pricingReq format
+ * {
+ * id: string, product id,
+ * choices: Object, e.g, {choice1-name: choice1-value, choice2-name: choice2-value}
+ * num: int, number,
+ * }
+ * 
+ * @param   {string}  authKey   csrf token
+ *
+ * @return  {promise}
+ */
+export function pricing(pricingReq, authKey) {
+  let postData = {...pricingReq, ...{_csrf: authKey}};
+  return {
+    types: [PRICING, PRICE_SUCCESS, PRICE_FAIL],
+    promise: ({apiClient}) => apiClient.post(ApiPath.PRICING, {
       data: postData
     })
   };

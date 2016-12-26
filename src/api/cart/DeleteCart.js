@@ -12,8 +12,8 @@ function validateInput(req) {
       reject("an deleteCart request is required");
     } else if (!req.session) {
       reject("session is required");
-    } else if (Validation.empty(req.body.productId) || !Validation.isString(req.body.productId)) {
-      reject("productId(string) is required");
+    } else if (Validation.empty(req.body.cartId) || !Validation.isString(req.body.cartId)) {
+      reject("cartId(string) is required");
     }else {
       resolve();
     }
@@ -28,7 +28,7 @@ exports = module.exports = function(req, res) {
   .then(() => {
     let header = new protos.common.ResponseHeader();
     if (req.session.cart) {
-      let newCart = req.session.cart.filter(elem => {return elem.productId != req.body.productId})
+      let newCart = req.session.cart.filter(elem => {return elem.cartId != req.body.cartId})
       req.session.cart = newCart
     }
     header.setResult(protos.common.ResultCode.SUCCESS);

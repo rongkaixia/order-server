@@ -100,7 +100,8 @@
 .cart .item .itemDesc {
     width: 315px;
     margin-left: 21px;
-    line-height: 90px;
+    //line-height: 90px;
+    padding-top: 40px;
     float: left;
 }
 
@@ -125,7 +126,6 @@
 
 .cart .item .num {
     width: 152px;
-    padding-right: 30px;
     line-height: 90px;
     text-align: right;
 }

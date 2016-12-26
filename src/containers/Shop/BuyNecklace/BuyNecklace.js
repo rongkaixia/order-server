@@ -11,7 +11,7 @@ import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import Button from 'react-bootstrap/lib/Button';
 import { routeActions } from 'react-router-redux';
 import * as shopAction from 'redux/modules/shop';
-import * as cartAction from 'redux/modules/cart';
+import {updateCart, loadCart} from 'redux/modules/cart';
 import Config from 'config';
 
 // TODO: 增加错误展示界面，监听loadInfo的错误
@@ -40,7 +40,10 @@ import Config from 'config';
 @connect((state => ({shop: state.shop,
                     necklaces: state.shop.productsByType.necklace,
                     authKey: state.csrf._csrf})),
-        {...shopAction, ...cartAction, redirectTo: routeActions.push})
+        {...shopAction, 
+        loadCart: loadCart, 
+        updateCart: updateCart, 
+        redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
     shop: PropTypes.object,
@@ -93,9 +96,21 @@ export default class UserCenter extends Component {
   }
 
   handleAddToCart(productId, num, event) {
-    const {authKey} = this.props;
-    return this.props.updateCart({productId: productId, num: num}, authKey)
-                     .then(() => { return this.props.loadCart()})
+    const {necklaces, location, authKey} = this.props;
+    let isValidate = true;
+    let item = necklaces[productId];
+    const currentChoices = this.state.currentChoices;
+    item.choices.forEach((choice) => {
+      if (!currentChoices || !currentChoices[choice.name]) {
+        event.preventDefault();
+        isValidate = false;
+        this.setState({validateFormError: "请选择 " + choice.display_name})
+      }
+    })
+    if (isValidate) {
+      return this.props.updateCart({productId: productId, choices: currentChoices, num: num}, authKey)
+                       .then(() => { return this.props.loadCart()})
+    }
   }
 
   renderChoice(choice) {

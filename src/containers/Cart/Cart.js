@@ -41,7 +41,8 @@ import * as cartAction from 'redux/modules/cart';
 @connect((state => ({user: state.userInfo.user,
                      cart: state.cart.data,
                      products: state.shop.productsById})),
-        {redirectTo: routeActions.push})
+        {...cartAction,
+        redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
     user: PropTypes.object,
@@ -50,11 +51,46 @@ export default class UserCenter extends Component {
     redirectTo: PropTypes.func.isRequired
   };
 
+  state = {
+    payAmt: null, 
+    realPayAmt: null
+  };
+
+  componentWillMount(){
+    console.log("componentWillMount");
+    let self = this;
+    if (self.props.cart) {
+      self.props.cart.forEach(cartItem => {
+        this.props
+      })
+    }
+  }
+
+  increaseNum() {
+    let num = this.state.num + 1;
+    this.setState({num: num});
+    const productId = location.pathname.split("/").reverse()[0]
+    let pricingReq = {id: productId, num: num};
+    this.props.pricing(pricingReq, this.props.authKey)
+  }
+
+  decreaseNum() {
+    let num = Math.max(1, this.state.num - 1);
+    this.setState({num: num});
+    const productId = location.pathname.split("/").reverse()[0]
+    let pricingReq = {id: productId, num: num};
+    this.props.pricing(pricingReq, this.props.authKey)
+  }
+
   renderItem(item) {
     const styles = require('./Cart.scss');
     const product = this.props.products[item.productId]
     const imagePath = product.images.thumbnail;
     const subtotal = item.num * product.real_price;
+    let productName = product.name;
+    Object.keys(item.choices).map(choiceName => {
+      productName += "-" + choiceName + "(" + item.choices[choiceName] + ")";
+    })
     return (
       <div className={styles.item}>
         <input className={styles.checkbox} name="Fruit" type="checkbox" value=""/>
@@ -64,11 +100,17 @@ export default class UserCenter extends Component {
           </a>
         </div>
         <div className={styles.itemDesc}>
-          <p>{product.name}</p>
+          <p>{productName}</p>
         </div>
         <span className={styles.operation}>删除</span>
         <span className={styles.subtotal}>{subtotal}</span>
-        <span className={styles.num}>{item.num}</span>
+        <span className={styles.num}>
+          <ButtonGroup>
+            <Button bsSize="small" onClick={this.decreaseNum.bind(this)}>-</Button>
+            <Button bsSize="small">{item.num}</Button>
+            <Button bsSize="small" onClick={this.increaseNum.bind(this)}>+</Button>
+          </ButtonGroup>
+        </span>
         <span className={styles.price}>{product.real_price}</span>
       </div>
     )

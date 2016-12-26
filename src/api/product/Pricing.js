@@ -56,10 +56,10 @@ exports = module.exports = function(req, res) {
           } else {
 	          header.setResult(protos.common.ResultCode.SUCCESS);
 	          result = {price: data.price,
-	          			real_price: data.real_price,
-	          			discount: 0.0,
-	          			pay_amt: pay_amt,
-	          			real_pay_amt: real_pay_amt}
+    	          			real_price: data.real_price,
+    	          			discount: 0.0,
+    	          			pay_amt: pay_amt,
+    	          			real_pay_amt: real_pay_amt}
       		}
         } else {
           header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);

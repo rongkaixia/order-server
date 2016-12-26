@@ -1,5 +1,6 @@
 import Config from '../../Config';
 import * as Validation from 'utils/Validation';
+// import {Types as MongoTypes}from 'mongoose';
 
 let grpc = require('grpc');
 let protos = require('../protocol');
@@ -16,7 +17,17 @@ function validateInput(req) {
       reject("productId(string) is required");
     } else if (Validation.empty(req.body.num) && !Validation.isInteger(req.body.num)) {
       reject("num(int) is required");
+    } else if (Validation.empty(req.body.choices)) {
+      reject("choices(Object) is required, e.g, {material: xxx, size: xxx}");
     }else {
+      // req.body.choices.forEach(choice => {
+      //   if (!Validation.isString(choice.name)) {
+      //     reject("name(string) is required for choices item, e.g, choices = [{name: xxx, value: xxx}]")
+      //   }
+      //   if (!Validation.isString(choice.value)) {
+      //     reject("value(string) is required for choices item, e.g, choices = [{name: xxx, value: xxx}]")
+      //   }
+      // })
       resolve();
     }
   })
@@ -29,14 +40,30 @@ exports = module.exports = function(req, res) {
   validateInput(req)
   .then(() => {
     let header = new protos.common.ResponseHeader();
+    let cartId = req.body.productId;
+    let currentTimeMs = Date.now();
+    Object.keys(req.body.choices).forEach(choiceName => {
+      cartId += "-" + choiceName + "(" + req.body.choices[choiceName] + ")"
+    })
     if (!req.session.cart) {
-      req.session.cart = [{productId: req.body.productId, num: req.body.num}];
+      req.session.cart = [{cartId: cartId, 
+                          productId: req.body.productId, 
+                          choices: req.body.choices,
+                          num: req.body.num,
+                          createAt: currentTimeMs,
+                          updateAt: currentTimeMs}];
     } else {
-      let index = req.session.cart.findIndex(elem => {return elem.productId == req.body.productId})
+      let index = req.session.cart.findIndex(elem => {return elem.cartId == cartId})
       if (index == -1) {
-        req.session.cart.push({productId: req.body.productId, num: req.body.num})
+        req.session.cart.push({cartId: cartId,
+                              productId: req.body.productId, 
+                              choices: req.body.choices,
+                              num: req.body.num,
+                              createAt: currentTimeMs,
+                              updateAt: currentTimeMs})
       } else {
-        req.session.cart[index] = {productId: req.body.productId, num: req.body.num}
+        req.session.cart[index].num += req.body.num
+        req.session.cart[index].updateAt = currentTimeMs
       }
     }
     header.setResult(protos.common.ResultCode.SUCCESS);
