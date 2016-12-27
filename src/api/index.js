@@ -20,6 +20,7 @@ export UpdateUserAddress from './user/UpdateUserAddress';
 export DeleteUserAddress from './user/DeleteUserAddress';
 
 export QueryCart from './cart/QueryCart'
+export AddCart from './cart/AddCart'
 export UpdateCart from './cart/UpdateCart'
 export DeleteCart from './cart/DeleteCart'
 

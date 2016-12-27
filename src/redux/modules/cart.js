@@ -4,6 +4,10 @@ const LOAD = 'redux-example/cart/LOAD';
 const LOAD_SUCCESS = 'redux-example/cart/LOAD_SUCCESS';
 const LOAD_FAIL = 'redux-example/cart/LOAD_FAIL';
 
+const ADD = 'redux-example/cart/ADD';
+const ADD_SUCCESS = 'redux-example/cart/ADD_SUCCESS';
+const ADD_FAIL = 'redux-example/cart/ADD_FAIL';
+
 const UPDATE = 'redux-example/cart/UPDATE';
 const UPDATE_SUCCESS = 'redux-example/cart/UPDATE_SUCCESS';
 const UPDATE_FAIL = 'redux-example/cart/UPDATE_FAIL';
@@ -21,6 +25,9 @@ const initialState = {
 };
 
 export default function reducer(state = initialState, action = {}) {
+  let newCartData = null
+  let cartId = null
+  let index = -1
   switch (action.type) {
     case LOAD:
       return {
@@ -42,16 +49,41 @@ export default function reducer(state = initialState, action = {}) {
         loadError: action.result,
         loadErrorDesc: action.result_description
       };
+    case ADD:
+      return {
+        ...state,
+        adding: true
+      };
+    case ADD_SUCCESS:
+      return {
+        ...state,
+        adding: false,
+        added: true
+      };
+    case ADD_FAIL:
+      return {
+        ...state,
+        adding: false,
+        added: false,
+        addError: action.result,
+        addErrorDesc: action.result_description
+      };
     case UPDATE:
       return {
         ...state,
         updating: true
       };
     case UPDATE_SUCCESS:
+      newCartData = state.data
+      let updateIdx = newCartData.findIndex(elem => {return elem.cartId == action.req.cartId})
+      if (updateIdx != -1) {
+        newCartData[updateIdx].num = action.req.num
+      }
       return {
         ...state,
         updating: false,
-        updated: true
+        updated: true,
+        data: newCartData
       };
     case UPDATE_FAIL:
       return {
@@ -86,12 +118,12 @@ export default function reducer(state = initialState, action = {}) {
         pricing: true
       }
     case PRICE_SUCCESS:
-      let cartId = action.product_id;
+      cartId = action.product_id;
       Object.keys(action.choices).forEach(choiceName => {
         cartId += "-" + choiceName + "(" + action.choices[choiceName] + ")"
       })
-      let newCartData = state.data
-      let index = newCartData.findIndex(elem => {return elem.cartId == cartId})
+      newCartData = state.data
+      index = newCartData.findIndex(elem => {return elem.cartId == cartId})
       if (index != -1) {
         newCartData[index].price = action.price;
         newCartData[index].realPrice = action.real_price;
@@ -133,13 +165,38 @@ export function loadCart() {
 }
 
 /**
+ * add cart item action，增加购物车item内容
+ *
+ * @param   {object}  addReq
+ * addReq format
+ * {
+ * productId: string, productId
+ * choices: Object, e.g, {choice1-name: choice1-value, choice2-name: choice2-value}
+ * num: int, num
+ * }
+ * 
+ * @param   {string}  authKey   csrf token
+ *
+ * @return  {promise}
+ */
+export function addCart(addReq, authKey) {
+  let postData = {...addReq, ...{_csrf: authKey}};
+  return {
+    types: [ADD, ADD_SUCCESS, ADD_FAIL],
+    req: addReq,
+    promise: ({apiClient}) => apiClient.post(ApiPath.USER_CART, {
+      data: postData
+    })
+  };
+}
+
+/**
  * update cart item action，更新购物车item内容
  *
  * @param   {object}  updateReq
  * updateReq format
  * {
- * productId: string, productId
- * choices: Object, e.g, {choice1-name: choice1-value, choice2-name: choice2-value}
+ * cartId: string, cartId
  * num: int, num
  * }
  * 
@@ -151,7 +208,8 @@ export function updateCart(updateReq, authKey) {
   let postData = {...updateReq, ...{_csrf: authKey}};
   return {
     types: [UPDATE, UPDATE_SUCCESS, UPDATE_FAIL],
-    promise: ({apiClient}) => apiClient.post(ApiPath.USER_CART, {
+    req: updateReq,
+    promise: ({apiClient}) => apiClient.put(ApiPath.USER_CART, {
       data: postData
     })
   };
@@ -174,7 +232,8 @@ export function deleteCart(deleteReq, authKey) {
   let postData = {...deleteReq, ...{_csrf: authKey}};
   return {
     types: [DELETE, DELETE_SUCCESS, DELETE_FAIL],
-    promise: ({apiClient}) => apiClient.post(ApiPath.USER_CART, {
+    req: deleteReq,
+    promise: ({apiClient}) => apiClient.delete(ApiPath.USER_CART, {
       data: postData
     })
   };
@@ -199,6 +258,7 @@ export function pricing(pricingReq, authKey) {
   let postData = {...pricingReq, ...{_csrf: authKey}};
   return {
     types: [PRICING, PRICE_SUCCESS, PRICE_FAIL],
+    req: pricingReq,
     promise: ({apiClient}) => apiClient.post(ApiPath.PRICING, {
       data: postData
     })

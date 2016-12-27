@@ -50,10 +50,10 @@ import * as cartAction from 'redux/modules/cart';
   }
 }])
 @connect((state => ({user: state.userInfo.user,
-                     cart: state.cart.data,
-                     products: state.shop.productsById})),
-        {...cartAction,
-        redirectTo: routeActions.push})
+                     cart: state.cart,
+                     products: state.shop.productsById,
+                     authKey: state.csrf._csrf})),
+        {...cartAction, redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
     user: PropTypes.object,
@@ -62,20 +62,32 @@ export default class UserCenter extends Component {
     redirectTo: PropTypes.func.isRequired
   };
 
-  increaseNum() {
-    let num = this.state.num + 1;
-    this.setState({num: num});
-    const productId = location.pathname.split("/").reverse()[0]
-    let pricingReq = {id: productId, num: num};
-    this.props.pricing(pricingReq, this.props.authKey)
+  increaseNum(cartItem, event) {
+    let num = cartItem.num + 1;
+    return this.props.updateCart({cartId: cartItem.cartId, num: num}, this.props.authKey)
+    .then(() => {
+      let pricingReq = {id: cartItem.productId, num: num, choices: cartItem.choices}
+      return this.props.pricing(pricingReq, this.props.authKey)
+    })
+    .catch((err) => {
+      console.log("increaseNum error: " + JSON.stringify(err))
+    })
   }
 
-  decreaseNum() {
-    let num = Math.max(1, this.state.num - 1);
-    this.setState({num: num});
-    const productId = location.pathname.split("/").reverse()[0]
-    let pricingReq = {id: productId, num: num};
-    this.props.pricing(pricingReq, this.props.authKey)
+  decreaseNum(cartItem, event) {
+    if (cartItem.num <= 1) {
+      return
+    } else {
+      let num = cartItem.num - 1;
+      this.props.updateCart({cartId: cartItem.cartId, num: num}, this.props.authKey)
+      .then(() => {
+        let pricingReq = {id: cartItem.productId, num: num, choices: cartItem.choices}
+        return this.props.pricing(pricingReq, this.props.authKey)
+      })
+      .catch((err) => {
+        console.log("decreaseNum error: " + JSON.stringify(err))
+      })
+    }
   }
 
   renderItem(item) {
@@ -102,9 +114,9 @@ export default class UserCenter extends Component {
         <span className={styles.subtotal}>{subtotal}</span>
         <span className={styles.num}>
           <ButtonGroup>
-            <Button bsSize="small" onClick={this.decreaseNum.bind(this)}>-</Button>
+            <Button bsSize="small" onClick={this.decreaseNum.bind(this, item)}>-</Button>
             <Button bsSize="small">{item.num}</Button>
-            <Button bsSize="small" onClick={this.increaseNum.bind(this)}>+</Button>
+            <Button bsSize="small" onClick={this.increaseNum.bind(this, item)}>+</Button>
           </ButtonGroup>
         </span>
         <span className={styles.price}>{product.real_price}</span>
@@ -118,7 +130,7 @@ export default class UserCenter extends Component {
     const styles = require('./Cart.scss');
     const imagePath = require('../../../static/diaozhui80X80.jpg');
     let total = 0.0
-    let itemView = cart.map(item => {
+    let itemView = cart.data.map(item => {
       // console.log(JSON.stringify(item))
       // console.log(JSON.stringify(products))
       let product = products[item.productId]

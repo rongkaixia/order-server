@@ -10,13 +10,15 @@ let port = Config.captainPort;
 function validateInput(req) {
   return new Promise((resolve, reject) => {
     if (!req) {
-      reject("an updateCart request is required");
+      reject("an addCart request is required");
     } else if (!req.session) {
       reject("session is required");
-    } else if (Validation.empty(req.body.cartId) || !Validation.isString(req.body.cartId)) {
-      reject("cartId(string) is required");
+    } else if (Validation.empty(req.body.productId) || !Validation.isString(req.body.productId)) {
+      reject("productId(string) is required");
     } else if (Validation.empty(req.body.num) && !Validation.isInteger(req.body.num)) {
       reject("num(int) is required");
+    } else if (Validation.empty(req.body.choices)) {
+      reject("choices(Object) is required, e.g, {material: xxx, size: xxx}");
     }else {
       // req.body.choices.forEach(choice => {
       //   if (!Validation.isString(choice.name)) {
@@ -32,17 +34,35 @@ function validateInput(req) {
 }
 
 exports = module.exports = function(req, res) {
-  console.log('handle updateCart request: ' + JSON.stringify(req.body));
+  console.log('handle addCart request: ' + JSON.stringify(req.body));
   console.log(req.params);
   // check input
   validateInput(req)
   .then(() => {
     let currentTimeMs = Date.now();
     let header = new protos.common.ResponseHeader();
-    if (req.session.cart) {
-      let index = req.session.cart.findIndex(elem => {return elem.cartId == req.body.cartId})
-      if (index != -1) {
-        req.session.cart[index].num = req.body.num
+    let cartId = req.body.productId;
+    Object.keys(req.body.choices).forEach(choiceName => {
+      cartId += "-" + choiceName + "(" + req.body.choices[choiceName] + ")"
+    })
+    if (!req.session.cart) {
+      req.session.cart = [{cartId: cartId, 
+                          productId: req.body.productId, 
+                          choices: req.body.choices,
+                          num: req.body.num,
+                          createAt: currentTimeMs,
+                          updateAt: currentTimeMs}];
+    } else {
+      let index = req.session.cart.findIndex(elem => {return elem.cartId == cartId})
+      if (index == -1) {
+        req.session.cart.push({cartId: cartId,
+                              productId: req.body.productId, 
+                              choices: req.body.choices,
+                              num: req.body.num,
+                              createAt: currentTimeMs,
+                              updateAt: currentTimeMs})
+      } else {
+        req.session.cart[index].num += req.body.num
         req.session.cart[index].updateAt = currentTimeMs
       }
     }

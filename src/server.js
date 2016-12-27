@@ -93,7 +93,8 @@ app.delete(ApiPath.USER_ADDRESS, api.DeleteUserAddress);
 app.put(ApiPath.USER_ADDRESS, api.UpdateUserAddress);
 
 app.get(ApiPath.USER_CART, api.QueryCart);
-app.post(ApiPath.USER_CART, api.UpdateCart);
+app.post(ApiPath.USER_CART, api.AddCart);
+app.put(ApiPath.USER_CART, api.UpdateCart);
 app.delete(ApiPath.USER_CART, api.DeleteCart);
 
 app.get(ApiPath.PRODUCT_INFO, api.QueryProductInfo)
