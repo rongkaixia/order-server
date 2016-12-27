@@ -115,6 +115,9 @@
     padding-right: 30px;
     line-height: 90px;
     text-align: right;
+    a {
+        cursor: pointer;
+    }
 }
 
 .cart .item .subtotal {

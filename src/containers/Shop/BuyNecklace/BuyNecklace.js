@@ -11,8 +11,9 @@ import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import Button from 'react-bootstrap/lib/Button';
 import { routeActions } from 'react-router-redux';
 import * as shopAction from 'redux/modules/shop';
-import {updateCart, loadCart} from 'redux/modules/cart';
+import {addCart, loadCart} from 'redux/modules/cart';
 import Config from 'config';
+import Querystring from 'querystring';
 
 // TODO: 增加错误展示界面，监听loadInfo的错误
 /* eslint-disable */ 
@@ -39,10 +40,11 @@ import Config from 'config';
 }])
 @connect((state => ({shop: state.shop,
                     necklaces: state.shop.productsByType.necklace,
+                    auth: state.auth,
                     authKey: state.csrf._csrf})),
         {...shopAction, 
         loadCart: loadCart, 
-        updateCart: updateCart, 
+        addCart: addCart, 
         redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
@@ -82,17 +84,25 @@ export default class UserCenter extends Component {
   }
 
   handleSubmit(event) {
-    const {necklaces, location} = this.props;
-    var id = location.pathname.split("/").reverse()[0]
-    let item = necklaces[id];
-    const currentChoices = this.state.currentChoices;
-    item.choices.forEach((choice) => {
-      if (!currentChoices || !currentChoices[choice.name]) {
-        event.preventDefault();
-        this.setState({validateFormError: "请选择 " + choice.display_name})
-        return;
-      }
-    })
+    const {necklaces, location, auth} = this.props;
+    if (!auth.loginSuccess) {
+      event.preventDefault();
+      const redirectPath = location.pathname + location.search;
+      const returnTo = '?' + Querystring.stringify({return_to: redirectPath});
+      console.log("returnTo: " + returnTo)
+      this.props.redirectTo('/login' + returnTo)
+    } else {
+      var id = location.pathname.split("/").reverse()[0]
+      let item = necklaces[id];
+      const currentChoices = this.state.currentChoices;
+      item.choices.forEach((choice) => {
+        if (!currentChoices || !currentChoices[choice.name]) {
+          event.preventDefault();
+          this.setState({validateFormError: "请选择 " + choice.display_name})
+          return;
+        }
+      })
+    }
   }
 
   handleAddToCart(productId, num, event) {
@@ -108,7 +118,7 @@ export default class UserCenter extends Component {
       }
     })
     if (isValidate) {
-      return this.props.updateCart({productId: productId, choices: currentChoices, num: num}, authKey)
+      return this.props.addCart({productId: productId, choices: currentChoices, num: num}, authKey)
                        .then(() => { return this.props.loadCart()})
     }
   }

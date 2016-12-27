@@ -131,10 +131,6 @@ export default class UserCenter extends Component {
   componentDidMount(){
     console.log("componentDidMount");  
   }
-  shouldComponentUpdate(){
-    console.log("shouldComponentUpdate");
-    return true;
-  }
 
   componentWillUpdate(){
     console.log("componentWillUpdate");

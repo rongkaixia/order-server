@@ -99,10 +99,12 @@ export default function reducer(state = initialState, action = {}) {
         deleting: true
       };
     case DELETE_SUCCESS:
+      newCartData = state.data.filter(elem => {return elem.cartId != action.req.cartId})
       return {
         ...state,
         deleting: false,
-        deleted: true
+        deleted: true,
+        data: newCartData
       };
     case DELETE_FAIL:
       return {
@@ -233,7 +235,7 @@ export function deleteCart(deleteReq, authKey) {
   return {
     types: [DELETE, DELETE_SUCCESS, DELETE_FAIL],
     req: deleteReq,
-    promise: ({apiClient}) => apiClient.delete(ApiPath.USER_CART, {
+    promise: ({apiClient}) => apiClient.del(ApiPath.USER_CART, {
       data: postData
     })
   };

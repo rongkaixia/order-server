@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
+import Modal from 'react-modal';
 import { asyncConnect } from 'redux-async-connect';
 import Image from 'react-bootstrap/lib/Image';
 import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
@@ -12,6 +13,16 @@ import * as shopAction from 'redux/modules/shop';
 import * as userAction from 'redux/modules/userInfo';
 import * as cartAction from 'redux/modules/cart';
 
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)'
+  }
+};
 
 // TODO: 增加错误展示界面，监听loadInfo的错误
 /* eslint-disable */ 
@@ -62,6 +73,27 @@ export default class UserCenter extends Component {
     redirectTo: PropTypes.func.isRequired
   };
 
+  state = {
+    deleteModalIsOpen: false,
+    deleteItem: null,
+    deleteCartError: null
+  };
+
+  openDeleteModel = (cartItem, event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    this.setState({deleteItem: cartItem, deleteModalIsOpen: true});
+  }
+
+  afterOpenDeleteModal = (event) => {
+  }
+
+  closeDeleteModel = (event) => {
+    // event.preventDefault();
+    this.setState({deleteModalIsOpen: false,
+                  deleteCartError: null});
+  }
+
   increaseNum(cartItem, event) {
     let num = cartItem.num + 1;
     return this.props.updateCart({cartId: cartItem.cartId, num: num}, this.props.authKey)
@@ -90,6 +122,41 @@ export default class UserCenter extends Component {
     }
   }
 
+  deleteCart(item, event) {
+    this.setState({deleteCartError: null})
+    this.props.deleteCart({cartId: item.cartId}, this.props.authKey)
+    .then(() => {
+      this.setState({deleteModalIsOpen: false});
+    })
+    .catch(err => {
+      this.setState({deleteCartError: JSON.stringify(err)})
+      console.log(err);
+    })
+  }
+
+  renderDeleteCartModal() {
+    const {authKey} =  this.props;
+    const {deleteItem, deleteCartError} = this.state;
+    return (
+      <div>
+        <Modal
+          isOpen={this.state.deleteModalIsOpen}
+          onAfterOpen={this.afterOpenDeleteModal}
+          onRequestClose={this.closeDeleteModel}
+          style={customStyles} >
+          <div>
+            <h4 ref="subtitle">删除<button style={{float: 'right'}} onClick={this.closeDeleteModel}>X</button></h4>
+            {!deleteCartError  && <div>确定删除该收藏物品吗？</div>}
+            {deleteCartError && <div>{'删除失败，请稍后重试。'}</div>}
+            <button className="btn btn-success" onClick={this.deleteCart.bind(this, deleteItem)}>
+            {'确定'}
+            </button>
+          </div>
+        </Modal>
+      </div>
+    );
+  }
+
   renderItem(item) {
     const styles = require('./Cart.scss');
     const product = this.props.products[item.productId]
@@ -110,7 +177,7 @@ export default class UserCenter extends Component {
         <div className={styles.itemDesc}>
           <p>{productName}</p>
         </div>
-        <span className={styles.operation}>删除</span>
+        <span className={styles.operation}><a onClick={this.openDeleteModel.bind(this, item)}>删除</a></span>
         <span className={styles.subtotal}>{subtotal}</span>
         <span className={styles.num}>
           <ButtonGroup>
@@ -131,16 +198,14 @@ export default class UserCenter extends Component {
     const imagePath = require('../../../static/diaozhui80X80.jpg');
     let total = 0.0
     let itemView = cart.data.map(item => {
-      // console.log(JSON.stringify(item))
-      // console.log(JSON.stringify(products))
       let product = products[item.productId]
-      // console.log(JSON.stringify(product))
       total += item.realPayAmt;
       return this.renderItem(item);
     })
+    let deleteCartItemView = this.renderDeleteCartModal()
     return (
       <div className={styles.checkoutBox}>
-
+        {deleteCartItemView}
         <div className={styles.cart}>
           <div className={styles.title}>
             <span className={styles.checkbox}>全选</span>
