@@ -31,8 +31,7 @@ export default function reducer(state = initialState, action = {}) {
     case CHECKOUT:
       return {
         ...state,
-        productId: action.productId,
-        num: Number(action.num)
+        checkoutItems: action.checkoutItems
       }
     case PRICING:
       console.log("PRICING")
@@ -125,15 +124,18 @@ export default function reducer(state = initialState, action = {}) {
  * 用户post要购买的product id跟数量num，用户post请求到服务器，服务器调用该action记录用户
  * 要购买的商品跟数量到store中，用于后续的批价跟下单
  *
+ * @param {Array} checkoutItems 购买的物品
+ * buyItems中的内容为
+ * {productId: xxx, choices: xxx, num: xxx}
  * @param   {string}  productId  商品ID
+ * @param   {object}  choices  e.g, {size: 12, material: 18K白金}
  * @param   {int}  num        购买数量
  *
  */
-export function checkoutSync(productId, num) {
+export function checkoutSync(checkoutItems) {
   return {
     type: CHECKOUT,
-    productId: productId,
-    num: num
+    checkoutItems: checkoutItems
   }
 }
 
@@ -160,6 +162,7 @@ export function isOrderInfoLoad(orderId, state) {
  * pricingReq format
  * {
  * id: string, product id,
+ * choices: Object, e.g, {choice1-name: choice1-value, choice2-name: choice2-value}
  * num: int, number,
  * }
  * 
