@@ -4,7 +4,8 @@ let Types = Mango.Types;
 let product = new Mango.Collection("product")
 
 product.addSchema({
-  class_id: Types.ObjectId,
+  category_id: Types.ObjectId,
+  category_name: Types.String,
   name: Types.String,
   brief_desc: [Types.String],
   common_props: [{name: Types.String, value: Types.String}],

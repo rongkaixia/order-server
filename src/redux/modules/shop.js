@@ -4,6 +4,10 @@ const LOAD_PRODUCT = 'redux-example/product/LOAD_PRODUCT';
 const LOAD_PRODUCT_SUCCESS = 'redux-example/product/LOAD_PRODUCT_SUCCESS';
 const LOAD_PRODUCT_FAIL = 'redux-example/product/LOAD_INF_FAIL';
 
+const LOAD_ITEM = 'redux-example/product/LOAD_ITEM';
+const LOAD_ITEM_SUCCESS = 'redux-example/product/LOAD_ITEM_SUCCESS';
+const LOAD_ITEM_FAIL = 'redux-example/product/LOAD_ITEM_FAIL';
+
 const PRICING = 'redux-example/product/PRICING';
 const PRICE_SUCCESS = 'redux-example/product/PRICE_SUCCESS';
 const PRICE_FAIL = 'redux-example/product/PRICE_FAIL';
@@ -98,19 +102,19 @@ export function isProductLoaded(id, globalState) {
 }
 
 export function loadProductInfo(id) {
-  return loadInfo(ApiPath.PRODUCT_INFO + '?id=' + id);
+  return loadInfo(ApiPath.PRODUCT_INFO + '?spu_id=' + id);
 }
 
 export function loadNecklace() {
-  return loadInfo(ApiPath.PRODUCT_INFO + '?type=necklace');
+  return loadInfo(ApiPath.PRODUCT_INFO + '?category=jade-necklace');
 }
 
 export function loadEarring() {
-  return loadInfo(ApiPath.PRODUCT_INFO + '?type=earring');
+  return loadInfo(ApiPath.PRODUCT_INFO + '?category=jade-earring');
 }
 
 export function loadRing(id) {
-  return loadInfo(ApiPath.PRODUCT_INFO + '?type=ring');
+  return loadInfo(ApiPath.PRODUCT_INFO + '?category=jade-ring');
 }
 
 /**

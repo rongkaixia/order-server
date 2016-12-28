@@ -4,12 +4,12 @@ let grpc = require('grpc');
 let protos = require('../protocol');
 
 let mango = require('mango');
-const productCollectionName = "product";
+const itemCollectionName = "item";
 
 function validateInput(req) {
   return new Promise((resolve, reject) => {
     if (!req) {
-      reject("an queryProductInfo request is required");
+      reject("an queryItemInfo request is required");
     } else if (req.query && req.query.spu_id && !Validation.isString(req.query.spu_id)) {
       reject("spu_id MUST BE a string")
     } else if (req.query && req.query.category && !Validation.isString(req.query.category)) {
@@ -23,7 +23,7 @@ function validateInput(req) {
 }
 
 exports = module.exports = function(req, res) {
-  console.log('handle queryProductInfo request: ' + JSON.stringify(req.query));
+  console.log('handle queryItemInfo request: ' + JSON.stringify(req.query));
   // check input
   validateInput(req)
   .then(() => {
@@ -32,11 +32,11 @@ exports = module.exports = function(req, res) {
     // construct query
     let query = null
     if (req.query.spu_id) {
-      query = mango.collections[productCollectionName].model.find({_id: req.query.spu_id});
+      query = mango.collections[itemCollectionName].model.find({_id: req.query.spu_id});
     } else if (req.query.category) {
-      query = mango.collections[productCollectionName].model.find({category_name: req.query.category});
+      query = mango.collections[itemCollectionName].model.find({category_name: req.query.category});
     } else {
-      query = mango.collections[productCollectionName].model.find();
+      query = mango.collections[itemCollectionName].model.find();
     }
 
     // do query
@@ -52,9 +52,9 @@ exports = module.exports = function(req, res) {
           result = data;
         } else {
           header.setResult(protos.common.ResultCode.INVALID_REQUEST_ARGUMENT);
-          header.setResultDescription("cannot find products by given query")
+          header.setResultDescription("cannot find items by given query")
         }
-        res.json(Object.assign({}, header.toRaw(), {products: result}))
+        res.json(Object.assign({}, header.toRaw(), {items: result}))
       }
     })
   }
