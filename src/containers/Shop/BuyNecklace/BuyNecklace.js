@@ -69,23 +69,34 @@ export default class UserCenter extends Component {
     if (index != -1) {
       this.product = this.props.shop.products[index];
       this.items = this.props.shop.items.filter(elem => {return elem.spu_id == spuId})
+      if (this.items.length > 0) {
+        const currentChoices = Object.assign({}, this.items[0].sell_props);
+        this.setState({currentChoices: currentChoices, skuId: this.items[0]._id})
+        let pricingReq = {id: this.items[0]._id, num: this.state.num};
+        this.props.pricing(pricingReq, this.props.authKey).then((res) => {
+          this.setState({realPayAmt: res.real_pay_amt})
+        })
+      }
     }
   }
 
   increaseNum() {
     let num = this.state.num + 1;
     this.setState({num: num});
-    const productId = location.pathname.split("/").reverse()[0]
-    let pricingReq = {id: productId, num: num};
-    this.props.pricing(pricingReq, this.props.authKey)
+    let pricingReq = {id: this.state.skuId, num: num};
+    this.props.pricing(pricingReq, this.props.authKey).then((res) => {
+      this.setState({realPayAmt: res.real_pay_amt})
+    })
   }
 
   decreaseNum() {
     let num = Math.max(1, this.state.num - 1);
     this.setState({num: num});
-    const productId = location.pathname.split("/").reverse()[0]
-    let pricingReq = {id: productId, num: num};
-    this.props.pricing(pricingReq, this.props.authKey)
+    let pricingReq = {id: this.state.skuId, num: num};
+    this.props.pricing(pricingReq, this.props.authKey).then((res) => {
+      this.setState({realPayAmt: res.real_pay_amt})
+    })
+
   }
 
   setChoicesAndPricing(name, value, event) {
@@ -129,7 +140,7 @@ export default class UserCenter extends Component {
 
   handleSubmit(event) {
     const {necklaces, location, auth} = this.props;
-    if (!auth.loginSuccess) {
+    if (!auth.loggedIn) {
       event.preventDefault();
       const redirectPath = location.pathname + location.search;
       const returnTo = '?' + Querystring.stringify({return_to: redirectPath});
@@ -250,8 +261,8 @@ export default class UserCenter extends Component {
           { realPayAmt && <p>{realPayAmt}</p>}
           <form id="shop-form" action={"http://" + Config.orderDomain + "/buy/checkout"} 
           method="post" onSubmit={this.handleSubmit.bind(this)}>
-            <input name="skuId" type="hidden" value={skuId} />
-            <input name="num" type="hidden" value={num} />
+            <input type="hidden" name="items[][skuId]" value={skuId} />
+            <input type="hidden" name="items[][num]" value={num} />
             <input name="_csrf" type="hidden" value={authKey} />
             <Button bsSize="large" bsStyle="info" type="submit">立即购买</Button>
             <Button bsSize="large" onClick={this.handleAddToCart.bind(this, skuId, num)}>加入购物车</Button>

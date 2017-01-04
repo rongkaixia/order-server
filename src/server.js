@@ -153,7 +153,9 @@ app.use((req, res) => {
       store.dispatch(loadCsrfToken(req.csrfToken()));
 
       if (req.path === '/buy/checkout' && req.method === 'POST' && req.body) {
-        store.dispatch(checkoutSync(req.body.productId, req.body.num));
+        console.log("=============/buy/checkout/=============")
+        console.log(JSON.stringify(req.body))
+        store.dispatch(checkoutSync(req.body.items));
       }
 
       loadOnServer({...renderProps, store, helpers: {req}}).then(() => {

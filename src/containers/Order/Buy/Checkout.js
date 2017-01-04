@@ -32,26 +32,46 @@ const PAY_METHOD_COD = 'COD';
 const DELIVER_METHOD_EXPRESS = 'EXPRESS';
 const DELIVER_METHOD_DTD = 'DTD';
 
+function _validateCheckoutItems(checkoutItems) {
+  if (!checkoutItems || !Array.isArray(checkoutItems)){
+    return false
+  }
+  for (let i = 0; i < checkoutItems.length; i++) {
+    if (!(checkoutItems[i] instanceof Object) ||
+        !("skuId" in checkoutItems[i]) ||
+        !("num" in checkoutItems[i])) {
+      return false
+    }
+  }
+  return true
+}
+
 /* eslint-disable */ 
 @asyncConnect([{
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
     const globalState = getState();
-    const promises = [];
-    let id = globalState.checkout && globalState.checkout.productId
-
-    if (id && !shopAction.isProductLoaded(id, globalState)) {
-      promises.push(dispatch(shopAction.loadProductInfo(id)));
+    let promises = []
+    let checkoutItems = globalState.checkout && globalState.checkout.checkoutItems
+    console.log("=========checkoutItems=======")
+    console.log(JSON.stringify(checkoutItems))
+    if (_validateCheckoutItems(checkoutItems)) {
+      console.log("_validateCheckoutItems")
+      promises = checkoutItems.map((item) => {
+        if (!shopAction.isItemLoaded(item.skuId, globalState)) {
+          console.log("loadItemInfoBySku")
+          return dispatch(shopAction.loadItemInfoBySku(item.skuId)).then(() => {
+            let pricingReq = {id: item.skuId, num: item.num};
+            console.log("pricing")
+            return dispatch(shopAction.pricing(pricingReq, globalState.csrf._csrf))
+          })
+        } else {
+          let pricingReq = {id: item.skuId, num: item.num};
+          console.log("pricing")
+          return dispatch(shopAction.pricing(pricingReq, globalState.csrf._csrf))
+        }
+      })
     }
-
     return Promise.all(promises);
-  }
-},{
-  promise: ({store: {dispatch, getState}, helpers: {client}}) => {
-    const state = getState();
-    if (state.checkout && state.checkout.productId && state.checkout.num) {
-      let pricingReq = {id: state.checkout.productId, num: state.checkout.num};
-      return dispatch(checkoutAction.pricing(pricingReq, state.csrf._csrf))
-    }
   }
 },{
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
@@ -96,20 +116,22 @@ export default class UserCenter extends Component {
     console.log("componentWillMount");
     let self = this;
     this.intervals = [];
-    // console.log("props: " + JSON.stringify(this.props));
+    console.log("==========this.props.checkout.prices========")
+    console.log(JSON.stringify(this.props.checkout.prices))
+
     // check invalid post data
-    if(!this.props.checkout.productId || !this.props.checkout.num || !this.props.checkout.priceSuccess) {
+    if(!_validateCheckoutItems(this.props.checkout.checkoutItems)) {
       console.log("invalid argument.");
       console.log("redirecting to /");
       this.setState({invalidArgument: true, countdown: 5});
       if (!__SERVER__) {
-        this.intervals.push(setInterval(() => {
-          self.setState({countdown: self.state.countdown - 1});
-          if (self.state.countdown <= 0) {
-            clearInterval();
-            self.props.replace(Config.mainDomainAbsPath + '/account/order');
-          }
-        }, 1000))
+        // this.intervals.push(setInterval(() => {
+        //   self.setState({countdown: self.state.countdown - 1});
+        //   if (self.state.countdown <= 0) {
+        //     clearInterval();
+        //     self.props.replace(Config.mainDomainAbsPath + '/account/order');
+        //   }
+        // }, 1000))
       }
     }
     // check resubmit

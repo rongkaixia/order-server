@@ -41,14 +41,16 @@ export default function reducer(state = initialState, action = {}) {
       }
     case PRICE_SUCCESS:
       console.log("PRICE_SUCCESS")
+      let newPrices = state.prices
+      newPrices[action.req.id] = {price: action.price, 
+                                  realPrice: action.real_price,
+                                  payAmt: action.pay_amt,
+                                  realPayAmt: action.real_pay_amt}
       return {
         ...state,
         pricing: false,
         priceSuccess: true,
-        price: action.price,
-        realPrice: action.real_price,
-        payAmt: action.pay_amt,
-        realPayAmt: action.real_pay_amt
+        prices: newPrices
       };
     case PRICE_FAIL:
       console.log("PRICE_FAIL")
@@ -121,14 +123,13 @@ export default function reducer(state = initialState, action = {}) {
 
 /**
  * checkout action
- * 用户post要购买的product id跟数量num，用户post请求到服务器，服务器调用该action记录用户
+ * 用户post要购买的sku id跟数量num，用户post请求到服务器，服务器调用该action记录用户
  * 要购买的商品跟数量到store中，用于后续的批价跟下单
  *
- * @param {Array} checkoutItems 购买的物品
- * buyItems中的内容为
- * {productId: xxx, choices: xxx, num: xxx}
- * @param   {string}  productId  商品ID
- * @param   {object}  choices  e.g, {size: 12, material: 18K白金}
+ * @param Array of Object checkoutItems 购买的物品
+ * checkoutItems 中的内容为
+ * [{skuId: xxx, num: xxx}, ..., ...]
+ * @param   {string}  skuId  商品ID
  * @param   {int}  num        购买数量
  *
  */
@@ -161,8 +162,7 @@ export function isOrderInfoLoad(orderId, state) {
  * @param   {object}  pricingReq
  * pricingReq format
  * {
- * id: string, product id,
- * choices: Object, e.g, {choice1-name: choice1-value, choice2-name: choice2-value}
+ * id: string, sku id,
  * num: int, number,
  * }
  * 
@@ -174,6 +174,7 @@ export function pricing(pricingReq, authKey) {
   let postData = {...pricingReq, ...{_csrf: authKey}};
   return {
     types: [PRICING, PRICE_SUCCESS, PRICE_FAIL],
+    req: pricingReq,
     promise: ({apiClient}) => apiClient.post(ApiPath.PRICING, {
       data: postData
     })
@@ -187,7 +188,7 @@ export function pricing(pricingReq, authKey) {
  * orderReq format
  * {
  * userId: string, user id,
- * products [{productId: string, product id, num: int, number}, ...],
+ * products [{skuId: string, product id, num: int, number}, ...],
  * payMethod: string, 'ONLINE' or 'COD',
  * deliverMethod: string, 'EXPRESS' or 'DTD',
  * recipientsName: string, recipients_name,
