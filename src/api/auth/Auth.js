@@ -23,10 +23,10 @@ exports = module.exports = function(req, res) {
   console.log('handle auth request: ' + JSON.stringify(req.body));
   console.log('req.session: ' + JSON.stringify(req.session));
   let header = new protos.common.ResponseHeader();
-  let result = {};
+  let result = {is_login: false};
   if (req.session.access_token && req.session.username && req.session.user_id) {
     header.setResult(protos.common.ResultCode.SUCCESS);
-    result = {user_id: req.session.user_id, username: req.session.username}
+    result = {user_id: req.session.user_id, username: req.session.username, is_login: true}
   } else {
     header.setResult(protos.common.ResultCode.SUCCESS);
   }

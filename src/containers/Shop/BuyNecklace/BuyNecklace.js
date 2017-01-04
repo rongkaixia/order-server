@@ -92,7 +92,16 @@ export default class UserCenter extends Component {
     let newChoices = this.state.currentChoices;
     if (!newChoices) newChoices = {};
     newChoices[name] = value;
-    this.setState({currentChoices: newChoices});
+    // clean useless choices
+    let index = this.product.sell_props_name.indexOf(name)
+    for (let i = index + 1; i < this.product.sell_props_name.length; i++) {
+      delete newChoices[this.product.sell_props_name[i]]
+    }
+    console.log("=====newChoices======")
+    console.log(JSON.stringify(newChoices))
+    this.setState({currentChoices: newChoices, realPayAmt: null});
+
+    // pricing
     let needPricing = true
     this.product.sell_props_name.forEach((choiceKey) => {
       if (!(choiceKey in newChoices)) {
@@ -127,16 +136,16 @@ export default class UserCenter extends Component {
       console.log("returnTo: " + returnTo)
       this.props.redirectTo('/login' + returnTo)
     } else {
-      var id = location.pathname.split("/").reverse()[0]
-      let item = necklaces[id];
       const currentChoices = this.state.currentChoices;
-      item.choices.forEach((choice) => {
-        if (!currentChoices || !currentChoices[choice.name]) {
+      for (let i = 0; i < this.product.sell_props_name.length; i++) {
+        let choiceKey = this.product.sell_props_name[i];
+        if (!currentChoices || !(choiceKey in currentChoices)) {
           event.preventDefault();
-          this.setState({validateFormError: "请选择 " + choice.display_name})
+          this.setState({validateFormError: "请选择 " + choiceKey})
           return;
+
         }
-      })
+      }
     }
   }
 
