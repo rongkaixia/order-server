@@ -25,4 +25,5 @@ export UpdateCart from './cart/UpdateCart'
 export DeleteCart from './cart/DeleteCart'
 
 export QueryProductInfo from './product/QueryProductInfo';
+export QueryItemInfo from './product/QueryItemInfo';
 export Pricing from './product/Pricing';

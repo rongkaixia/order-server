@@ -4,7 +4,7 @@ let grpc = require('grpc');
 let protos = require('../protocol');
 
 let mango = require('mango');
-const productCollectionName = "product";
+const itemCollectionName = "item";
 
 function validateInput(req) {
   return new Promise((resolve, reject) => {
@@ -34,7 +34,7 @@ exports = module.exports = function(req, res) {
     let header = new protos.common.ResponseHeader();
 
     // construct query
-    let query = mango.collections[productCollectionName].model.findById(req.body.id);
+    let query = mango.collections[itemCollectionName].model.findById(req.body.id);
 
     // do query
     query.exec((err, data) => {
@@ -55,9 +55,8 @@ exports = module.exports = function(req, res) {
 	          header.setResultDescription("内部错误，批价有问题");
           } else {
 	          header.setResult(protos.common.ResultCode.SUCCESS);
-	          result = {product_id: req.body.id,
+	          result = {sku_id: req.body.id,
                       num: req.body.num,
-                      choices: req.body.choices,
                       price: data.price,
     	          			real_price: data.real_price,
     	          			discount: 0.0,

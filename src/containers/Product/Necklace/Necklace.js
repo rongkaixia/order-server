@@ -8,7 +8,7 @@ import Image from 'react-bootstrap/lib/Image';
 import { routeActions } from 'react-router-redux';
 import * as shopAction from 'redux/modules/shop';
 
-
+const JADE_NECKLACE_CATEGORY_NAME = "jade-necklace";
 // TODO: 增加错误展示界面，监听loadInfo的错误
 /* eslint-disable */ 
 @asyncConnect([{
@@ -16,11 +16,11 @@ import * as shopAction from 'redux/modules/shop';
     return dispatch(shopAction.loadNecklace());
   }
 }])
-@connect((state => ({necklaces: state.shop.productsByType.necklace})),
+@connect((state => ({shop: state.shop})),
         {redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
-    necklaces: PropTypes.object,
+    shop: PropTypes.object,
     redirectTo: PropTypes.func.isRequired
   };
 
@@ -47,13 +47,13 @@ export default class UserCenter extends Component {
 
   render() {
     const styles = require('./Necklace.scss');
-    const {necklaces} = this.props;
+    const {shop} = this.props;
     let items = [];
     // console.log("necklaces: " + JSON.stringify(necklaces))
-    if (necklaces) {
-      Object.keys(necklaces).forEach((id) => {
-        let item = necklaces[id];
-        items.push(this.renderItem(item));;
+    if (shop && shop.products) {
+      shop.products.filter(elem => {return elem.category_name == JADE_NECKLACE_CATEGORY_NAME})
+      .forEach((elem) => {
+        items.push(this.renderItem(elem));;
       })
     }
 

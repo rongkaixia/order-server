@@ -98,6 +98,7 @@ app.put(ApiPath.USER_CART, api.UpdateCart);
 app.delete(ApiPath.USER_CART, api.DeleteCart);
 
 app.get(ApiPath.PRODUCT_INFO, api.QueryProductInfo)
+app.get(ApiPath.ITEM_INFO, api.QueryItemInfo)
 app.post(ApiPath.PRICING, api.Pricing)
 
 // load redux store middleware

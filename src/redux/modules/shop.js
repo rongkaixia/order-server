@@ -1,4 +1,5 @@
 import ApiPath from 'api/ApiPath';
+import _ from 'lodash';
 
 const LOAD_PRODUCT = 'redux-example/product/LOAD_PRODUCT';
 const LOAD_PRODUCT_SUCCESS = 'redux-example/product/LOAD_PRODUCT_SUCCESS';
@@ -13,47 +14,76 @@ const PRICE_SUCCESS = 'redux-example/product/PRICE_SUCCESS';
 const PRICE_FAIL = 'redux-example/product/PRICE_FAIL';
 
 const initialState = {
-  loaded: false,
-  productsByType: {},
-  productsById: {}
+  productLoaded: false,
+  products: [],
+  items: []
 };
 
 export default function reducer(state = initialState, action = {}) {
-  let newInfo = {};
+  let newProducts = [];
+  let newItems = [];
   switch (action.type) {
     case LOAD_PRODUCT:
       return {
         ...state,
-        loading: true
+        productLoading: true
       };
     case LOAD_PRODUCT_SUCCESS:
-      let productsById = state.productsById;
-      let productsByType = state.productsByType;
+      newProducts = state.products;
       action.products.forEach((item) => {
-        let data = {};
-        data[item._id] = item;
-        Object.assign(productsById, data)
-        if (!productsByType[item.type]) {
-          productsByType[item.type] = {};
+        let index = newProducts.findIndex(elem => {return elem._id == item._id})
+        if (index !== -1) {
+          newProducts[index] = item;
+        } else {
+          newProducts.push(item)
         }
-        Object.assign(productsByType[item.type], data);
       })
       return {
         ...state,
-        loading: false,
-        loaded: true,
-        productsByType: productsByType,
-        productsById: productsById,
-        loadInfoError: false,
-        loadInfoErrorDesc: action.result_description
+        productLoading: false,
+        productLoaded: true,
+        products: newProducts,
+        loadProductInfoError: false,
+        loadProductInfoErrorDesc: action.result_description
       };
     case LOAD_PRODUCT_FAIL:
       return {
         ...state,
-        loading: false,
-        loaded: false,
-        loadInfoError: action.result,
-        loadInfoErrorDesc: action.result_description
+        productLoading: false,
+        productLoaded: false,
+        loadProductInfoError: action.result,
+        loadProductInfoErrorDesc: action.result_description
+      };
+    case LOAD_ITEM:
+      return {
+        ...state,
+        itemLoading: true
+      };
+    case LOAD_ITEM_SUCCESS:
+      newItems = state.items;
+      action.items.forEach((item) => {
+        let index = newItems.findIndex(elem => {return elem._id == item._id})
+        if (index !== -1) {
+          newItems[index] = item;
+        } else {
+          newItems.push(item)
+        }
+      })
+      return {
+        ...state,
+        itemLoading: false,
+        itemLoaded: true,
+        items: newItems,
+        loadItemInfoError: false,
+        loadItemInfoErrorDesc: action.result_description
+      };
+    case LOAD_ITEM_FAIL:
+      return {
+        ...state,
+        itemLoading: false,
+        itemLoaded: false,
+        loadItemInfoError: action.result,
+        loadItemInfoErrorDesc: action.result_description
       };
     case PRICING:
       console.log("PRICING")
@@ -85,45 +115,67 @@ export default function reducer(state = initialState, action = {}) {
   }
 }
 
+export function isProductLoaded(id, globalState) {
+  return globalState.shop && 
+         globalState.shop.products && 
+         (globalState.shop.products.findIndex(elem=>{return elem._id == id}) != -1);
+}
+
 /**
  * load product info
  *
  * @param   {string}  type  ring, necklace, earring
  */
-function loadInfo(path) {
+function _loadProductInfo(path) {
   return {
     types: [LOAD_PRODUCT, LOAD_PRODUCT_SUCCESS, LOAD_PRODUCT_FAIL],
     promise: ({apiClient}) => apiClient.get(path)
   };
 }
 
-export function isProductLoaded(id, globalState) {
-  return globalState.shop && globalState.shop.productsById && globalState.shop.productsById[id];
-}
-
 export function loadProductInfo(id) {
-  return loadInfo(ApiPath.PRODUCT_INFO + '?spu_id=' + id);
+  return _loadProductInfo(ApiPath.PRODUCT_INFO + '?spu_id=' + id);
 }
 
 export function loadNecklace() {
-  return loadInfo(ApiPath.PRODUCT_INFO + '?category=jade-necklace');
+  return _loadProductInfo(ApiPath.PRODUCT_INFO + '?category=jade-necklace');
 }
 
 export function loadEarring() {
-  return loadInfo(ApiPath.PRODUCT_INFO + '?category=jade-earring');
+  return _loadProductInfo(ApiPath.PRODUCT_INFO + '?category=jade-earring');
 }
 
 export function loadRing(id) {
-  return loadInfo(ApiPath.PRODUCT_INFO + '?category=jade-ring');
+  return _loadProductInfo(ApiPath.PRODUCT_INFO + '?category=jade-ring');
 }
 
+export function isItemLoaded(id, globalState) {
+  return globalState.shop && 
+         globalState.shop.items && 
+         (globalState.shop.items.findIndex(elem=>{return elem._id == id}) != -1);
+}
+
+export function loadItemInfoBySku(id) {
+  return {
+    types: [LOAD_ITEM, LOAD_ITEM_SUCCESS, LOAD_ITEM_FAIL],
+    promise: ({apiClient}) => apiClient.get(ApiPath.ITEM_INFO + '?sku_id=' + id)
+  };
+}
+
+export function loadItemInfoBySpu(id) {
+  return {
+    types: [LOAD_ITEM, LOAD_ITEM_SUCCESS, LOAD_ITEM_FAIL],
+    promise: ({apiClient}) => apiClient.get(ApiPath.ITEM_INFO + '?spu_id=' + id)
+  };
+
+}
 /**
  * pricing action, 批价请求
  *
  * @param   {object}  pricingReq
  * pricingReq format
  * {
- * id: string, product id,
+ * id: string, sku id,
  * num: int, number,
  * }
  * 

@@ -10,12 +10,12 @@ function validateInput(req) {
   return new Promise((resolve, reject) => {
     if (!req) {
       reject("an queryItemInfo request is required");
+    } else if (req.query && req.query.sku_id && !Validation.isString(req.query.sku_id)) {
+      reject("sku_id MUST BE a string")
     } else if (req.query && req.query.spu_id && !Validation.isString(req.query.spu_id)) {
       reject("spu_id MUST BE a string")
-    } else if (req.query && req.query.category && !Validation.isString(req.query.category)) {
-      reject("category MUST BE a string")
-    } else if (req.query && req.query.spu_id && req.query.category) {
-      reject("category and spu_id MUST NOT BE set at the same time")
+    } else if (req.query && req.query.sku_id && req.query.spu_id) {
+      reject("spu_id and sku_id MUST NOT BE set at the same time")
     } else {
       resolve();
     }
@@ -31,10 +31,10 @@ exports = module.exports = function(req, res) {
 
     // construct query
     let query = null
-    if (req.query.spu_id) {
-      query = mango.collections[itemCollectionName].model.find({_id: req.query.spu_id});
-    } else if (req.query.category) {
-      query = mango.collections[itemCollectionName].model.find({category_name: req.query.category});
+    if (req.query.sku_id) {
+      query = mango.collections[itemCollectionName].model.find({_id: req.query.sku_id});
+    } else if (req.query.spu_id) {
+      query = mango.collections[itemCollectionName].model.find({spu_id: req.query.spu_id});
     } else {
       query = mango.collections[itemCollectionName].model.find();
     }
