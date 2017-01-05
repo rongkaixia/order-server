@@ -57,18 +57,25 @@ function _validateCheckoutItems(checkoutItems) {
     if (_validateCheckoutItems(checkoutItems)) {
       console.log("_validateCheckoutItems")
       promises = checkoutItems.map((item) => {
-        if (!shopAction.isItemLoaded(item.skuId, globalState)) {
-          console.log("loadItemInfoBySku")
-          return dispatch(shopAction.loadItemInfoBySku(item.skuId)).then(() => {
-            let pricingReq = {id: item.skuId, num: item.num};
-            console.log("pricing")
-            return dispatch(shopAction.pricing(pricingReq, globalState.csrf._csrf))
-          })
-        } else {
+        console.log("loadItemInfoBySku")
+        return dispatch(checkoutAction.loadItemInfoBySku(item.skuId)).then(() => {
           let pricingReq = {id: item.skuId, num: item.num};
           console.log("pricing")
-          return dispatch(shopAction.pricing(pricingReq, globalState.csrf._csrf))
-        }
+          return dispatch(checkoutAction.pricing(pricingReq, globalState.csrf._csrf))
+        })
+
+        // if (!shopAction.isItemLoaded(item.skuId, globalState)) {
+        //   console.log("loadItemInfoBySku")
+        //   return dispatch(shopAction.loadItemInfoBySku(item.skuId)).then(() => {
+        //     let pricingReq = {id: item.skuId, num: item.num};
+        //     console.log("pricing")
+        //     return dispatch(checkoutAction.pricing(pricingReq, globalState.csrf._csrf))
+        //   })
+        // } else {
+        //   let pricingReq = {id: item.skuId, num: item.num};
+        //   console.log("pricing")
+        //   return dispatch(checkoutAction.pricing(pricingReq, globalState.csrf._csrf))
+        // }
       })
     }
     return Promise.all(promises);
@@ -80,7 +87,7 @@ function _validateCheckoutItems(checkoutItems) {
 }])
 @connect((state => ({user: state.userInfo.user,
                     checkout: state.checkout,
-                    products: state.shop.productsById,
+                    shop: state.shop,
                     authKey: state.csrf._csrf})),
         {...checkoutAction, 
         loadInfo: userAction.loadInfo,
@@ -93,7 +100,7 @@ export default class UserCenter extends Component {
   static propTypes = {
     user: PropTypes.object,
     checkout: PropTypes.object,
-    products: PropTypes.object,
+    shop: PropTypes.object,
     authKey: PropTypes.object,
     order: PropTypes.func.isRequired,
     redirectTo: PropTypes.func.isRequired
@@ -116,8 +123,8 @@ export default class UserCenter extends Component {
     console.log("componentWillMount");
     let self = this;
     this.intervals = [];
-    console.log("==========this.props.checkout.prices========")
-    console.log(JSON.stringify(this.props.checkout.prices))
+    console.log("==========this.props.checkout.checkoutItems========")
+    console.log(JSON.stringify(this.props.checkout.checkoutItems))
 
     // check invalid post data
     if(!_validateCheckoutItems(this.props.checkout.checkoutItems)) {
@@ -291,10 +298,29 @@ export default class UserCenter extends Component {
   }
 
   renderItem(item) {
+    const styles = require('./Checkout.scss');
+    const {checkout} = this.props;
+    return (
+      <div className={styles.item}>
+        <div className={styles.itemThump}>
+          <a href="http://www.smartisan.com/shop/#/t2" title="Smartisan T2（黑色，16GB）" target="_blank"> 
+            <img src={item.images.thumbnail}/> 
+          </a>
+        </div>
+        <div className={styles.itemDesc}>
+          <p>{item.name}</p>
+        </div>
+        <span className={styles.subtotal}>{price.realPayAmt}</span>
+        <span className={styles.num}>{checkout.num}</span>
+        <span className={styles.price}>{checkout.realPrice}</span>
+      </div>
+    );
+  }
+
+  renderView() {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
     const styles = require('./Checkout.scss');
     const {user, checkout} = this.props;
-    const imagePath = item.images.thumbnail;
     const selectedAddress = this.state.selectedAddress;
     const payMethod = this.state.payMethod;
     const deliverMethod = this.state.deliverMethod;
@@ -385,17 +411,6 @@ export default class UserCenter extends Component {
                 <span className={styles.price}>单价</span>
               </div>
               <div className={styles.items}>
-                <div className={styles.itemThump}>
-                  <a href="http://www.smartisan.com/shop/#/t2" title="Smartisan T2（黑色，16GB）" target="_blank"> 
-                    <img src={imagePath}/> 
-                  </a>
-                </div>
-                <div className={styles.itemDesc}>
-                  <p>{item.name}</p>
-                </div>
-                <span className={styles.subtotal}>{checkout.realPayAmt}</span>
-                <span className={styles.num}>{checkout.num}</span>
-                <span className={styles.price}>{checkout.realPrice}</span>
               </div>
               <div className={styles.summary}>
                 <div className={styles.total}>
@@ -417,7 +432,6 @@ export default class UserCenter extends Component {
 
   render() {
     const styles = require('./Checkout.scss');
-    const {products, checkout} = this.props;
     const {resubmitting, invalidArgument, countdown} = this.state;
     if (resubmitting) {
       return (
@@ -432,17 +446,13 @@ export default class UserCenter extends Component {
         </div>
       );
     }
-    var id = checkout.productId;
-    let item = products[id];
-    let itemView = null;
-    if (item) {
-      itemView = this.renderItem(item);
-    }
+
+    let view = this.renderView();
     let validateErrorModal = this.renderValidateFormErrorModal();
 
     return (
       <div className={'container'}>
-        {itemView}
+        {view}
         {validateErrorModal}
       </div>
     );

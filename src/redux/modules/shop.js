@@ -30,12 +30,12 @@ export default function reducer(state = initialState, action = {}) {
       };
     case LOAD_PRODUCT_SUCCESS:
       newProducts = state.products;
-      action.products.forEach((item) => {
-        let index = newProducts.findIndex(elem => {return elem._id == item._id})
+      action.products.forEach((product) => {
+        let index = newProducts.findIndex(elem => {return elem._id == product._id})
         if (index !== -1) {
-          newProducts[index] = item;
+          newProducts[index] = product;
         } else {
-          newProducts.push(item)
+          newProducts.push(product)
         }
       })
       return {

@@ -2,9 +2,9 @@ import ApiPath from 'api/ApiPath';
 
 const CHECKOUT = 'redux-example/checkout/CHECKOUT';
 
-const QUERYING = 'redux-example/checkout/QUERYING';
-const QUERY_SUCCESS = 'redux-example/checkout/QUERY_SUCCESS';
-const QUERY_FAIL = 'redux-example/checkout/QUERY_FAIL';
+const LOAD_ITEM = 'redux-example/product/LOAD_ITEM';
+const LOAD_ITEM_SUCCESS = 'redux-example/product/LOAD_ITEM_SUCCESS';
+const LOAD_ITEM_FAIL = 'redux-example/product/LOAD_ITEM_FAIL';
 
 const PRICING = 'redux-example/checkout/PRICING';
 const PRICE_SUCCESS = 'redux-example/checkout/PRICE_SUCCESS';
@@ -22,17 +22,52 @@ const FAKE_NOTIFYING = 'redux-example/checkout/FAKE_NOTIFYING';
 const FAKE_NOTIFY_SUCCESS = 'redux-example/checkout/FAKE_NOTIFY_SUCCESS';
 const FAKE_NOTIFY_FAIL = 'redux-example/checkout/FAKE_NOTIFY_FAIL';
 
+const QUERYING = 'redux-example/checkout/QUERYING';
+const QUERY_SUCCESS = 'redux-example/checkout/QUERY_SUCCESS';
+const QUERY_FAIL = 'redux-example/checkout/QUERY_FAIL';
+
 const initialState = {
 };
 
 export default function reducer(state = initialState, action = {}) {
   let orderInfo = action.order_info;
+  let newCheckoutItems = {}
+  let index = -1
   switch (action.type) {
     case CHECKOUT:
       return {
         ...state,
         checkoutItems: action.checkoutItems
       }
+    case LOAD_ITEM:
+      return {
+        ...state,
+        itemLoading: true
+      };
+    case LOAD_ITEM_SUCCESS:
+      newCheckoutItems = state.checkoutItems;
+      action.items.forEach((item) => {
+        let index = newCheckoutItems.findIndex(elem => {return elem.skuId == item._id})
+        if (index !== -1) {
+          newCheckoutItems[index] = Object.assign(newCheckoutItems[index], item);
+        }
+      })
+      return {
+        ...state,
+        itemLoading: false,
+        itemLoaded: true,
+        checkoutItems: newCheckoutItems,
+        loadItemInfoError: false,
+        loadItemInfoErrorDesc: action.result_description
+      };
+    case LOAD_ITEM_FAIL:
+      return {
+        ...state,
+        itemLoading: false,
+        itemLoaded: false,
+        loadItemInfoError: action.result,
+        loadItemInfoErrorDesc: action.result_description
+      };
     case PRICING:
       console.log("PRICING")
       return {
@@ -41,16 +76,26 @@ export default function reducer(state = initialState, action = {}) {
       }
     case PRICE_SUCCESS:
       console.log("PRICE_SUCCESS")
-      let newPrices = state.prices
-      newPrices[action.req.id] = {price: action.price, 
-                                  realPrice: action.real_price,
-                                  payAmt: action.pay_amt,
-                                  realPayAmt: action.real_pay_amt}
+      // let newPrices = state.prices
+      // newPrices[action.req.id] = {price: action.price, 
+      //                             realPrice: action.real_price,
+      //                             payAmt: action.pay_amt,
+      //                             realPayAmt: action.real_pay_amt}
+      newCheckoutItems = state.checkoutItems;
+      index = newCheckoutItems.findIndex((elem) => {return elem.skuId == action.req.id})
+      console.log(index)
+      console.log(action.req.id)
+      if (index != -1) {
+        newCheckoutItems[index].price = action.price
+        newCheckoutItems[index].realPrice = action.real_price
+        newCheckoutItems[index].payAmt = action.pay_amt
+        newCheckoutItems[index].realPayAmt = action.real_pay_amt
+      }
       return {
         ...state,
         pricing: false,
         priceSuccess: true,
-        prices: newPrices
+        checkoutItems: newCheckoutItems
       };
     case PRICE_FAIL:
       console.log("PRICE_FAIL")
@@ -138,6 +183,19 @@ export function checkoutSync(checkoutItems) {
     type: CHECKOUT,
     checkoutItems: checkoutItems
   }
+}
+
+/**
+ * load item info action
+ * 获取商品信息
+ *
+ * @param {string} id sku id
+ */
+export function loadItemInfoBySku(id) {
+  return {
+    types: [LOAD_ITEM, LOAD_ITEM_SUCCESS, LOAD_ITEM_FAIL],
+    promise: ({apiClient}) => apiClient.get(ApiPath.ITEM_INFO + '?sku_id=' + id)
+  };
 }
 
 /**
