@@ -56,12 +56,12 @@ const customStyles = {
   promise: ({store: {dispatch, getState}, helpers: {client}}) => {
     return dispatch(ordersAction.queryOrder()).then(() => {
       const globalState = getState();
-      let productIds = new Set(_.flatMap(globalState.order.orders, (order) => {
-        return order.products.map(e => {return e.product_id});
+      let skuIds = new Set(_.flatMap(globalState.order.orders, (order) => {
+        return order.items.map(e => {return e.sku_id});
       }))
-      const promises = [...productIds].map((id) => {
-        if (id && !shopAction.isProductLoaded(id, globalState))
-          return dispatch(shopAction.loadProductInfo(id));
+      const promises = [...skuIds].map((id) => {
+        if (id && !shopAction.isItemLoaded(id, globalState))
+          return dispatch(shopAction.loadItemInfoBySku(id));
         else
           return Promise.resolve();
       })
@@ -72,7 +72,7 @@ const customStyles = {
 @connect((state => ({user: state.userInfo.user,
                     authKey: state.csrf._csrf,
                     orders: state.order.orders,
-                    products: state.shop.productsById})),
+                    shop: state.shop})),
         {deliverAction: ordersAction.deliver,
          deliverConfirmAction: ordersAction.deliverConfirm,
          refundAction: ordersAction.refund,
@@ -84,7 +84,7 @@ export default class UserCenter extends Component {
   static propTypes = {
     user: PropTypes.object,
     orders: PropTypes.object,
-    products: PropTypes.object,
+    shop: PropTypes.object,
     redirectTo: PropTypes.func.isRequired
   };
 
@@ -298,7 +298,7 @@ export default class UserCenter extends Component {
 
   renderOrder(order) {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
-    const {user, products} = this.props;
+    const {user, shop} = this.props;
     const styles = require('./Order.scss');
     let orderState = "";
     if (order.state == ORDER_STATE.UNPAY || order.state == ORDER_STATE.PAY_ERROR) {
@@ -318,9 +318,9 @@ export default class UserCenter extends Component {
     console.log("===================ORDER_STATE=============");
     console.log(orderState)
     const createAt = new Date(Number(order.create_at)).toString();
-    let itemsView = order.products.map(prod => {
-      const item = products[prod.product_id];
-      return this.renderOrderItem(item);
+    let itemsView = order.items.map(item => {
+      const itemInfo = shop.items.filter((elem) => {return elem._id == item.sku_id})[0]
+      return this.renderOrderItem(itemInfo);
     })
     return (
       <div className={styles.order + " clearfix"}>
@@ -370,7 +370,7 @@ export default class UserCenter extends Component {
     const {user} = this.props;
     const {orderSwitch} = this.state;
     const styles = require('./Order.scss');
-    const {products, orders} = this.props;
+    const {orders} = this.props;
     let selectedOrders = null;
     if (orderSwitch === ORDER_SWITCH.ALL) {
       selectedOrders = orders;

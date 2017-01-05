@@ -13,19 +13,11 @@ function validateInput(req) {
       reject("an updateCart request is required");
     } else if (!req.session) {
       reject("session is required");
-    } else if (Validation.empty(req.body.cartId) || !Validation.isString(req.body.cartId)) {
-      reject("cartId(string) is required");
+    } else if (Validation.empty(req.body.skuId) || !Validation.isString(req.body.skuId)) {
+      reject("skuId(string) is required");
     } else if (Validation.empty(req.body.num) && !Validation.isInteger(req.body.num)) {
       reject("num(int) is required");
     }else {
-      // req.body.choices.forEach(choice => {
-      //   if (!Validation.isString(choice.name)) {
-      //     reject("name(string) is required for choices item, e.g, choices = [{name: xxx, value: xxx}]")
-      //   }
-      //   if (!Validation.isString(choice.value)) {
-      //     reject("value(string) is required for choices item, e.g, choices = [{name: xxx, value: xxx}]")
-      //   }
-      // })
       resolve();
     }
   })
@@ -40,10 +32,10 @@ exports = module.exports = function(req, res) {
     let currentTimeMs = Date.now();
     let header = new protos.common.ResponseHeader();
     if (req.session.cart) {
-      let index = req.session.cart.findIndex(elem => {return elem.cartId == req.body.cartId})
+      let index = req.session.cart.findIndex(elem => {return elem.sku_id == req.body.skuId})
       if (index != -1) {
         req.session.cart[index].num = req.body.num
-        req.session.cart[index].updateAt = currentTimeMs
+        req.session.cart[index].update_at = currentTimeMs
       }
     }
     header.setResult(protos.common.ResultCode.SUCCESS);

@@ -26,7 +26,6 @@ const initialState = {
 
 export default function reducer(state = initialState, action = {}) {
   let newCartData = null
-  let cartId = null
   let index = -1
   switch (action.type) {
     case LOAD:
@@ -75,7 +74,7 @@ export default function reducer(state = initialState, action = {}) {
       };
     case UPDATE_SUCCESS:
       newCartData = state.data
-      let updateIdx = newCartData.findIndex(elem => {return elem.cartId == action.req.cartId})
+      let updateIdx = newCartData.findIndex(elem => {return elem.sku_id == action.req.skuId})
       if (updateIdx != -1) {
         newCartData[updateIdx].num = action.req.num
       }
@@ -99,7 +98,7 @@ export default function reducer(state = initialState, action = {}) {
         deleting: true
       };
     case DELETE_SUCCESS:
-      newCartData = state.data.filter(elem => {return elem.cartId != action.req.cartId})
+      newCartData = state.data.filter(elem => {return elem.sku_id != action.req.skuId})
       return {
         ...state,
         deleting: false,
@@ -120,17 +119,13 @@ export default function reducer(state = initialState, action = {}) {
         pricing: true
       }
     case PRICE_SUCCESS:
-      cartId = action.product_id;
-      Object.keys(action.choices).forEach(choiceName => {
-        cartId += "-" + choiceName + "(" + action.choices[choiceName] + ")"
-      })
       newCartData = state.data
-      index = newCartData.findIndex(elem => {return elem.cartId == cartId})
+      index = newCartData.findIndex(elem => {return elem.sku_id == action.req.skuId})
       if (index != -1) {
         newCartData[index].price = action.price;
-        newCartData[index].realPrice = action.real_price;
-        newCartData[index].payAmt = action.pay_amt;
-        newCartData[index].realPayAmt = action.real_pay_amt;
+        newCartData[index].real_price = action.real_price;
+        newCartData[index].pay_amt = action.pay_amt;
+        newCartData[index].real_pay_amt = action.real_pay_amt;
       }
       return {
         ...state,
@@ -172,8 +167,7 @@ export function loadCart() {
  * @param   {object}  addReq
  * addReq format
  * {
- * productId: string, productId
- * choices: Object, e.g, {choice1-name: choice1-value, choice2-name: choice2-value}
+ * skuId: string, skuId
  * num: int, num
  * }
  * 
@@ -198,7 +192,7 @@ export function addCart(addReq, authKey) {
  * @param   {object}  updateReq
  * updateReq format
  * {
- * cartId: string, cartId
+ * skuId: string, skuId
  * num: int, num
  * }
  * 
@@ -223,7 +217,7 @@ export function updateCart(updateReq, authKey) {
  * @param   {object}  deleteReq
  * deleteReq format
  * {
- * cartId: string, cartId
+ * skuId: string, skuId
  * }
  * 
  * @param   {string}  authKey   csrf token
@@ -247,8 +241,7 @@ export function deleteCart(deleteReq, authKey) {
  * @param   {object}  pricingReq
  * pricingReq format
  * {
- * id: string, product id,
- * choices: Object, e.g, {choice1-name: choice1-value, choice2-name: choice2-value}
+ * skuId: string, sku id,
  * num: int, number,
  * }
  * 

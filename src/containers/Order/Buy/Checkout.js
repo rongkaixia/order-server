@@ -9,7 +9,6 @@ import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import Button from 'react-bootstrap/lib/Button';
 import { routeActions } from 'react-router-redux';
-import * as shopAction from 'redux/modules/shop';
 import * as userAction from 'redux/modules/userInfo';
 import * as checkoutAction from 'redux/modules/checkout';
 import {AddressCard} from 'containers';
@@ -63,19 +62,6 @@ function _validateCheckoutItems(checkoutItems) {
           console.log("pricing")
           return dispatch(checkoutAction.pricing(pricingReq, globalState.csrf._csrf))
         })
-
-        // if (!shopAction.isItemLoaded(item.skuId, globalState)) {
-        //   console.log("loadItemInfoBySku")
-        //   return dispatch(shopAction.loadItemInfoBySku(item.skuId)).then(() => {
-        //     let pricingReq = {id: item.skuId, num: item.num};
-        //     console.log("pricing")
-        //     return dispatch(checkoutAction.pricing(pricingReq, globalState.csrf._csrf))
-        //   })
-        // } else {
-        //   let pricingReq = {id: item.skuId, num: item.num};
-        //   console.log("pricing")
-        //   return dispatch(checkoutAction.pricing(pricingReq, globalState.csrf._csrf))
-        // }
       })
     }
     return Promise.all(promises);
@@ -175,8 +161,8 @@ export default class UserCenter extends Component {
 
   componentWillReceiveProps(nextProps) {
     console.log("componentWillReceiveProps: " + JSON.stringify(nextProps));
-    console.log('checkout: ' + JSON.stringify(this.props.checkout));
-    console.log('nextProps: ' + JSON.stringify(nextProps.checkout));
+    // console.log('checkout: ' + JSON.stringify(this.props.checkout));
+    // console.log('nextProps: ' + JSON.stringify(nextProps.checkout));
     if (this.props.checkout && nextProps.checkout) {
       if (!this.props.checkout.orderSuccess && nextProps.checkout.orderSuccess) {
         this.props.replace('/buy/payment/' + nextProps.checkout.orderInfo.order_id);

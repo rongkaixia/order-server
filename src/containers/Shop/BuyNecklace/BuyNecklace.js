@@ -160,22 +160,10 @@ export default class UserCenter extends Component {
     }
   }
 
-  handleAddToCart(productId, num, event) {
-    const {necklaces, location, authKey} = this.props;
-    let isValidate = true;
-    let item = necklaces[productId];
-    const currentChoices = this.state.currentChoices;
-    item.choices.forEach((choice) => {
-      if (!currentChoices || !currentChoices[choice.name]) {
-        event.preventDefault();
-        isValidate = false;
-        this.setState({validateFormError: "请选择 " + choice.display_name})
-      }
-    })
-    if (isValidate) {
-      return this.props.addCart({productId: productId, choices: currentChoices, num: num}, authKey)
-                       .then(() => { return this.props.loadCart()})
-    }
+  handleAddToCart(skuId, num, event) {
+    const {authKey} = this.props;
+    return this.props.addCart({skuId: skuId, num: num}, authKey)
+                     .then(() => { return this.props.loadCart()})
   }
 
   renderChoice(choiceKey, choiceValues, availableSellProps) {
