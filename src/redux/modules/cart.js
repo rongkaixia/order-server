@@ -119,8 +119,9 @@ export default function reducer(state = initialState, action = {}) {
         pricing: true
       }
     case PRICE_SUCCESS:
+      console.log("CART.JS PRICE_SUCCESS")
       newCartData = state.data
-      index = newCartData.findIndex(elem => {return elem.sku_id == action.req.skuId})
+      index = newCartData.findIndex(elem => {return elem.sku_id == action.req.id})
       if (index != -1) {
         newCartData[index].price = action.price;
         newCartData[index].real_price = action.real_price;
@@ -241,7 +242,7 @@ export function deleteCart(deleteReq, authKey) {
  * @param   {object}  pricingReq
  * pricingReq format
  * {
- * skuId: string, sku id,
+ * id: string, sku id,
  * num: int, number,
  * }
  * 

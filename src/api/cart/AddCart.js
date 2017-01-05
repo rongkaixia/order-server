@@ -37,7 +37,7 @@ exports = module.exports = function(req, res) {
                           create_at: currentTimeMs,
                           update_at: currentTimeMs}];
     } else {
-      let index = req.session.cart.findIndex(elem => {return elem.sku_id == skuId})
+      let index = req.session.cart.findIndex(elem => {return elem.sku_id == req.body.skuId})
       if (index == -1) {
         req.session.cart.push({sku_id: req.body.skuId, 
                               num: req.body.num,

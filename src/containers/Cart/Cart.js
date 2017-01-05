@@ -35,10 +35,10 @@ const customStyles = {
     return loadCartPromise.then(() => { // load product info
       const globalState = getState();
       if (globalState.cart && globalState.cart.data) {
-        let productIds = globalState.cart.data.map(e => {return e.productId});
-        const promises = [...productIds].map((id) => {
-          if (id && !shopAction.isProductLoaded(id, globalState))
-            return dispatch(shopAction.loadProductInfo(id));
+        let skuIds = globalState.cart.data.map(e => {return e.sku_id});
+        const promises = [...skuIds].map((id) => {
+          if (id && !shopAction.isItemLoaded(id, globalState))
+            return dispatch(shopAction.loadItemInfoBySku(id));
           else
             return Promise.resolve();
         })
@@ -47,10 +47,11 @@ const customStyles = {
         return Promise.resolve();
       }
     }).then(() => { // pricing
+      console.log("=========cart asyncConnect pricing============")
       const globalState = getState();
       if (globalState.cart && globalState.cart.data) {
         const promises = globalState.cart.data.map(cartItem => {
-          let pricingReq = {id: cartItem.productId, num: cartItem.num, choices: cartItem.choices};
+          let pricingReq = {id: cartItem.sku_id, num: cartItem.num};
           return dispatch(cartAction.pricing(pricingReq, globalState.csrf._csrf))
         })
         return Promise.all(promises);
@@ -62,13 +63,13 @@ const customStyles = {
 }])
 @connect((state => ({user: state.userInfo.user,
                      cart: state.cart,
-                     products: state.shop.productsById,
+                     shop: state.shop,
                      authKey: state.csrf._csrf})),
         {...cartAction, redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
     user: PropTypes.object,
-    products: PropTypes.object,
+    shop: PropTypes.object,
     cart: PropTypes.object,
     redirectTo: PropTypes.func.isRequired
   };
@@ -96,9 +97,9 @@ export default class UserCenter extends Component {
 
   increaseNum(cartItem, event) {
     let num = cartItem.num + 1;
-    return this.props.updateCart({cartId: cartItem.cartId, num: num}, this.props.authKey)
+    return this.props.updateCart({skuId: cartItem.sku_id, num: num}, this.props.authKey)
     .then(() => {
-      let pricingReq = {id: cartItem.productId, num: num, choices: cartItem.choices}
+      let pricingReq = {id: cartItem.sku_id, num: num}
       return this.props.pricing(pricingReq, this.props.authKey)
     })
     .catch((err) => {
@@ -111,9 +112,9 @@ export default class UserCenter extends Component {
       return
     } else {
       let num = cartItem.num - 1;
-      this.props.updateCart({cartId: cartItem.cartId, num: num}, this.props.authKey)
+      this.props.updateCart({skuId: cartItem.sku_id, num: num}, this.props.authKey)
       .then(() => {
-        let pricingReq = {id: cartItem.productId, num: num, choices: cartItem.choices}
+        let pricingReq = {id: cartItem.sku_id, num: num}
         return this.props.pricing(pricingReq, this.props.authKey)
       })
       .catch((err) => {
@@ -124,7 +125,7 @@ export default class UserCenter extends Component {
 
   deleteCart(item, event) {
     this.setState({deleteCartError: null})
-    this.props.deleteCart({cartId: item.cartId}, this.props.authKey)
+    this.props.deleteCart({skuId: item.sku_id}, this.props.authKey)
     .then(() => {
       this.setState({deleteModalIsOpen: false});
     })
@@ -159,13 +160,17 @@ export default class UserCenter extends Component {
 
   renderItem(item) {
     const styles = require('./Cart.scss');
-    const product = this.props.products[item.productId]
-    const imagePath = product.images.thumbnail;
-    const subtotal = item.realPayAmt;
-    let productName = product.name;
-    Object.keys(item.choices).map(choiceName => {
-      productName += "-" + choiceName + "(" + item.choices[choiceName] + ")";
+    console.log("===========this.props.shop.items========")
+    console.log(JSON.stringify(this.props.shop.items))
+    console.log("===========cartItem========")
+    console.log(JSON.stringify(item))
+    const itemInfo = this.props.shop.items.filter((elem) => {return elem._id == item.sku_id})[0]
+    const imagePath = itemInfo.images.thumbnail;
+    let productName = itemInfo.name;
+    Object.keys(itemInfo.sell_props).map(choiceName => {
+      productName += "-" + choiceName + "(" + itemInfo.sell_props[choiceName] + ")";
     })
+    const subtotal = item.real_pay_amt;
     return (
       <div className={styles.item}>
         <input className={styles.checkbox} name="Fruit" type="checkbox" value=""/>
@@ -186,20 +191,19 @@ export default class UserCenter extends Component {
             <Button bsSize="small" onClick={this.increaseNum.bind(this, item)}>+</Button>
           </ButtonGroup>
         </span>
-        <span className={styles.price}>{product.real_price}</span>
+        <span className={styles.price}>{item.real_price}</span>
       </div>
     )
   }
 
-  renderView(item) {
+  renderView() {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
-    const {user, products, cart} = this.props;
+    const {user, shop, cart} = this.props;
     const styles = require('./Cart.scss');
     const imagePath = require('../../../static/diaozhui80X80.jpg');
     let total = 0.0
     let itemView = cart.data.map(item => {
-      let product = products[item.productId]
-      total += item.realPayAmt;
+      total += Number(item.real_pay_amt);
       return this.renderItem(item);
     })
     let deleteCartItemView = this.renderDeleteCartModal()
@@ -235,7 +239,7 @@ export default class UserCenter extends Component {
   render() {
     const styles = require('./Cart.scss');
     let itemView = null;
-    itemView = this.renderView({name: "test"});
+    itemView = this.renderView();
 
     return (
       <div className={'container'}>
