@@ -21,8 +21,8 @@ function validateOrderInput(req) {
       reject("token is required");
     } else if (Validation.isEmpty(req.body.userId) || !Validation.isString(req.body.userId)) {
       reject("userId(string) is required");
-    } else if (Validation.isEmpty(req.body.products) || !(req.body.products instanceof Array)) {
-      reject("products(Array) is required")
+    } else if (Validation.isEmpty(req.body.items) || !(req.body.items instanceof Array)) {
+      reject("items(Array) is required")
     } else if (Validation.isEmpty(req.body.payMethod) || !Validation.isString(req.body.payMethod)) {
       reject("payMethod(string) is required");
     } else if (Validation.isEmpty(req.body.deliverMethod) || !Validation.isString(req.body.deliverMethod)) {
@@ -40,11 +40,11 @@ function validateOrderInput(req) {
     } else if (req.body.deliverMethod != DELIVER_METHOD_EXPRESS && req.body.deliverMethod != DELIVER_METHOD_DTD) {
       reject("deliverMethod MUST be EXPRESS or DTD");
     } else {
-      const products = req.body.products;
-      products.forEach(product => {
-        if (Validation.isEmpty(product.productId) || !Validation.isString(product.productId)) {
-          reject("productId(string) is required");
-        } else if (Validation.isEmpty(product.num) || !Validation.isInteger(product.num)) {
+      const items = req.body.items;
+      items.forEach(item => {
+        if (Validation.isEmpty(item.skuId) || !Validation.isString(item.skuId)) {
+          reject("skuId(string) is required");
+        } else if (Validation.isEmpty(item.num) || !Validation.isInteger(item.num)) {
           reject("num(int) is required");
         }
       })
@@ -65,17 +65,19 @@ exports = module.exports = function(req, res) {
     let client = new protos.gold.OrderService(host + ':' + port, grpc.credentials.createInsecure());
 
     let request = new protos.gold.OrderRequest();
-    let products = req.body.products.map(p => {
-      let elem = new protos.gold.ProductInfo()
-      elem.setProductId(p.productId);
-      elem.setNum(p.num);
+    let items = req.body.items.map(p => {
+      console.log("============p==========")
+      console.log(JSON.stringify(p))
+      let elem = new protos.product.ItemInfo()
+      elem.setSkuId(p.skuId);
+      elem.setNum(Number(p.num));
       return elem;
     })
-    console.log(products)
-    console.log(JSON.stringify(products))
+    console.log(items)
+    console.log(JSON.stringify(items))
 
     request.setUserId(req.body.userId);
-    request.setProducts(products);
+    request.setItems(items);
     if (req.body.payMethod === PAY_METHOD_ONLINE) {
       request.setPayMethod(protos.gold.PayMethod.ONLINE);
     } else {

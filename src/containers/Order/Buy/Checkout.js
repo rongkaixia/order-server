@@ -252,9 +252,12 @@ export default class UserCenter extends Component {
     }else if (!deliverMethod) {
       this.setState({submitError: '请选择配送方式', orderErrorModalIsOpen: true})
     }else {
+      let items = checkout.checkoutItems.map((item) => {
+        return {skuId: item.skuId, num: item.num};
+      })
       let req = {userId: user.user_id,
                 title: 'buy',
-                products: [{productId: checkout.productId, num: checkout.num}],
+                items: items,
                 payMethod: payMethod,
                 deliverMethod: deliverMethod,
                 recipientsName: selectedAddress.recipientsName,
@@ -297,35 +300,10 @@ export default class UserCenter extends Component {
     );
   }
 
-  renderItem(item) {
+  renderAddress() {
     const styles = require('./Checkout.scss');
-    const {checkout} = this.props;
-    return (
-      <div className={styles.item}>
-        <div className={styles.itemThump}>
-          <a href="http://www.smartisan.com/shop/#/t2" title="Smartisan T2（黑色，16GB）" target="_blank"> 
-            <img src={item.images.thumbnail}/> 
-          </a>
-        </div>
-        <div className={styles.itemDesc}>
-          <p>{item.name}</p>
-        </div>
-        <span className={styles.subtotal}>{price.realPayAmt}</span>
-        <span className={styles.num}>{checkout.num}</span>
-        <span className={styles.price}>{checkout.realPrice}</span>
-      </div>
-    );
-  }
-
-  renderView() {
-      // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
-    const styles = require('./Checkout.scss');
-    const {user, checkout} = this.props;
+    const {user} = this.props;
     const selectedAddress = this.state.selectedAddress;
-    const payMethod = this.state.payMethod;
-    const deliverMethod = this.state.deliverMethod;
-    console.log("imagePath: " + imagePath);
-
     let addressCards = [];
     if (user.addresses) {
       let index = 0;
@@ -351,6 +329,40 @@ export default class UserCenter extends Component {
       onUpdateAddress={this.handleUpdateAddress.bind(this)}
       onDeleteAddress={this.handleDeleteAddress.bind(this)}/>
     );
+    return addressCards;
+  }
+
+  renderItem(item) {
+    const styles = require('./Checkout.scss');
+    return (
+      <div className={styles.item}>
+        <div className={styles.itemThump}>
+          <a href="http://www.smartisan.com/shop/#/t2" title="Smartisan T2（黑色，16GB）" target="_blank"> 
+            <img src={item.images.thumbnail}/> 
+          </a>
+        </div>
+        <div className={styles.itemDesc}>
+          <p>{item.name}</p>
+        </div>
+        <span className={styles.subtotal}>{item.realPayAmt}</span>
+        <span className={styles.num}>{item.num}</span>
+        <span className={styles.price}>{item.realPrice}</span>
+      </div>
+    );
+  }
+
+  renderView() {
+      // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
+    const styles = require('./Checkout.scss');
+    const {user, checkout} = this.props;
+    const selectedAddress = this.state.selectedAddress;
+    const payMethod = this.state.payMethod;
+    const deliverMethod = this.state.deliverMethod;
+    const addressView = this.renderAddress();
+    const itemView = checkout.checkoutItems.map((item) => {
+      return this.renderItem(item);
+    })
+
     return (
       <div className={styles.checkoutBox}>
         <div className={styles.section}>
@@ -358,7 +370,7 @@ export default class UserCenter extends Component {
             <h3 className={styles.title}>{"收货地址"}</h3>
           </div>
           <div className={styles.sectionBody + " clearfix"}>
-            <ul>{addressCards}</ul>
+            <ul>{addressView}</ul>
           </div>
         </div>
         <div className={styles.section + " " + styles.sectionOptions + " clearfix"}
@@ -411,6 +423,7 @@ export default class UserCenter extends Component {
                 <span className={styles.price}>单价</span>
               </div>
               <div className={styles.items}>
+                {itemView}
               </div>
               <div className={styles.summary}>
                 <div className={styles.total}>
