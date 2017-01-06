@@ -319,7 +319,7 @@ export default class UserCenter extends Component {
     console.log(orderState)
     const createAt = new Date(Number(order.create_at)).toString();
     let itemsView = order.items.map(item => {
-      const itemInfo = shop.items.filter((elem) => {return elem._id == item.sku_id})[0]
+      const itemInfo = shop.items.find((elem) => {return elem._id == item.sku_id})
       return this.renderOrderItem(itemInfo);
     })
     return (

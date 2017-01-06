@@ -12,6 +12,7 @@ import { routeActions } from 'react-router-redux';
 import * as shopAction from 'redux/modules/shop';
 import * as userAction from 'redux/modules/userInfo';
 import * as cartAction from 'redux/modules/cart';
+import Config from 'config';
 
 const customStyles = {
   content: {
@@ -75,10 +76,21 @@ export default class UserCenter extends Component {
   };
 
   state = {
+    selectedItems: {},
+    submitError: null,
     deleteModalIsOpen: false,
     deleteItem: null,
     deleteCartError: null
   };
+
+  componentWillMount(){
+    console.log("componentWillMount");
+    let selectedItems = {}
+    this.props.cart.data.forEach((cartItem) => {
+      selectedItems[cartItem.sku_id] = false
+    })
+    this.setState({selectedItems: selectedItems})
+  }
 
   openDeleteModel = (cartItem, event) => {
     event.preventDefault();
@@ -135,6 +147,23 @@ export default class UserCenter extends Component {
     })
   }
 
+  checkCart(item, event) {
+    const {selectedItems} = this.state;
+    selectedItems[item.sku_id] = !selectedItems[item.sku_id]
+    this.setState({selectedItems: selectedItems})
+  }
+
+  handleSubmit(event) {
+    const {selectedItems} = this.state;
+    const numItemSelected = Object.keys(selectedItems).map((id) => {return selectedItems[id]})
+                                                     .reduce((a,b) => {return a + b})
+    if (numItemSelected <= 0) {
+      event.preventDefault();
+      this.setState({submitError: "请选择要购买的物品"})
+    }
+
+  }
+
   renderDeleteCartModal() {
     const {authKey} =  this.props;
     const {deleteItem, deleteCartError} = this.state;
@@ -160,10 +189,7 @@ export default class UserCenter extends Component {
 
   renderItem(item) {
     const styles = require('./Cart.scss');
-    console.log("===========this.props.shop.items========")
-    console.log(JSON.stringify(this.props.shop.items))
-    console.log("===========cartItem========")
-    console.log(JSON.stringify(item))
+    const {selectedItems} = this.state;
     const itemInfo = this.props.shop.items.filter((elem) => {return elem._id == item.sku_id})[0]
     const imagePath = itemInfo.images.thumbnail;
     let productName = itemInfo.name;
@@ -173,7 +199,10 @@ export default class UserCenter extends Component {
     const subtotal = item.real_pay_amt;
     return (
       <div className={styles.item}>
-        <input className={styles.checkbox} name="Fruit" type="checkbox" value=""/>
+        <input className={styles.checkbox}
+              type="checkbox" 
+              checked={selectedItems[item.sku_id]}
+              onClick={this.checkCart.bind(this, item)}/>
         <div className={styles.itemThump}>
           <a href="http://www.smartisan.com/shop/#/t2" title="Smartisan T2（黑色，16GB）" target="_blank"> 
             <img src={imagePath}/> 
@@ -198,7 +227,8 @@ export default class UserCenter extends Component {
 
   renderView() {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
-    const {user, shop, cart} = this.props;
+    const {user, shop, cart, authKey} = this.props;
+    const {selectedItems, submitError} = this.state;
     const styles = require('./Cart.scss');
     const imagePath = require('../../../static/diaozhui80X80.jpg');
     let total = 0.0
@@ -207,6 +237,19 @@ export default class UserCenter extends Component {
       return this.renderItem(item);
     })
     let deleteCartItemView = this.renderDeleteCartModal()
+    let index = 0
+    const hiddenInputs = cart.data.filter((item) => {return selectedItems[item.sku_id]})
+                          .map((item) => {
+                            let skuIdName = "items[" + index + "][skuId]"
+                            let numName = "items[" + index + "][num]"
+                            index += 1
+                            return (
+                              <div>
+                                <input type="hidden" name={skuIdName} value={item.sku_id} />
+                                <input type="hidden" name={numName} value={item.num} />
+                              </div>
+                            )
+                         })
     return (
       <div className={styles.checkoutBox}>
         {deleteCartItemView}
@@ -223,9 +266,16 @@ export default class UserCenter extends Component {
           {itemView}
           </div>
           <div className={styles.summary}>
-            <div className={styles.submitButton}>
-              <Button bsSize="large" bsStyle={"warning"} href="/buy/checkout/123c">结算</Button>
-            </div>
+            {submitError && <div>{submitError}</div>}
+            <form id="shop-form" action={"http://" + Config.orderDomain + "/buy/checkout"} 
+            method="post" onSubmit={this.handleSubmit.bind(this)}>
+              {hiddenInputs}
+              <input name="_csrf" type="hidden" value={authKey} />
+              <div className={styles.submitButton}>
+                <Button bsSize="large" bsStyle={"warning"} type="submit">结算</Button>
+              </div>
+            </form>
+
             <div className={styles.total}>
               <span>{"商品总计：" + total.toString()}</span>
             </div>

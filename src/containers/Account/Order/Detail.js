@@ -61,42 +61,33 @@ const customStyles = {
     const orderId = globalState.routing.location.pathname.split("/").reverse()[0]
     console.log("==============next promises=============")
     console.log(JSON.stringify(globalState));
+    let queryOrderPromise = Promise.resolve()
     // new Promise((resolve, reject) => {})
     if (!globalState.order.orders ||
         !globalState.order.orders.find(elem => elem.order_id == orderId)) {
       console.log("Detail.js load order info for id " + orderId);
-      return dispatch(ordersAction.queryOrder(orderId)).then(() => {
-        const globalState = getState();
-        const order = globalState.order.orders.find(elem => elem.order_id == orderId)
-        let productIds = order.products.map(e => {return e.product_id});
-        const promises = [...productIds].map((id) => {
-          if (id && !shopAction.isProductLoaded(id, globalState))
-            return dispatch(shopAction.loadProductInfo(id));
-          else
-            return Promise.resolve();
-        })
-        return Promise.all(promises);
-      })
-    } else {
-      console.log("==============asdfasdf promises=============")
+      queryOrderPromise = dispatch(ordersAction.queryOrder(orderId))
+    }
+    return queryOrderPromise.then(() => {
+      const globalState = getState();
       const order = globalState.order.orders.find(elem => elem.order_id == orderId)
-      console.log("=============order==============")
+      console.log("=======order======")
       console.log(JSON.stringify(order))
-      let productIds = order.products.map(e => {return e.product_id});
-      const promises = [...productIds].map((id) => {
-        if (id && !shopAction.isProductLoaded(id, globalState))
-          return dispatch(shopAction.loadProductInfo(id));
+      let skuIds = order.items.map(e => {return e.sku_id});
+      const promises = [...skuIds].map((id) => {
+        if (id && !shopAction.isItemLoaded(id, globalState))
+          return dispatch(shopAction.loadItemInfoBySku(id));
         else
           return Promise.resolve();
       })
       return Promise.all(promises);
-    }
+    })
   }
 }])
 @connect((state => ({user: state.userInfo.user,
                     authKey: state.csrf._csrf,
                     orders: state.order.orders,
-                    products: state.shop.productsById,
+                    shop: state.shop,
                     location: state.routing.location})),
         {deliverConfirmAction: ordersAction.deliverConfirm,
          refundAction: ordersAction.refund,
@@ -107,7 +98,7 @@ export default class UserCenter extends Component {
   static propTypes = {
     user: PropTypes.object,
     orders: PropTypes.object,
-    products: PropTypes.object,
+    shop: PropTypes.object,
     location: PropTypes.object,
     redirectTo: PropTypes.func.isRequired
   };
@@ -353,8 +344,8 @@ export default class UserCenter extends Component {
 
   renderItem(item) {
     const styles = require('./Detail.scss');
-    const product = this.props.products[item.product_id]
-    const imagePath = product.images.thumbnail;
+    const itemInfo = this.props.shop.items.find((elem) => {return elem._id == item.sku_id})
+    const imagePath = itemInfo.images.thumbnail;
     return (
       <div className={styles.item}>
         <div className={styles.itemThump}>
@@ -363,7 +354,7 @@ export default class UserCenter extends Component {
           </a>
         </div>
         <div className={styles.itemDesc}>
-          <p>{product.name}</p>
+          <p>{itemInfo.name}</p>
         </div>
         <span className={styles.subtotal}>{item.total}</span>
         <span className={styles.num}>{item.num}</span>
@@ -431,13 +422,10 @@ export default class UserCenter extends Component {
 
   renderOrder(order) {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
-    const {user, products} = this.props;
+    const {user} = this.props;
     const styles = require('./Detail.scss');
-    console.log("================products==============")
-    console.log(order.products);
-    console.log(JSON.stringify(products));
     const orderStatusView = this.renderOrderStatus(order)
-    let itemsView = order.products.map(item => {
+    let itemsView = order.items.map(item => {
       return this.renderItem(item);
     })
 
