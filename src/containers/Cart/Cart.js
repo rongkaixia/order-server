@@ -12,6 +12,7 @@ import { routeActions } from 'react-router-redux';
 import * as shopAction from 'redux/modules/shop';
 import * as userAction from 'redux/modules/userInfo';
 import * as cartAction from 'redux/modules/cart';
+import Querystring from 'querystring';
 import Config from 'config';
 
 const customStyles = {
@@ -65,11 +66,13 @@ const customStyles = {
 @connect((state => ({user: state.userInfo.user,
                      cart: state.cart,
                      shop: state.shop,
+                     auth: state.auth,
                      authKey: state.csrf._csrf})),
         {...cartAction, redirectTo: routeActions.push})
 export default class UserCenter extends Component {
   static propTypes = {
     user: PropTypes.object,
+    auth: PropTypes.object,
     shop: PropTypes.object,
     cart: PropTypes.object,
     redirectTo: PropTypes.func.isRequired
@@ -155,6 +158,15 @@ export default class UserCenter extends Component {
 
   handleSubmit(event) {
     const {selectedItems} = this.state;
+    const {location, auth} = this.props;
+    if (!auth.loggedIn) {
+      event.preventDefault();
+      const redirectPath = location.pathname + location.search;
+      const returnTo = '?' + Querystring.stringify({return_to: redirectPath});
+      console.log("returnTo: " + returnTo)
+      this.props.redirectTo('/login' + returnTo)
+      return
+    }
     const numItemSelected = Object.keys(selectedItems).map((id) => {return selectedItems[id]})
                                                      .reduce((a,b) => {return a + b})
     if (numItemSelected <= 0) {
