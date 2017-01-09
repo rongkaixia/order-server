@@ -42,7 +42,7 @@
       "env": {
         "NODE_PATH": "./src:./lib:./lib/echo-node-modules",
         "NODE_ENV": "production",
-        "PORT": 8090,
+        "PORT": 4000,
         "CAPTAIN_HOST": "localhost",
         "CAPTAIN_PORT": 19876
       }
@@ -129,6 +129,7 @@
     "react-router": "2.0.0",
     "react-router-bootstrap": "^0.20.1",
     "react-router-redux": "^3.0.0",
+    "react-slick": "^0.14.5",
     "react-timer-mixin": "^0.13.3",
     "redux": "^3.0.4",
     "redux-async-connect": "^1.0.0-rc2",
@@ -136,6 +137,7 @@
     "scroll-behavior": "^0.3.2",
     "serialize-javascript": "^1.1.2",
     "serve-favicon": "^2.3.0",
+    "slick-carousel": "^1.6.0",
     "socket.io": "^1.3.7",
     "socket.io-client": "^1.3.7",
     "superagent": "^2.0.0",

@@ -1,6 +1,6 @@
 {
   "javascript": {
-    "main": "http://localhost:4001/dist/main-60c286cdad9dc01aaf09.js"
+    "main": "http://localhost:4001/dist/main-c3a0469cc4402af6b724.js"
   },
   "styles": {},
   "assets": {
@@ -46,12 +46,13 @@
     },
     "./src/containers/Home/Home.scss": {
       "home": "home___1bkob",
+      "container": "container___YvjzJ",
       "masthead": "masthead___3qL9t",
       "logo": "logo___1_SL2",
       "humility": "humility___Bedqz",
       "github": "github___qJ_u3",
       "counterContainer": "counterContainer___Jx2OO",
-      "_style": "/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.home___1bkob dd {\n  margin-bottom: 15px;\n}\n\n.masthead___3qL9t {\n  background: #2d2d2d;\n  padding: 40px 20px;\n  color: white;\n  text-align: center;\n}\n\n.masthead___3qL9t .logo___1_SL2 {\n  margin: auto;\n  height: 200px;\n  width: 200px;\n  border-radius: 100px;\n  border: 1px solid #33e0ff;\n  box-shadow: inset 0 0 10px #33e0ff;\n  vertical-align: middle;\n}\n\n.masthead___3qL9t .logo___1_SL2 p {\n  line-height: 200px;\n  margin: 0px;\n}\n\n.masthead___3qL9t .logo___1_SL2 img {\n  width: 75%;\n  margin: auto;\n}\n\n.masthead___3qL9t h1 {\n  color: #33e0ff;\n  font-size: 4em;\n}\n\n.masthead___3qL9t h2 {\n  color: #ddd;\n  font-size: 2em;\n  margin: 20px;\n}\n\n.masthead___3qL9t a {\n  color: #ddd;\n}\n\n.masthead___3qL9t p {\n  margin: 10px;\n}\n\n.masthead___3qL9t .humility___Bedqz {\n  color: #777;\n}\n\n.masthead___3qL9t .humility___Bedqz a {\n  color: #777;\n}\n\n.masthead___3qL9t .github___qJ_u3 {\n  font-size: 1.5em;\n}\n\n.counterContainer___Jx2OO {\n  text-align: center;\n  margin: 20px;\n}\n"
+      "_style": "/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.home___1bkob dd {\n  margin-bottom: 15px;\n}\n\n.container___YvjzJ {\n  margin: 0 auto;\n  padding: 40px;\n  width: 80%;\n  color: #333;\n  background: #419be0;\n}\n\n.masthead___3qL9t {\n  background: #2d2d2d;\n  padding: 40px 20px;\n  color: white;\n  text-align: center;\n}\n\n.masthead___3qL9t .logo___1_SL2 {\n  margin: auto;\n  height: 200px;\n  width: 200px;\n  border-radius: 100px;\n  border: 1px solid #33e0ff;\n  box-shadow: inset 0 0 10px #33e0ff;\n  vertical-align: middle;\n}\n\n.masthead___3qL9t .logo___1_SL2 p {\n  line-height: 200px;\n  margin: 0px;\n}\n\n.masthead___3qL9t .logo___1_SL2 img {\n  width: 75%;\n  margin: auto;\n}\n\n.masthead___3qL9t h1 {\n  color: #33e0ff;\n  font-size: 4em;\n}\n\n.masthead___3qL9t h2 {\n  color: #ddd;\n  font-size: 2em;\n  margin: 20px;\n}\n\n.masthead___3qL9t a {\n  color: #ddd;\n}\n\n.masthead___3qL9t p {\n  margin: 10px;\n}\n\n.masthead___3qL9t .humility___Bedqz {\n  color: #777;\n}\n\n.masthead___3qL9t .humility___Bedqz a {\n  color: #777;\n}\n\n.masthead___3qL9t .github___qJ_u3 {\n  font-size: 1.5em;\n}\n\n.counterContainer___Jx2OO {\n  text-align: center;\n  margin: 20px;\n}\n"
     },
     "./src/containers/Login/Login.scss": {
       "loginPage": "loginPage___29OrY",
