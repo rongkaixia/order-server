@@ -13,6 +13,7 @@ import { InfoBar, NavBar, Footer } from 'components';
 import { routeActions } from 'react-router-redux';
 import config from '../../config';
 import { asyncConnect } from 'redux-async-connect';
+import './App.scss';
 
 @asyncConnect([{
   promise: ({store: {dispatch, getState}}) => {
