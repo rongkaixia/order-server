@@ -58,7 +58,7 @@ export default class UserCenter extends Component {
     }
 
     return (
-      <div className={styles.necklacePage + ' container'}>
+      <div className={styles.necklacePage}>
         <h1 className={styles.headline}>项链/吊坠</h1>
         <div className="container">
           <ul>{items}</ul>

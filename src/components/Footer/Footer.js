@@ -1,11 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {Link} from 'react-router';
 import Helmet from 'react-helmet';
-import Navbar from 'react-bootstrap/lib/Navbar';
-import Nav from 'react-bootstrap/lib/Nav';
-import NavItem from 'react-bootstrap/lib/NavItem';
-import MenuItem from 'react-bootstrap/lib/MenuItem';
-import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 
 export default class Footer extends Component {
   static propTypes = {

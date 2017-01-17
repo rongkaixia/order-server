@@ -269,7 +269,7 @@ export default class UserCenter extends Component {
     }
 
     return (
-      <div className={styles.necklacePage + ' container'}>
+      <div className={styles.buyNecklacePage}>
         {itemView}
       </div>
     );
