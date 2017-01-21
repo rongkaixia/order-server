@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { CounterButton, GithubButton } from 'components';
+import { Promos } from 'containers';
 import config from '../../config';
 import Helmet from 'react-helmet';
 import Slider from 'react-slick';
-// var Slider = require('react-slick')
-// import './Home.scss';
-// import '../../../node_modules/slick-carousel/slick/slick.scss'
-// import '../../../node_modules/slick-carousel/slick/slick-theme.scss'
-// require('!style-loader!css-loader!sass-loader!slick-carousel/slick/slick.scss')
-// require('!style-loader!css-loader!sass-loader!slick-carousel/slick/slick-theme.scss');
 
 var ReactSlickDemo = React.createClass({
   render: function() {
@@ -29,21 +24,46 @@ var ReactSlickDemo = React.createClass({
   }
 });
 
+var SampleNextArrow = React.createClass({
+  render: function() {
+    return <div {...this.props} style={{right: '0px'}}></div>;
+  }
+});
+
+var SamplePrevArrow = React.createClass({
+  render: function() {
+    return (
+      <div {...this.props} style={{left: '0px'}}></div>
+    );
+  }
+});
+
+
 export default class Home extends Component {
 
   renderSlider() {
     const settings = {
-      dots: true
+      dots: true,
+      adaptiveHeight: true,
+      nextArrow: <SampleNextArrow />,
+      prevArrow: <SamplePrevArrow />
     };
+    const styles = require('./Home.scss');
+    const imgPath = require('./macbookpro_large.jpg');
     return (
-      <Slider {...settings}>
-        <div><h3>1</h3></div>
-        <div><h3>2</h3></div>
-        <div><h3>3</h3></div>
-        <div><h3>4</h3></div>
-        <div><h3>5</h3></div>
-        <div><h3>6</h3></div>
-      </Slider>
+      <article className={styles.galleryContainer}>
+        <div className={styles.gallery}>
+          <div className={styles.gallerySlideWrapper}>
+            {/*<Slider {...settings}>*/}
+              {/*<a className={styles.galleryItem}>*/}
+                <figure className={styles.galleryImage + ' ' + styles.galleryImageWatch}/>
+                {/*<div><img src={imgPath} /></div>*/}
+
+              {/*</a>*/}
+            {/*</Slider>*/}
+          </div>
+        </div>
+      </article>
     );
   }
   render() {
@@ -57,6 +77,7 @@ export default class Home extends Component {
       <div className={styles.home}>
         <Helmet title="Home"/>
         {slider}
+        <Promos />
       </div>
     );
   }

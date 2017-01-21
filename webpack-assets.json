@@ -1,12 +1,17 @@
 {
   "javascript": {
-    "main": "http://localhost:4001/dist/main-7ca210b6eee28c111312.js"
+    "main": "http://localhost:4001/dist/main-f9352d5d3196209f88f6.js"
   },
   "styles": {},
   "assets": {
     "./static/logo.png": "http://localhost:4001/dist/static/logo.png",
+    "./src/components/Footer/qq.png": "http://localhost:4001/dist/src/components/Footer/qq.png",
+    "./src/components/Footer/weibo.png": "http://localhost:4001/dist/src/components/Footer/weibo.png",
+    "./src/components/Footer/wechat2.png": "http://localhost:4001/dist/src/components/Footer/wechat2.png",
     "./~/slick-carousel/slick/ajax-loader.gif": "http://localhost:4001/dist/node_modules/slick-carousel/slick/ajax-loader.gif",
     "./src/containers/Home/logo.png": "http://localhost:4001/dist/src/containers/Home/logo.png",
+    "./src/containers/Home/hero.jpg": "http://localhost:4001/dist/src/containers/Home/hero.jpg",
+    "./src/containers/Home/macbookpro_large.jpg": "http://localhost:4001/dist/src/containers/Home/macbookpro_large.jpg",
     "./static/user.png": "http://localhost:4001/dist/static/user.png",
     "./static/unpayOrder.png": "http://localhost:4001/dist/static/unpayOrder.png",
     "./static/payedOrder.png": "http://localhost:4001/dist/static/payedOrder.png",
@@ -37,12 +42,29 @@
       "_style": ".infoBar {\n  font-variant: italics;\n}\n\n.time {\n  margin: 0 30px;\n}\n"
     },
     "./src/components/NavBar/NavBar.scss": {
+      "navbar": "navbar",
+      "navbar-default": "navbar-default",
+      "navbar-brand": "navbar-brand",
+      "nav": "nav",
+      "navbar-nav": "navbar-nav",
+      "container": "container",
+      "medium": "medium",
+      "navbarNavLeft": "navbarNavLeft",
       "brand": "brand",
-      "_style": ".brand {\n  position: absolute;\n  top: 5px;\n  left: 5px;\n  display: inline-block;\n  background: #2d2d2d url(http://localhost:4001/dist/static/logo.png) no-repeat center center;\n  width: 40px;\n  height: 40px;\n  background-size: 80%;\n  margin: 0 10px 0 0;\n  border-radius: 20px;\n}\n\nnav .fa {\n  font-size: 2em;\n  line-height: 20px;\n}\n"
+      "_style": "@charset \"UTF-8\";\n/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.navbar {\n  font-family: \"PingFang SC\", \"Helvetica Neue\", Helvetica, Arial, \"Hiragino Sans GB\", \"Microsoft Yahei\", 微软雅黑, STHeiti, 华文细黑, sans-serif;\n}\n\n.navbar-default .navbar-brand {\n  color: #000;\n  font-size: 24px;\n}\n\n.navbar-default .nav .navbar-nav {\n  border-color: #e7e7e7;\n  margin-left: auto;\n  max-width: 800px;\n}\n\n.navbar-default .navbar-nav > li > a {\n  color: #000;\n}\n\n@media (min-width: 768px) and (max-width: 991px) {\n  .navbar-default .container {\n    width: 100%;\n  }\n}\n\n/*\n@include media(\"<medium\") {\n    .navbar-header {\n        float: none;\n    }\n    .navbar-toggle {\n        display: block;\n    }\n    .navbar-collapse {\n        border-top: 1px solid transparent;\n        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);\n    }\n    .navbar-collapse.collapse {\n        display: none!important;\n    }\n    .navbar-nav {\n        float: none!important;\n        margin: 7.5px -15px;\n    }\n    .navbar-nav>li {\n        float: none;\n    }\n    .navbar-nav>li>a {\n        padding-top: 10px;\n        padding-bottom: 10px;\n    }\n}\n*/\n.medium {\n  display: -ms-flexbox;\n  display: flex;\n  margin-bottom: 0;\n  padding-left: 0;\n  list-style: none;\n}\n\n@media (min-width: 992px) {\n  .navbarNavLeft > li {\n    margin: 0px 15px 0px 15px;\n  }\n}\n\n.brand {\n  position: absolute;\n  top: 5px;\n  left: 5px;\n  display: inline-block;\n  background: #2d2d2d url(http://localhost:4001/dist/static/logo.png) no-repeat center center;\n  width: 40px;\n  height: 40px;\n  background-size: 80%;\n  margin: 0 10px 0 0;\n  border-radius: 20px;\n}\n\nnav .fa {\n  font-size: 2em;\n  line-height: 20px;\n}\n"
     },
     "./src/components/Footer/Footer.scss": {
+      "footer": "footer",
+      "footerContent": "footerContent",
+      "footerBrand": "footerBrand",
+      "contactUs": "contactUs",
+      "contactSocial": "contactSocial",
+      "contactQQ": "contactQQ",
+      "contactWeibo": "contactWeibo",
+      "contactWechat": "contactWechat",
+      "helpColumn": "helpColumn",
       "copyright": "copyright",
-      "_style": "dt {\n  color: #424242;\n  font-size: 18px;\n  padding: 0 0 13px;\n}\n\ndd {\n  float: left;\n  color: #757575;\n  font-size: 14px;\n  padding: 6px 0;\n  line-height: 1;\n  width: 173px;\n}\n\n.copyright {\n  clear: both;\n  color: #434d55;\n  font-size: 12px;\n  padding: 10px 0 10px;\n}\n\n.copyright h2, .copyright h3 {\n  height: 15px;\n  line-height: 15px;\n  color: #757575;\n  font-size: 100%;\n  font-weight: 400;\n}\n\n.copyright h4 {\n  clear: both;\n  padding: 10px 0 0;\n  font-size: 100%;\n  font-weight: 400;\n  color: #bdbdbd;\n  font-size: 12px;\n  height: 12px;\n  line-height: 1;\n}\n"
+      "_style": ".footer {\n  margin-top: 10px;\n}\n\n@media (max-width: 767px) {\n  .footer {\n    padding-left: 20px;\n    padding-right: 20px;\n  }\n}\n\n.footer .footerContent {\n  border-bottom: 1px solid #e3e3e3;\n}\n\n.footer h2 {\n  font-size: 24px;\n  opacity: 0.87;\n}\n\n.footer h3 {\n  font-size: 22px;\n  opacity: 0.87;\n}\n\n.footer h4 {\n  font-size: 16px;\n  color: #424242;\n}\n\n.footer .footerBrand {\n  height: 170px;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-flow: row wrap;\n      flex-flow: row wrap;\n  -ms-flex-align: center;\n      align-items: center;\n  -ms-flex-pack: center;\n      justify-content: center;\n  text-align: center;\n}\n\n.footer .contactUs {\n  height: 170px;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-flow: row wrap;\n      flex-flow: row wrap;\n  -ms-flex-align: center;\n      align-items: center;\n  -ms-flex-pack: center;\n      justify-content: center;\n  -ms-flex-line-pack: center;\n      align-content: center;\n  text-align: center;\n}\n\n.footer .contactUs p {\n  font-size: 14px;\n  opacity: 0.38;\n}\n\n.footer .contactUs .contactSocial {\n  width: 100%;\n  margin-top: -20px;\n}\n\n.footer .contactUs .contactSocial .contactQQ {\n  display: inline-block;\n  background: url(http://localhost:4001/dist/src/components/Footer/qq.png) no-repeat center center;\n  width: 40px;\n  height: 40px;\n  background-size: 70%;\n  margin: 0 10px 0 0;\n  border-radius: 20px;\n}\n\n.footer .contactUs .contactSocial .contactWeibo {\n  display: inline-block;\n  background: url(http://localhost:4001/dist/src/components/Footer/weibo.png) no-repeat center center;\n  width: 40px;\n  height: 40px;\n  background-size: 90%;\n  margin: 0 10px 0 0;\n  border-radius: 20px;\n}\n\n.footer .contactUs .contactSocial .contactWechat {\n  display: inline-block;\n  background: url(http://localhost:4001/dist/src/components/Footer/wechat2.png) no-repeat center center;\n  width: 40px;\n  height: 40px;\n  background-size: 100%;\n  margin: 0 10px 0 0;\n  border-radius: 20px;\n}\n\n.footer .helpColumn {\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-flow: row wrap;\n      flex-flow: row wrap;\n}\n\n@media (min-width: 768px) {\n  .footer .helpColumn {\n    height: 170px;\n    -ms-flex-align: center;\n        -ms-grid-row-align: center;\n        align-items: center;\n    -ms-flex-pack: center;\n        justify-content: center;\n    -ms-flex-line-pack: center;\n        align-content: center;\n    text-align: center;\n  }\n}\n\n@media (max-width: 767px) {\n  .footer .helpColumn {\n    border-bottom: 1px solid #e3e3e3;\n  }\n}\n\n.footer .helpColumn h4 {\n  width: 100%;\n  margin: 5;\n}\n\n.footer .helpColumn ul {\n  list-style: none;\n  padding: 0;\n}\n\n.footer .helpColumn ul li {\n  float: left;\n  color: #757575;\n  font-size: 14px;\n  padding: 6px 0;\n  line-height: 1;\n  width: 100%;\n}\n\n.copyright {\n  clear: both;\n  color: #434d55;\n  font-size: 12px;\n  padding: 10px 0 10px;\n}\n\n.copyright h2, .copyright h3 {\n  height: 15px;\n  line-height: 15px;\n  color: #757575;\n  font-size: 100%;\n  font-weight: 400;\n  margin-top: 0;\n}\n\n.copyright h4 {\n  clear: both;\n  font-size: 100%;\n  font-weight: 400;\n  color: #bdbdbd;\n  font-size: 12px;\n  height: 12px;\n  line-height: 1;\n}\n"
     },
     "./src/containers/App/App.scss": {
       "slick-slider": "slick-slider",
@@ -67,7 +89,14 @@
     },
     "./src/containers/Home/Home.scss": {
       "home": "home",
-      "_style": "/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.home {\n  width: 80%;\n  padding: 40px;\n  margin: 0 auto;\n}\n\n.home dd {\n  margin-bottom: 15px;\n}\n"
+      "galleryContainer": "galleryContainer",
+      "gallery": "gallery",
+      "gallerySlideWrapper": "gallerySlideWrapper",
+      "galleryItem": "galleryItem",
+      "galleryImage": "galleryImage",
+      "galleryImageMacbook": "galleryImageMacbook",
+      "galleryImageWatch": "galleryImageWatch",
+      "_style": "/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.home {\n  width: 100%;\n  height: 100%;\n  margin: 0 auto;\n}\n\n.home dd {\n  margin-bottom: 15px;\n}\n\n.home .galleryContainer {\n  height: calc(80vh - 76px);\n}\n\n.home .galleryContainer .gallery {\n  position: relative;\n  z-index: 1;\n  overflow: hidden;\n  height: 100%;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper {\n  height: 100%;\n}\n\n.home .galleryContainer .galleryItem {\n  display: block;\n  position: absolute;\n  z-index: 1;\n  overflow: hidden;\n  width: 100%;\n  height: 100%;\n  color: #333;\n  will-change: transform;\n  transform: translate3d(100%, 0, 0);\n}\n\n.galleryImage {\n  position: absolute;\n  z-index: 1;\n  width: 100%;\n  height: 100%;\n}\n\n.galleryImageMacbook {\n  width: auto;\n  height: auto;\n  top: -10%;\n  bottom: -10%;\n  left: 0;\n  right: 0;\n  background-size: auto 100%;\n  background-position: top center;\n  background-repeat: no-repeat;\n  background-image: url(http://localhost:4001/dist/src/containers/Home/hero.jpg);\n}\n\n.galleryImageWatch {\n  background-size: auto 85%;\n  background-position: center center;\n  background-repeat: no-repeat;\n  top: 5%;\n}\n"
     },
     "./src/containers/Login/Login.scss": {
       "loginPage": "loginPage",
@@ -249,6 +278,11 @@
       "payMethod": "payMethod",
       "tab-content": "tab-content",
       "_style": ".buyNecklacePage input {\n  padding: 5px 10px;\n  border-radius: 5px;\n  border: 1px solid #ccc;\n}\n\n.buyNecklacePage form {\n  margin: 30px 0;\n}\n\n.buyNecklacePage form .btn {\n  margin-left: 10px;\n}\n\n.headline {\n  text-align: center;\n  margin-top: 46px;\n  margin-bottom: 48px;\n  padding-left: 28px;\n  padding-right: 28px;\n}\n\n.paymentBox {\n  padding: 48px 0 48px;\n  background-color: #fff;\n}\n\n.payInfo {\n  margin-left: 48px;\n  margin-right: 48px;\n  border: 1px solid #e0e0e0;\n  height: 160px;\n}\n\n.payInfo .success {\n  float: left;\n  line-height: 160px;\n  padding-left: 20px;\n  width: 15%;\n}\n\n.payInfo h3 {\n  padding-bottom: 20px;\n  line-height: 36px;\n  font-size: 36px;\n  color: #212121;\n}\n\n.payInfo .comment {\n  line-height: 28px;\n  font-size: 16px;\n}\n\n.payMethod {\n  margin-left: 48px;\n  margin-right: 48px;\n  margin-top: 48px;\n  height: 160px;\n}\n\n.payMethod .tab-content {\n  border: 1px solid #e0e0e0;\n  height: 160px;\n}\n"
+    },
+    "./src/containers/Promos/Promos.scss": {
+      "promoContainer": "promoContainer",
+      "promoColumn": "promoColumn",
+      "_style": ".promoContainer {\n  width: 100%;\n  padding: 0;\n  margin: 0;\n}\n\n.promoContainer .promoColumn {\n  height: 200px;\n  background-size: contain;\n  background-color: aliceblue;\n  background-clip: content-box;\n}\n"
     }
   }
 }

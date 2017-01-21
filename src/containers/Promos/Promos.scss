@@ -1,0 +1,11 @@
+.promoContainer {
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	.promoColumn {
+		height: 200px;
+	    background-size: contain;
+	    background-color: aliceblue;
+	    background-clip: content-box;
+	}
+}

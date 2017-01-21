@@ -17,4 +17,5 @@ export BuyNecklace from './Shop/BuyNecklace/BuyNecklace';
 export Cart from './Cart/Cart';
 export Checkout from './Order/Buy/Checkout';
 export Payment from './Order/Buy/Payment';
+export Promos from './Promos/Promos';
 export NotFound from './NotFound/NotFound';

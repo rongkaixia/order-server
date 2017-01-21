@@ -1,16 +1,125 @@
-dt {
-	color: #424242;
-	font-size: 18px;
-	padding: 0 0 13px;
-}
+@import "~include-media/dist/_include-media.scss";
 
-dd {
-	float: left;
-	color: #757575;
-	font-size: 14px;
-	padding: 6px 0;
-	line-height: 1;
-	width: 173px;
+$breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
+
+$footerColumnHeight: 170px;
+
+.footer {
+  @include media("<tablet") {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .footerContent {
+    border-bottom: 1px solid #e3e3e3;
+  }
+
+  margin-top: 10px;
+
+  h2 {
+    font-size: 24px;
+    opacity: 0.87;
+  }
+  h3 {
+    font-size: 22px;
+    opacity: 0.87;
+  }
+  h4 {
+    font-size: 16px;
+    color: #424242;
+  }
+
+  .footerBrand {
+    height: $footerColumnHeight;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .contactUs {
+    height: $footerColumnHeight;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    p {
+      font-size: 14px;
+      opacity: 0.38;
+    }
+    .contactSocial {
+      width: 100%;
+      margin-top: -20px;
+      .contactQQ {
+        $size: 40px;
+        display: inline-block;
+        background: url('./qq.png') no-repeat center center;
+        width: $size;
+        height: $size;
+        background-size: 70%;
+        margin: 0 10px 0 0;
+        border-radius: $size / 2;
+      }
+      .contactWeibo {
+        $size: 40px;
+        display: inline-block;
+        background: url('./weibo.png') no-repeat center center;
+        width: $size;
+        height: $size;
+        background-size: 90%;
+        margin: 0 10px 0 0;
+        border-radius: $size / 2;
+      }
+      .contactWechat {
+        $size: 40px;
+        display: inline-block;
+        background: url('./wechat2.png') no-repeat center center;
+        width: $size;
+        height: $size;
+        background-size: 100%;
+        margin: 0 10px 0 0;
+        border-radius: $size / 2;
+      }
+
+    }
+  }
+
+  .helpColumn {
+    display: flex;
+    flex-flow: row wrap;
+    @include media(">=tablet") {
+      height: $footerColumnHeight;
+      align-items: center;
+      justify-content: center;
+      align-content: center;
+      text-align: center;
+    }
+
+    @include media("<tablet") {
+      border-bottom: 1px solid #e3e3e3;
+    }
+
+    h4 {
+      width: 100%;
+      margin: 5;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      li {
+        float: left;
+        color: #757575;
+        font-size: 14px;
+        padding: 6px 0;
+        line-height: 1;
+        width: 100%;
+      }
+    }
+  }
 }
 
 .copyright {
@@ -24,10 +133,10 @@ dd {
     color: #757575;
     font-size: 100%;
     font-weight: 400;
+    margin-top: 0;
   }
   h4 {
-		clear: both;
-    padding: 10px 0 0;
+    clear: both;
     font-size: 100%;
     font-weight: 400;
     color: #bdbdbd;

@@ -44,54 +44,51 @@ export default class NavBar extends Component {
       returnTo = '?' + Querystring.stringify({return_to: redirectPath});
     }
     return (
-      <Navbar style={{'margin-bottom': '0px'}}>
+      <Navbar className={styles.navbar} style={{'margin-bottom': '0px'}}>
         <Navbar.Header>
           <Navbar.Brand>
-            <IndexLink to="/" activeStyle={{color: '#33e0ff'}}>
-              <div className={styles.brand}/>
-              <span>{config.app.title}</span>
+            <IndexLink to="/">
+              <div>EchoMoment</div>
             </IndexLink>
           </Navbar.Brand>
           <Navbar.Toggle/>
         </Navbar.Header>
 
         <Navbar.Collapse eventKey={0}>
-          <Nav>
+          <Nav className={styles.navbarNavLeft}>
             <LinkContainer to="/necklace">
-              <NavItem eventKey={3}>项链/吊坠</NavItem>
+              <NavItem eventKey={1}>戒指</NavItem>
             </LinkContainer>
-            {user &&
+            <LinkContainer to="/necklace2">
+              <NavItem eventKey={2}>项链/吊坠</NavItem>
+            </LinkContainer>
+            <LinkContainer to="/necklace3">
+              <NavItem eventKey={3}>耳钉/耳环</NavItem>
+            </LinkContainer>
+            <LinkContainer to="/necklace4">
+              <NavItem eventKey={4}>套装</NavItem>
+            </LinkContainer>
+            <LinkContainer to="/necklace5">
+              <NavItem eventKey={8}>礼品</NavItem>
+            </LinkContainer>
+            {/*user &&
             <LinkContainer to="/account">
-              <NavItem eventKey={4}>Account</NavItem>
-            </LinkContainer>}
-
-            {!user &&
-            <LinkContainer to={'/login' + returnTo}>
-              <NavItem eventKey={5}>Login</NavItem>
-            </LinkContainer>}
-            {!user &&
-            <LinkContainer to={"/signup" + returnTo}>
-              <NavItem eventKey={7}>Signup</NavItem>
-            </LinkContainer>}
-            {user &&
-            <LinkContainer to="/logout">
-              <NavItem eventKey={6} className="logout-link" onClick={this.handleLogout}>
-                Logout
-              </NavItem>
-            </LinkContainer>}
-          </Nav>
-          {user &&
-          <p className={styles.loggedInMessage + ' navbar-text'}>Logged in as <strong>{user.username}</strong>.</p>}
-          <Nav>
-            <LinkContainer to="/cart">
-              <NavItem eventKey={3}>{"购物车(" + numCart + ")"}</NavItem>
-            </LinkContainer>
+              <NavItem eventKey={4}>account</NavItem>
+            </LinkContainer>*/}
           </Nav>
           <Nav pullRight>
+            <LinkContainer to={'/login' + returnTo}>
+              <NavItem eventKey={5}>登录</NavItem>
+            </LinkContainer>
+            <LinkContainer to={"/signup" + returnTo}>
+              <NavItem eventKey={7}>注册</NavItem>
+            </LinkContainer>
+          </Nav>
+          {/*<Nav pullRight>
             <NavItem eventKey={1} target="_blank" title="View on Github" href="https://github.com/erikras/react-redux-universal-hot-example">
               <i className="fa fa-github"/>
             </NavItem>
-          </Nav>
+          </Nav>*/}
         </Navbar.Collapse>
       </Navbar>
     );
