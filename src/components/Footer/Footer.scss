@@ -5,6 +5,7 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
 $footerColumnHeight: 170px;
 
 .footer {
+  background-color: #fafafa;
   @include media("<tablet") {
     padding-left: 20px;
     padding-right: 20px;
@@ -12,9 +13,10 @@ $footerColumnHeight: 170px;
 
   .footerContent {
     border-bottom: 1px solid #e3e3e3;
+    margin: 0;
   }
 
-  margin-top: 10px;
+  margin-top: 2px;
 
   h2 {
     font-size: 24px;
@@ -127,6 +129,7 @@ $footerColumnHeight: 170px;
   color: #434d55;
   font-size: 12px;
   padding: 10px 0 10px;
+  margin: 0;
   h2, h3 {
     height: 15px;
     line-height: 15px;

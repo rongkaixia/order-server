@@ -1,11 +1,55 @@
+$promoColumnHeight: 200px;
+
 .promoContainer {
 	width: 100%;
 	padding: 0;
 	margin: 0;
 	.promoColumn {
-		height: 200px;
-	    background-size: contain;
-	    background-color: aliceblue;
-	    background-clip: content-box;
+		height: $promoColumnHeight;
+    background-size: contain;
+    background-color: #fafafa;
+    background-clip: content-box;
+    padding-left: 2px;
+    padding-right: 0px;
+    text-align: center;
+
+		h2 {
+			font-size: 24px;
+			opacity: 0.87;
+		}
+		h3 {
+			font-size: 22px;
+			opacity: 0.87;
+		}
+
+		h4 {
+			font-size: 16px;
+			color: #424242;
+		}
+
+		p {
+      color: #757575;
+      font-size: 14px;
+		}
+
+		.promoContentTop {
+			margin-top: 20px;
+		}
+
+    .promoRing {
+			height: 100%;
+			background-size: auto 120%;
+			background-position: center center;
+			background-repeat: no-repeat;
+			background-image: url('./ring.png');
+			transform: translate(0, -30%);
+    }
+    .promoNecklace {
+			height: 100%;
+			background-size: auto 100%;
+			background-position: center center;
+			background-repeat: no-repeat;
+			background-image: url('./necklace.jpg');
+    }
 	}
 }

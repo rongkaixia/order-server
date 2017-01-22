@@ -26,14 +26,14 @@ var ReactSlickDemo = React.createClass({
 
 var SampleNextArrow = React.createClass({
   render: function() {
-    return <div {...this.props} style={{right: '0px'}}></div>;
+    return <div {...this.props} style={{right: '10px'}}></div>;
   }
 });
 
 var SamplePrevArrow = React.createClass({
   render: function() {
     return (
-      <div {...this.props} style={{left: '0px'}}></div>
+      <div {...this.props} style={{left: '10px'}}></div>
     );
   }
 });
@@ -49,18 +49,17 @@ export default class Home extends Component {
       prevArrow: <SamplePrevArrow />
     };
     const styles = require('./Home.scss');
-    const imgPath = require('./macbookpro_large.jpg');
+    const imgPath = require('./jade2.jpg');
     return (
       <article className={styles.galleryContainer}>
         <div className={styles.gallery}>
           <div className={styles.gallerySlideWrapper}>
-            {/*<Slider {...settings}>*/}
-              {/*<a className={styles.galleryItem}>*/}
-                <figure className={styles.galleryImage + ' ' + styles.galleryImageWatch}/>
-                {/*<div><img src={imgPath} /></div>*/}
-
-              {/*</a>*/}
-            {/*</Slider>*/}
+            <Slider {...settings} style={{height: '100%'}}>
+              <a className={styles.galleryItem}>
+                {/*<div className={styles.galleryImage}>1</div>*/}
+                <figure className={styles.galleryImage + ' ' + styles.galleryImageClassic}/>
+              </a>
+            </Slider>
           </div>
         </div>
       </article>

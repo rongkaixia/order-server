@@ -35,10 +35,38 @@ export default class Propagation extends Component {
     return (
       <Grid className={styles.promoContainer}>
         <Row>
-          <Col xs={12} sm={6} md={6} lg={3} className={styles.promoColumn}><code>&lt;{'Col xs={12} md={3}'} /&gt;</code></Col>
-          <Col xs={12} sm={6} md={6} lg={3} className={styles.promoColumn}><code>&lt;{'Col xs={12} md={3}'} /&gt;</code></Col>
-          <Col xs={12} sm={6} md={6} lg={3} className={styles.promoColumn}><code>&lt;{'Col xs={12} md={3}'} /&gt;</code></Col>
-          <Col xs={12} sm={6} md={6} lg={3} className={styles.promoColumn}><code>&lt;{'Col xs={12} md={3}'} /&gt;</code></Col>
+          <Col xs={12} sm={6} md={6} lg={3} className={styles.promoColumn}>
+            <div className={styles.promoContentTop}>
+              <h4>戒指</h4>
+              <p>项链吊坠有多重设计。搭配18k白金、黄金和双色项链来表达您的个人风格</p>
+            </div>
+            <figure className={styles.promoRing}/>
+          </Col>
+
+          <Col xs={12} sm={6} md={6} lg={3} className={styles.promoColumn}>
+            {/*<div className={styles.promoContentTop}>
+              <h4>戒指</h4>
+              <p>项链吊坠有多重设计。搭配18k白金、黄金和双色项链来表达您的个人风格</p>
+            </div>*/}
+            <figure className={styles.promoNecklace}/>
+          </Col>
+
+          <Col xs={12} sm={6} md={6} lg={3} className={styles.promoColumn}>
+            <div className={styles.promoContentTop}>
+              <h4>戒指</h4>
+              <p>项链吊坠有多重设计。搭配18k白金、黄金和双色项链来表达您的个人风格</p>
+            </div>
+            <figure className={styles.promoRing}/>
+          </Col>
+
+          <Col xs={12} sm={6} md={6} lg={3} className={styles.promoColumn}>
+            <div className={styles.promoContentTop}>
+              <h4>戒指</h4>
+              <p>项链吊坠有多重设计。搭配18k白金、黄金和双色项链来表达您的个人风格</p>
+            </div>
+            <figure className={styles.promoRing}/>
+          </Col>
+
         </Row>
       </Grid>
     );

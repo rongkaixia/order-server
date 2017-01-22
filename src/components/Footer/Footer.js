@@ -107,7 +107,7 @@ export default class Footer extends Component {
     const styles = require('./Footer.scss');
     const {needCollapse} = this.state;
     return (
-      <Grid className={styles.footer}>
+      <div className={styles.footer}>
         <Row className={styles.footerContent}>
           <Col md={2} sm={2} xs={12}>
             <div className={styles.helpColumn}>
@@ -181,21 +181,19 @@ export default class Footer extends Component {
         </Row>
 
       {/* copyright */}
-        <Row>
-          <div className={styles.copyright}>
-            <h2>Copyright © <span copyright-year="">2016</span>, Smartisan Digital Co., Ltd. All Rights Reserved.
-            <span>深圳市壹刻珠宝有限公司</span>
-            </h2>
-            <h4>
-              <a href="http://www.miibeian.gov.cn/" target="_blank">
-                <span>京ICP备14041720号-1</span>
-                <span>京ICP证140622号</span>
-                <span>京公网安备11010502025474</span>
-              </a>
-            </h4>
-          </div>
+        <Row className={styles.copyright}>
+          <h2>Copyright © <span copyright-year="">2016</span>, Smartisan Digital Co., Ltd. All Rights Reserved.
+          <span>深圳市壹刻珠宝有限公司</span>
+          </h2>
+          <h4>
+            <a href="http://www.miibeian.gov.cn/" target="_blank">
+              <span>京ICP备14041720号-1</span>
+              <span>京ICP证140622号</span>
+              <span>京公网安备11010502025474</span>
+            </a>
+          </h4>
         </Row>
-      </Grid>
+      </div>
     );
   }
 }
