@@ -1,6 +1,6 @@
 {
   "javascript": {
-    "main": "http://localhost:4001/dist/main-c7a5f0596cc9daf31cac.js"
+    "main": "http://localhost:4001/dist/main-ab508592b217a2f83cb9.js"
   },
   "styles": {},
   "assets": {
@@ -26,8 +26,7 @@
     "./static/diaozhui80X80.jpg": "http://localhost:4001/dist/static/diaozhui80X80.jpg",
     "./src/containers/Order/Buy/platform.png": "http://localhost:4001/dist/src/containers/Order/Buy/platform.png",
     "./src/containers/Order/Buy/PaySuccess.png": "http://localhost:4001/dist/src/containers/Order/Buy/PaySuccess.png",
-    "./src/containers/Promos/ring.png": "http://localhost:4001/dist/src/containers/Promos/ring.png",
-    "./src/containers/Promos/necklace.jpg": "http://localhost:4001/dist/src/containers/Promos/necklace.jpg",
+    "./src/containers/Home/macbookpro_large.jpg": "http://localhost:4001/dist/src/containers/Home/macbookpro_large.jpg",
     "./~/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.eot": "http://localhost:4001/dist/f4769f9bdb7466be65088239c12046d1.eot",
     "./~/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.woff2": "http://localhost:4001/dist/448c34a56d699c29117adc64c43affeb.woff2",
     "./~/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.woff": "http://localhost:4001/dist/fa2772327f55d8198301fdb8bcfc8158.woff",
@@ -95,15 +94,21 @@
       "galleryContainer": "galleryContainer",
       "gallery": "gallery",
       "gallerySlideWrapper": "gallerySlideWrapper",
+      "slick-arrow": "slick-arrow",
+      "slick-prev": "slick-prev",
+      "slick-next": "slick-next",
       "slick-slider": "slick-slider",
       "slick-list": "slick-list",
       "slick-track": "slick-track",
+      "slick-dots": "slick-dots",
+      "slick-active": "slick-active",
       "galleryItem": "galleryItem",
       "galleryImage": "galleryImage",
       "galleryImageMacbook": "galleryImageMacbook",
       "galleryImageWatch": "galleryImageWatch",
+      "galleryImageTest": "galleryImageTest",
       "galleryImageClassic": "galleryImageClassic",
-      "_style": "/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.home {\n  width: 100%;\n  height: 100%;\n  margin: 0 auto;\n}\n\n.home dd {\n  margin-bottom: 15px;\n}\n\n.home .galleryContainer {\n  height: calc(95vh - 76px);\n}\n\n.home .galleryContainer .gallery {\n  position: relative;\n  z-index: 1;\n  overflow: hidden;\n  height: 100%;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper {\n  height: 100%;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-slider {\n  height: 90%;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-slider .slick-list {\n  height: 100% !important;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-slider .slick-list .slick-track {\n  height: 100%;\n}\n\n.home .galleryContainer .galleryItem {\n  display: block;\n  z-index: 1;\n  overflow: hidden;\n  width: 100%;\n  height: 100%;\n  color: #333;\n  will-change: transform;\n}\n\n.galleryImage {\n  position: relative;\n  z-index: 1;\n  width: 100%;\n  height: 100%;\n}\n\n.galleryImageMacbook {\n  width: auto;\n  height: auto;\n  top: -10%;\n  bottom: -10%;\n  left: 0;\n  right: 0;\n  background-size: auto 100%;\n  background-position: top center;\n  background-repeat: no-repeat;\n  background-image: url(http://localhost:4001/dist/src/containers/Home/hero.jpg);\n}\n\n.galleryImageWatch {\n  background-size: auto 100%;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-image: url(http://localhost:4001/dist/src/containers/Home/jade.jpg);\n}\n\n.galleryImageClassic {\n  background-size: auto 85%;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-image: url(http://localhost:4001/dist/src/containers/Home/jade.jpg);\n}\n"
+      "_style": "/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.home {\n  width: 100%;\n  height: 100%;\n  margin: 0 auto;\n}\n\n.home dd {\n  margin-bottom: 15px;\n}\n\n.home .galleryContainer {\n  height: calc(95vh - 76px);\n}\n\n.home .galleryContainer .gallery {\n  position: relative;\n  z-index: 1;\n  overflow: hidden;\n  height: 100%;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper {\n  height: 100%;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-arrow {\n  z-index: 1000;\n  border-radius: 64px;\n  margin-top: -32px;\n  width: 64px;\n  height: 64px;\n  background-color: rgba(180, 180, 180, 0.25);\n  color: #848484;\n  font-size: 40px;\n  line-height: 65px;\n  text-align: center;\n  opacity: 0.3;\n  transition: opacity 0.5s ease-in-out;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-arrow:hover {\n  opacity: 1;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-prev {\n  left: 18px;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-prev:before {\n  content: \"\";\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-prev:after {\n  font-family: FontAwesome;\n  content: \"\\F104\";\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-next {\n  right: 18px;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-next:before {\n  content: \"\";\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-next:after {\n  font-family: FontAwesome;\n  content: \"\\F105\";\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-slider {\n  height: 90%;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-slider .slick-list {\n  height: 100% !important;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-slider .slick-list .slick-track {\n  height: 100%;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-dots {\n  position: absolute;\n  z-index: 1000;\n  width: 100%;\n  text-align: center;\n  line-height: 1;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-dots .slick-active {\n  opacity: 1 !important;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-dots li {\n  list-style: none;\n  margin: 0 5px;\n  width: 50px;\n  height: 22px;\n  position: relative;\n  opacity: 0.2;\n  transition: opacity 500ms ease;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-dots li button {\n  top: 0;\n  left: 0;\n  width: 50px;\n  height: 2px;\n  outline: none;\n  position: absolute;\n  padding: 10px 0;\n  box-sizing: content-box;\n  background-color: gray;\n  background-clip: content-box;\n}\n\n.home .galleryContainer .gallery .gallerySlideWrapper .slick-dots li button:before {\n  content: \"\";\n}\n\n.home .galleryContainer .galleryItem {\n  display: block;\n  z-index: 1;\n  overflow: hidden;\n  width: 100%;\n  height: 100%;\n  color: #333;\n  will-change: transform;\n}\n\n.galleryImage {\n  position: relative;\n  z-index: 1;\n  width: 100%;\n  height: 100%;\n}\n\n.galleryImageMacbook {\n  width: auto;\n  height: auto;\n  top: -10%;\n  bottom: -10%;\n  left: 0;\n  right: 0;\n  background-size: auto 100%;\n  background-position: top center;\n  background-repeat: no-repeat;\n  background-image: url(http://localhost:4001/dist/src/containers/Home/hero.jpg);\n}\n\n.galleryImageWatch {\n  background-size: auto 100%;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-image: url(http://localhost:4001/dist/src/containers/Home/jade.jpg);\n}\n\n.galleryImageTest {\n  background-size: auto 75%;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-image: url(http://localhost:4001/dist/src/containers/Home/macbookpro_large.jpg);\n}\n\n.galleryImageClassic {\n  background-size: auto 85%;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-image: url(http://localhost:4001/dist/src/containers/Home/jade.jpg);\n}\n"
     },
     "./src/containers/Login/Login.scss": {
       "loginPage": "loginPage",
@@ -288,11 +293,12 @@
     },
     "./src/containers/Promos/Promos.scss": {
       "promoContainer": "promoContainer",
+      "row": "row",
       "promoColumn": "promoColumn",
       "promoContentTop": "promoContentTop",
       "promoRing": "promoRing",
       "promoNecklace": "promoNecklace",
-      "_style": ".promoContainer {\n  width: 100%;\n  padding: 0;\n  margin: 0;\n}\n\n.promoContainer .promoColumn {\n  height: 200px;\n  background-size: contain;\n  background-color: #fafafa;\n  background-clip: content-box;\n  padding-left: 2px;\n  padding-right: 0px;\n  text-align: center;\n}\n\n.promoContainer .promoColumn h2 {\n  font-size: 24px;\n  opacity: 0.87;\n}\n\n.promoContainer .promoColumn h3 {\n  font-size: 22px;\n  opacity: 0.87;\n}\n\n.promoContainer .promoColumn h4 {\n  font-size: 16px;\n  color: #424242;\n}\n\n.promoContainer .promoColumn p {\n  color: #757575;\n  font-size: 14px;\n}\n\n.promoContainer .promoColumn .promoContentTop {\n  margin-top: 20px;\n}\n\n.promoContainer .promoColumn .promoRing {\n  height: 100%;\n  background-size: auto 120%;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-image: url(http://localhost:4001/dist/src/containers/Promos/ring.png);\n  transform: translate(0, -30%);\n}\n\n.promoContainer .promoColumn .promoNecklace {\n  height: 100%;\n  background-size: auto 100%;\n  background-position: center center;\n  background-repeat: no-repeat;\n  background-image: url(http://localhost:4001/dist/src/containers/Promos/necklace.jpg);\n}\n"
+      "_style": ".promoContainer {\n  width: 100%;\n  padding: 0;\n  margin: 0;\n}\n\n.promoContainer .row {\n  margin-left: 0;\n  margin-right: 0;\n}\n\n.promoContainer .promoColumn {\n  height: 200px;\n  background-size: contain;\n  background-color: #fafafa;\n  background-clip: content-box;\n  padding-left: 2px;\n  padding-right: 0px;\n  text-align: center;\n}\n\n.promoContainer .promoColumn h2 {\n  font-size: 24px;\n  opacity: 0.87;\n}\n\n.promoContainer .promoColumn h3 {\n  font-size: 22px;\n  opacity: 0.87;\n}\n\n.promoContainer .promoColumn h4 {\n  font-size: 16px;\n  color: #424242;\n}\n\n.promoContainer .promoColumn p {\n  color: #757575;\n  font-size: 14px;\n}\n\n.promoContainer .promoColumn .promoContentTop {\n  margin-top: 20px;\n}\n\n.promoContainer .promoColumn .promoRing {\n  height: 100%;\n  background-size: auto 120%;\n  background-position: center center;\n  background-repeat: no-repeat;\n  transform: translate(0, -30%);\n}\n\n.promoContainer .promoColumn .promoNecklace {\n  height: 100%;\n  background-size: auto 100%;\n  background-position: center center;\n  background-repeat: no-repeat;\n}\n"
     }
   }
 }

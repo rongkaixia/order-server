@@ -6,34 +6,16 @@ import config from '../../config';
 import Helmet from 'react-helmet';
 import Slider from 'react-slick';
 
-var ReactSlickDemo = React.createClass({
-  render: function() {
-    var settings = {
-      dots: true
-    }
-    return (
-      <div className='container'>
-        <Slider {...settings}>
-          <div><img src='http://placekitten.com/g/400/200' /></div>
-          <div><img src='http://placekitten.com/g/400/200' /></div>
-          <div><img src='http://placekitten.com/g/400/200' /></div>
-          <div><img src='http://placekitten.com/g/400/200' /></div>
-        </Slider>
-      </div>
-    );
-  }
-});
-
 var SampleNextArrow = React.createClass({
   render: function() {
-    return <div {...this.props} style={{right: '10px'}}></div>;
+    return <div {...this.props}></div>;
   }
 });
 
 var SamplePrevArrow = React.createClass({
   render: function() {
     return (
-      <div {...this.props} style={{left: '10px'}}></div>
+      <div {...this.props}></div>
     );
   }
 });
@@ -57,7 +39,10 @@ export default class Home extends Component {
             <Slider {...settings} style={{height: '100%'}}>
               <a className={styles.galleryItem}>
                 {/*<div className={styles.galleryImage}>1</div>*/}
-                <figure className={styles.galleryImage + ' ' + styles.galleryImageClassic}/>
+                <figure className={styles.galleryImage + ' ' + styles.galleryImageTest}/>
+              </a>
+              <a className={styles.galleryItem}>
+                <figure className={styles.galleryImage + ' ' + styles.galleryImageTest}/>
               </a>
             </Slider>
           </div>

@@ -1,5 +1,12 @@
 @import "../../theme/variables.scss";
 
+@mixin transition($transition...) {
+    -moz-transition:    $transition;
+    -o-transition:      $transition;
+    -webkit-transition: $transition;
+    transition:         $transition;
+}
+
 .home {
   width: 100%;
   height: 100%;
@@ -14,8 +21,50 @@
       z-index: 1;
       overflow: hidden;
       height: 100%;
+
       .gallerySlideWrapper {
         height: 100%;
+
+        .slick-arrow {
+          z-index: 1000;
+          border-radius: 64px;
+          margin-top: -32px;
+          width: 64px;
+          height: 64px;
+          background-color: rgba(180,180,180,0.25);
+          color: #848484;
+          font-size: 40px;
+          line-height: 65px;
+          text-align: center;
+          opacity: 0.3;
+          @include transition(opacity 0.5s ease-in-out);
+          &:hover{
+            opacity: 1;
+          }
+        }//slick-arrow
+
+        .slick-prev{
+          left: 18px;
+          &:before {
+            content: "";
+          }
+          &:after {
+            font-family: FontAwesome;
+            content: "\f104";
+          }
+        }
+
+        .slick-next{
+          right: 18px;
+          &:before {
+            content: "";
+          }
+          &:after {
+            font-family: FontAwesome;
+            content: "\f105";
+          }
+        }
+
         .slick-slider {
           height: 90%;
           .slick-list {
@@ -24,8 +73,46 @@
               height: 100%;
             }
           }
+        }//slick-slider
+
+        .slick-dots {
+          position: absolute;
+          z-index: 1000;
+          //bottom: 20px;
+          width: 100%;
+          text-align: center;
+          line-height: 1;
+          .slick-active {
+            opacity: 1 !important;
+          }
+          li {
+            list-style: none;
+            margin: 0 5px;
+            width: 50px;
+            height: 22px;
+            // float: left;
+            position: relative;
+            opacity: 0.2;
+            @include transition(opacity 500ms ease);
+
+            button {
+              top: 0;
+              left: 0;
+              width: 50px;
+              height: 2px;
+              outline: none;
+              position: absolute;
+              padding: 10px 0;
+              box-sizing: content-box;
+              background-color: rgba(128,128,128,1);
+              background-clip:content-box;
+              &:before {
+                content: "";
+              }
+            }
+          }
         }
-      }
+      }//gallerySlideWrapper
     }
 
     .galleryItem {
@@ -66,6 +153,15 @@
   background-position: center center;
   background-repeat: no-repeat;
   background-image: url('./jade.jpg');
+  //top: 5%;
+}
+
+.galleryImageTest {
+  background-size: auto 75%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  // background-image: url('./jade.jpg');
+  background-image: url('./macbookpro_large.jpg');
   //top: 5%;
 }
 
