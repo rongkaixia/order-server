@@ -6,7 +6,7 @@ import { asyncConnect } from 'redux-async-connect';
 import {Grid, Row, Col} from 'react-bootstrap/lib';
 import config from '../../config';
 import Querystring from 'querystring';
-
+var Card = require('react-material-card')
 /* eslint-disable */ 
 @connect(state => ({location: state.routing.location}))
 export default class Propagation extends Component {
@@ -36,35 +36,47 @@ export default class Propagation extends Component {
       <Grid className={styles.promoContainer}>
         <Row>
           <Col xs={12} sm={6} md={6} lg={3} className={styles.promoColumn}>
-            <div className={styles.promoContentTop}>
-              <h4>戒指</h4>
-              <p>项链吊坠有多重设计。搭配18k白金、黄金和双色项链来表达您的个人风格</p>
-            </div>
-            <figure className={styles.promoRing}/>
+            <Card onOver={card => card.setLevel(2)} onOut={card => card.setLevel(1)}
+            className="promoCard">
+              <div className={styles.promoContentTop}>
+                <h4>戒指</h4>
+                <p>项链吊坠有多重设计。搭配18k白金、黄金和双色项链来表达您的个人风格</p>
+              </div>
+              <figure className={styles.promoRing}/>
+            </Card>
           </Col>
 
           <Col xs={12} sm={6} md={6} lg={3} className={styles.promoColumn}>
-            {/*<div className={styles.promoContentTop}>
-              <h4>戒指</h4>
-              <p>项链吊坠有多重设计。搭配18k白金、黄金和双色项链来表达您的个人风格</p>
-            </div>*/}
-            <figure className={styles.promoNecklace}/>
+            <Card onOver={card => card.setLevel(2)} onOut={card => card.setLevel(1)}
+            className={styles.promoNecklace}>
+              <div className={styles.promoContentTop}>
+                <h4>戒指</h4>
+                <p>项链吊坠有多重设计。搭配18k白金、黄金和双色项链来表达您的个人风格</p>
+              </div>
+              {/*<figure className={styles.promoNecklace}/>*/}
+            </Card>
           </Col>
 
           <Col xs={12} sm={6} md={6} lg={3} className={styles.promoColumn}>
-            <div className={styles.promoContentTop}>
-              <h4>戒指</h4>
-              <p>项链吊坠有多重设计。搭配18k白金、黄金和双色项链来表达您的个人风格</p>
-            </div>
-            <figure className={styles.promoRing}/>
+            <Card onOver={card => card.setLevel(2)} onOut={card => card.setLevel(1)}
+            className="promoCard">
+              <div className={styles.promoContentTop}>
+                <h4>戒指</h4>
+                <p>项链吊坠有多重设计。搭配18k白金、黄金和双色项链来表达您的个人风格</p>
+              </div>
+              <figure className={styles.promoEaring}/>
+            </Card>
           </Col>
 
           <Col xs={12} sm={6} md={6} lg={3} className={styles.promoColumn}>
-            <div className={styles.promoContentTop}>
-              <h4>戒指</h4>
-              <p>项链吊坠有多重设计。搭配18k白金、黄金和双色项链来表达您的个人风格</p>
-            </div>
-            <figure className={styles.promoRing}/>
+            <Card onOver={card => card.setLevel(2)} onOut={card => card.setLevel(1)}
+            className="promoCard">
+              <div className={styles.promoContentTop}>
+                <h4>戒指</h4>
+                <p>项链吊坠有多重设计。搭配18k白金、黄金和双色项链来表达您的个人风格</p>
+              </div>
+              <figure className={styles.promoRing}/>
+            </Card>
           </Col>
 
         </Row>

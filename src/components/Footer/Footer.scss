@@ -6,6 +6,10 @@ $footerColumnHeight: 170px;
 
 .footer {
   // background-color: #fafafa;
+  @include media(">=tablet") {
+    margin-left: 60px;
+    margin-right: 60px;
+  }
   @include media("<tablet") {
     padding-left: 20px;
     padding-right: 20px;
@@ -36,7 +40,7 @@ $footerColumnHeight: 170px;
     display: flex;
     flex-flow: row wrap;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     text-align: center;
   }
 
@@ -45,9 +49,9 @@ $footerColumnHeight: 170px;
     display: flex;
     flex-flow: row wrap;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     align-content: center;
-    text-align: center;
+    text-align: end;
     p {
       font-size: 14px;
       opacity: 0.38;
@@ -89,6 +93,51 @@ $footerColumnHeight: 170px;
     }
   }
 
+  .helpContent {
+    height: $footerColumnHeight;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    flex-flow: row wrap;
+  }
+
+  .helpRow {
+    display: flex;
+    flex-flow: row wrap;
+    @include media(">=tablet") {
+      align-items: center;
+      // justify-content: center;
+      align-content: center;
+      text-align: center;
+      width: 70%;
+    }
+
+    @include media("<tablet") {
+      border-bottom: 1px solid #e3e3e3;
+    }
+
+    h4 {
+      // width: 100%;
+      margin: 5;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      li {
+        float: left;
+        color: #757575;
+        font-size: 14px;
+        padding: 6px 0;
+        line-height: 1;
+        padding-left: 40px;
+        // width: 100%;
+      }
+    }
+  }//helpRow
+
   .helpColumn {
     display: flex;
     flex-flow: row wrap;
@@ -96,8 +145,9 @@ $footerColumnHeight: 170px;
       height: $footerColumnHeight;
       align-items: center;
       justify-content: center;
-      align-content: center;
+      align-content: flex-start;
       text-align: center;
+      padding-top: 20px;
     }
 
     @include media("<tablet") {
@@ -122,6 +172,7 @@ $footerColumnHeight: 170px;
       }
     }
   }
+
 }
 
 .copyright {

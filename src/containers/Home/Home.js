@@ -39,7 +39,7 @@ export default class Home extends Component {
             <Slider {...settings} style={{height: '100%'}}>
               <a className={styles.galleryItem}>
                 {/*<div className={styles.galleryImage}>1</div>*/}
-                <figure className={styles.galleryImage + ' ' + styles.galleryImageTest}/>
+                <figure className={styles.galleryImage + ' ' + styles.galleryImageClassic}/>
               </a>
               <a className={styles.galleryItem}>
                 <figure className={styles.galleryImage + ' ' + styles.galleryImageTest}/>
