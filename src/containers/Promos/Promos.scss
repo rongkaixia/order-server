@@ -4,17 +4,18 @@ $promoColumnHeight: 200px;
 	width: 100%;
 	padding: 0;
 	margin: 0;
+  background-color: #fafafa;
 	.row {
-		margin-left: 0;
-		margin-right: 0;
+		margin: 2px 0 0px 0;
 	}
 	.promoColumn {
 		height: $promoColumnHeight;
     background-size: contain;
-    background-color: #fafafa;
+    background-color: #ffffff;
     background-clip: content-box;
-    padding-left: 2px;
-    padding-right: 0px;
+    padding-left: 1px;
+    padding-right: 1px;
+    padding-bottom: 2px;
     text-align: center;
 
 		h2 {
