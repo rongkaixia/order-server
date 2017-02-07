@@ -15,6 +15,7 @@ import {
     AccountCoupon,
     AccountOrder,
     OrderDetail,
+    ProductNeck,
     Necklace,
     BuyNecklace,
     Cart,
@@ -80,7 +81,7 @@ export default (store) => {
         <Route path="buy/checkout" component={Checkout}/>
         <Route path="buy/payment/:id" component={Payment}/>
       </Route>
-      {/*<Route path="necklace" component={Necklace}/>*/}
+      <Route path="necklace" component={ProductNeck}/>
       <Route path="shop/buy-necklace">
         <IndexRoute component={Necklace}/>
         <Route path=":id" component={BuyNecklace}/>

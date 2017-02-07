@@ -39,7 +39,7 @@ export default class Propagation extends Component {
             <Card onOver={card => card.setLevel(2)} onOut={card => card.setLevel(1)}
             className="promoCard">
               <div className={styles.promoContentTop}>
-                <h4>戒指</h4>
+                <h6>戒指</h6>
                 <p>项链吊坠有多重设计。搭配18k白金、黄金和双色项链来表达您的个人风格</p>
               </div>
               <figure className={styles.promoRing}/>
@@ -50,7 +50,7 @@ export default class Propagation extends Component {
             <Card onOver={card => card.setLevel(2)} onOut={card => card.setLevel(1)}
             className={styles.promoNecklace}>
               <div className={styles.promoContentTop}>
-                <h4>戒指</h4>
+                <h6>戒指</h6>
                 <p>项链吊坠有多重设计。搭配18k白金、黄金和双色项链来表达您的个人风格</p>
               </div>
               {/*<figure className={styles.promoNecklace}/>*/}
@@ -61,7 +61,7 @@ export default class Propagation extends Component {
             <Card onOver={card => card.setLevel(2)} onOut={card => card.setLevel(1)}
             className="promoCard">
               <div className={styles.promoContentTop}>
-                <h4>戒指</h4>
+                <h6>戒指</h6>
                 <p>项链吊坠有多重设计。搭配18k白金、黄金和双色项链来表达您的个人风格</p>
               </div>
               <figure className={styles.promoEaring}/>
@@ -72,7 +72,7 @@ export default class Propagation extends Component {
             <Card onOver={card => card.setLevel(2)} onOut={card => card.setLevel(1)}
             className="promoCard">
               <div className={styles.promoContentTop}>
-                <h4>礼品</h4>
+                <h6>礼品</h6>
                 <p>多样礼物，总有一款适合您</p>
               </div>
               <figure className={styles.promoOther}/>

@@ -4,8 +4,10 @@ $slick-arrow-color: blue;
 
 @import "~slick-carousel/slick/slick.scss";
 @import "~slick-carousel/slick/slick-theme.scss";
+@import "../../theme/variables.scss";
 
 .app {
+  font-family: $font-family-Yahei;
   .brand {
     position: absolute;
     $size: 40px;
@@ -27,3 +29,40 @@ $slick-arrow-color: blue;
 .appContent {
   // margin: 50px 0; // for fixed navbar
 }
+
+h1 {
+  font-size: 56px;
+  opacity: 0.87;
+}
+
+h2 {
+  font-size: 45px;
+  opacity: 0.87;
+}
+
+h3 {
+  font-size: 34px;
+  opacity: 0.87;
+}
+
+h4 {
+  font-size: 24px;
+  opacity: 0.87;
+}
+h5 {
+  font-size: 22px;
+  opacity: 0.87;
+}
+
+h6 {
+  font-size: 16px;
+  color: #424242;
+}
+
+// a {
+//     color: #0070c9;
+// }
+// p {
+//   color: #757575;
+//   font-size: 14px;
+// }

@@ -113,9 +113,9 @@ export default class Footer extends Component {
           <Row>
             <Col md={2} sm={2} xs={12}>
               <div className={styles.helpColumn}>
-                <h4 onClick={this.handleCollapseOrderService.bind(this)}>
+                <h6 onClick={this.handleCollapseOrderService.bind(this)}>
                 订单服务
-                </h4>
+                </h6>
                 <Collapse in={this.state.openOrderService}>
                   <ul>
                     <li>购物指南</li>
@@ -127,9 +127,9 @@ export default class Footer extends Component {
             </Col>
             <Col md={2} sm={2} xs={12}>
               <div className={styles.helpColumn}>
-                <h4 onClick={this.handleCollapseSupport.bind(this)}>
+                <h6 onClick={this.handleCollapseSupport.bind(this)}>
                 服务支持
-                </h4>
+                </h6>
                 <Collapse in={this.state.openSupport}>
                   <ul>
                     <li>珠宝保养</li>
@@ -140,9 +140,9 @@ export default class Footer extends Component {
             </Col>
             <Col md={2} sm={2} xs={12}>
               <div className={styles.helpColumn}>
-                <h4 onClick={this.handleCollapseAboutUs.bind(this)}>
+                <h6 onClick={this.handleCollapseAboutUs.bind(this)}>
                 关于我们
-                </h4>
+                </h6>
                 <Collapse in={this.state.openAboutUs}>
                   <ul>
                     <li>了解我们</li>
@@ -166,12 +166,12 @@ export default class Footer extends Component {
                 </dl>*/}
             <Col md={3} sm={3} xs={12}>
               <div className={styles.footerBrand}>
-                <h2>EchoMoment<p>一刻珠宝</p></h2>
+                <h4>EchoMoment<p>一刻珠宝</p></h4>
               </div>
             </Col>
             <Col md={3} sm={3} xs={12}>
               <div className={styles.contactUs}>
-                <h3>400-619-0909<p>周一至周五09:00~18:00</p></h3>
+                <h5>400-619-0909<p>周一至周五09:00~18:00</p></h5>
                 <div className={styles.contactSocial}>
                   <a className={styles.contactWechat} />
                   <a className={styles.contactQQ} />
@@ -208,9 +208,9 @@ export default class Footer extends Component {
         <div>
           <Col md={2} sm={2} xs={12}>
             <div className={styles.helpRow}>
-              <h4 onClick={this.handleCollapseOrderService.bind(this)}>
+              <h6 onClick={this.handleCollapseOrderService.bind(this)}>
               订单服务
-              </h4>
+              </h6>
               <Collapse in={this.state.openOrderService}>
                 <ul>
                   <li>购物指南</li>
@@ -222,9 +222,9 @@ export default class Footer extends Component {
           </Col>
           <Col md={2} sm={2} xs={12}>
             <div className={styles.helpRow}>
-              <h4 onClick={this.handleCollapseSupport.bind(this)}>
+              <h6 onClick={this.handleCollapseSupport.bind(this)}>
               服务支持
-              </h4>
+              </h6>
               <Collapse in={this.state.openSupport}>
                 <ul>
                   <li>珠宝保养</li>
@@ -235,9 +235,9 @@ export default class Footer extends Component {
           </Col>
           <Col md={2} sm={2} xs={12}>
             <div className={styles.helpRow}>
-              <h4 onClick={this.handleCollapseAboutUs.bind(this)}>
+              <h6 onClick={this.handleCollapseAboutUs.bind(this)}>
               关于我们
-              </h4>
+              </h6>
               <Collapse in={this.state.openAboutUs}>
                 <ul>
                   <li>了解我们</li>
@@ -253,9 +253,9 @@ export default class Footer extends Component {
         <Col md={6} sm={6} xs={12}>
           <div className={styles.helpContent}>
             <div className={styles.helpRow}>
-              <h4>
+              <h6>
               订单服务
-              </h4>
+              </h6>
               <ul>
                 <li>购物指南</li>
                 <li>支付方式</li>
@@ -263,9 +263,9 @@ export default class Footer extends Component {
               </ul>
             </div>
             <div className={styles.helpRow}>
-              <h4>
+              <h6>
               服务支持
-              </h4>
+              </h6>
               <ul>
                 <li>珠宝保养</li>
                 <li>售后服务</li>
@@ -273,9 +273,9 @@ export default class Footer extends Component {
             </div>
 
             <div className={styles.helpRow}>
-              <h4>
+              <h6>
               关于我们
-              </h4>
+              </h6>
               <ul>
                 <li>了解我们</li>
                 <li>加入我们</li>
@@ -298,12 +298,12 @@ export default class Footer extends Component {
         <Row className={styles.footerContent}>
           <Col md={3} sm={3} xs={12}>
             <div className={styles.footerBrand}>
-              <h2>EchoMoment<p>一刻珠宝</p></h2>
+              <h4>EchoMoment<p>一刻珠宝</p></h4>
             </div>
           </Col>
           <Col md={3} sm={3} xs={12}>
             <div className={styles.contactUs}>
-              <h3>400-619-0909<p>周一至周五09:00~18:00</p></h3>
+              <h5>400-619-0909<p>周一至周五09:00~18:00</p></h5>
               <div className={styles.contactSocial}>
                 <a className={styles.contactWechat} />
                 <a className={styles.contactQQ} />

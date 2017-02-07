@@ -1,11 +1,6 @@
-@import "../../theme/variables.scss";
 @import "~include-media/dist/_include-media.scss";
 
 $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
-
-.navbar {
-  font-family: $font-family-Yahei;
-}
 
 .navbar-default {
   background-color: #fefefe;
