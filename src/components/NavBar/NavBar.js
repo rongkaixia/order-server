@@ -56,19 +56,19 @@ export default class NavBar extends Component {
 
         <Navbar.Collapse eventKey={0}>
           <Nav className={styles.navbarNavLeft}>
-            <LinkContainer to="/necklace">
+            <LinkContainer to="/shop/buy-necklace">
               <NavItem eventKey={1}>戒指</NavItem>
             </LinkContainer>
-            <LinkContainer to="/necklace2">
+            <LinkContainer to="/shop/buy-necklace2">
               <NavItem eventKey={2}>项链/吊坠</NavItem>
             </LinkContainer>
-            <LinkContainer to="/necklace3">
+            <LinkContainer to="/shop/buy-necklac3">
               <NavItem eventKey={3}>耳钉/耳环</NavItem>
             </LinkContainer>
-            <LinkContainer to="/necklace4">
+            <LinkContainer to="/shop/buy-necklac4">
               <NavItem eventKey={4}>套装</NavItem>
             </LinkContainer>
-            <LinkContainer to="/necklace5">
+            <LinkContainer to="/shop/buy-necklace5">
               <NavItem eventKey={8}>礼品</NavItem>
             </LinkContainer>
             {/*user &&

@@ -12,7 +12,7 @@ export AccountAddress from './Account/Address';
 export AccountCoupon from './Account/Coupon';
 export AccountOrder from './Account/Order/Order';
 export OrderDetail from './Account/Order/Detail';
-export Necklace from './Product/Necklace/Necklace';
+export Necklace from './Shop/Necklace/Necklace';
 export BuyNecklace from './Shop/BuyNecklace/BuyNecklace';
 export Cart from './Cart/Cart';
 export Checkout from './Order/Buy/Checkout';

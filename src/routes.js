@@ -80,8 +80,11 @@ export default (store) => {
         <Route path="buy/checkout" component={Checkout}/>
         <Route path="buy/payment/:id" component={Payment}/>
       </Route>
-      <Route path="necklace" component={Necklace}/>
-      <Route path="shop/buy-necklace/:id" component={BuyNecklace}/>
+      {/*<Route path="necklace" component={Necklace}/>*/}
+      <Route path="shop/buy-necklace">
+        <IndexRoute component={Necklace}/>
+        <Route path=":id" component={BuyNecklace}/>
+      </Route>
       <Route path="cart" component={Cart}/>
       { /* Routes */ }
       <Route onEnter={requireNotLogin}>
