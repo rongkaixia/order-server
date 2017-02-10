@@ -44,6 +44,9 @@ export default class Home extends Component {
               <a className={styles.galleryItem}>
                 <figure className={styles.galleryImage + ' ' + styles.galleryImageClassic}/>
               </a>
+              <a className={styles.galleryItem}>
+                <figure className={styles.galleryImage + ' ' + styles.galleryImageSnow}/>
+              </a>
             </Slider>
           </div>
         </div>

@@ -5,15 +5,13 @@ import {reduxForm} from 'redux-form';
 import Helmet from 'react-helmet';
 import { asyncConnect } from 'redux-async-connect';
 import {UserCenterLeftPanel} from 'containers';
-import Image from 'react-bootstrap/lib/Image';
-import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
-import Button from 'react-bootstrap/lib/Button';
 import { routeActions } from 'react-router-redux';
 import * as shopAction from 'redux/modules/shop';
 import {addCart, loadCart} from 'redux/modules/cart';
 import Config from 'config';
 import Querystring from 'querystring';
+import Image from 'react-bootstrap/lib/Image';
+import {Grid, Row, Col, Well, Collapse, ButtonToolbar, ButtonGroup, Button} from 'react-bootstrap/lib';
 
 // TODO: 增加错误展示界面，监听loadInfo的错误
 /* eslint-disable */ 
@@ -231,32 +229,38 @@ export default class UserCenter extends Component {
     const imagePath = this.product.images.hero_image;
     const choicesSection = this.renderSellProps();
     return (
-      <div className={styles.gridItem + " container"}>
-        <div className={styles.selectionImage}>
-          <Image width={400} height={400} alt='400x400' src={imagePath} responsive rounded/>
-        </div>
-        <div className={styles.productSelectionArea}>
-          <p className={styles.introductionTitle}>{product.name}</p>
-          <p className={styles.introductionSummary}>{product.name}</p>
-          {choicesSection}
-          <p className={styles.subTitle}>{"选择数量"}</p>
-          <ButtonGroup>
-            <Button bsSize="large" onClick={this.decreaseNum.bind(this)}>-</Button>
-            <Button bsSize="large">{num}</Button>
-            <Button bsSize="large" onClick={this.increaseNum.bind(this)}>+</Button>
-          </ButtonGroup>
-          <p className={styles.chooseOptionComment}></p>
-          { realPayAmt && <p>{realPayAmt}</p>}
-          <form id="shop-form" action={"http://" + Config.orderDomain + "/buy/checkout"} 
-          method="post" onSubmit={this.handleSubmit.bind(this)}>
-            <input type="hidden" name="items[][skuId]" value={skuId} />
-            <input type="hidden" name="items[][num]" value={num} />
-            <input name="_csrf" type="hidden" value={authKey} />
-            <Button bsSize="large" bsStyle="info" type="submit">立即购买</Button>
-            <Button bsSize="large" onClick={this.handleAddToCart.bind(this, skuId, num)}>加入购物车</Button>
-          </form>
-          {validateFormError && <div>{validateFormError}</div>}
-        </div>
+      <div className={styles.gridItem}>
+        <Row>
+          <Col xs={12} sm={6} md={6} lg={6} className={styles.fpProductContent}>
+            <div className={styles.selectionImage}>
+              <Image width={400} height={400} alt='400x400' src={imagePath} responsive rounded/>
+            </div>
+          </Col>
+          <Col xs={12} sm={6} md={6} lg={6} className={styles.fpProductContent}>
+            <div className={styles.productSelectionArea}>
+              <p className={styles.introductionTitle}>{product.name}</p>
+              <p className={styles.introductionSummary}>{product.name}</p>
+              {choicesSection}
+              <p className={styles.subTitle}>{"选择数量"}</p>
+              <ButtonGroup>
+                <Button bsSize="large" onClick={this.decreaseNum.bind(this)}>-</Button>
+                <Button bsSize="large">{num}</Button>
+                <Button bsSize="large" onClick={this.increaseNum.bind(this)}>+</Button>
+              </ButtonGroup>
+              <p className={styles.chooseOptionComment}></p>
+              { realPayAmt && <p>{realPayAmt}</p>}
+              <form id="shop-form" action={"http://" + Config.orderDomain + "/buy/checkout"} 
+              method="post" onSubmit={this.handleSubmit.bind(this)}>
+                <input type="hidden" name="items[][skuId]" value={skuId} />
+                <input type="hidden" name="items[][num]" value={num} />
+                <input name="_csrf" type="hidden" value={authKey} />
+                <Button bsSize="large" bsStyle="info" type="submit">立即购买</Button>
+                <Button bsSize="large" onClick={this.handleAddToCart.bind(this, skuId, num)}>加入购物车</Button>
+              </form>
+              {validateFormError && <div>{validateFormError}</div>}
+            </div>
+          </Col>
+        </Row>
       </div>
     );
   }
