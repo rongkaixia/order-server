@@ -29,20 +29,20 @@ export default function reducer(state = initialState, action = {}) {
         productLoading: true
       };
     case LOAD_PRODUCT_SUCCESS:
-      newProducts = state.products;
-      action.products.forEach((product) => {
-        let index = newProducts.findIndex(elem => {return elem._id == product._id})
-        if (index !== -1) {
-          newProducts[index] = product;
-        } else {
-          newProducts.push(product)
-        }
-      })
+      // newProducts = state.products;
+      // action.products.forEach((product) => {
+      //   let index = newProducts.findIndex(elem => {return elem._id == product._id})
+      //   if (index !== -1) {
+      //     newProducts[index] = product;
+      //   } else {
+      //     newProducts.push(product)
+      //   }
+      // })
       return {
         ...state,
         productLoading: false,
         productLoaded: true,
-        products: newProducts,
+        products: action.products,
         loadProductInfoError: false,
         loadProductInfoErrorDesc: action.result_description
       };
@@ -60,20 +60,20 @@ export default function reducer(state = initialState, action = {}) {
         itemLoading: true
       };
     case LOAD_ITEM_SUCCESS:
-      newItems = state.items;
-      action.items.forEach((item) => {
-        let index = newItems.findIndex(elem => {return elem._id == item._id})
-        if (index !== -1) {
-          newItems[index] = item;
-        } else {
-          newItems.push(item)
-        }
-      })
+      // newItems = state.items;
+      // action.items.forEach((item) => {
+      //   let index = newItems.findIndex(elem => {return elem._id == item._id})
+      //   if (index !== -1) {
+      //     newItems[index] = item;
+      //   } else {
+      //     newItems.push(item)
+      //   }
+      // })
       return {
         ...state,
         itemLoading: false,
         itemLoaded: true,
-        items: newItems,
+        items: action.items,
         loadItemInfoError: false,
         loadItemInfoErrorDesc: action.result_description
       };

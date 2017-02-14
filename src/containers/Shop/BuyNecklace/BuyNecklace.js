@@ -56,8 +56,32 @@ export default class UserCenter extends Component {
     skuId: null,
     currentChoices: null,
     num: 1,
-    realPayAmt: null
+    realPayAmt: null,
+    isLocalNavVisable: false
   };
+
+  handleScroll(e) {
+    console.log("========BuyNecklace handleScroll===========")
+    const el = window.document.getElementById("productSelectionHeader")
+    if (el){
+      const bottom = el.getBoundingClientRect().bottom;
+      console.log(JSON.stringify(bottom))
+      if (this.state.isLocalNavVisable && bottom > 0) {
+        this.setState({isLocalNavVisable: false})
+      }
+      if (!this.state.isLocalNavVisable && bottom <= 0) {
+        this.setState({isLocalNavVisable: true})
+      }
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll.bind(this));
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll.bind(this));
+  }
 
   componentWillMount(){
     this.product = null;
@@ -164,20 +188,21 @@ export default class UserCenter extends Component {
                      .then(() => { return this.props.loadCart()})
   }
 
-  renderChoice(choiceKey, choiceValues, availableSellProps) {
+  renderChoice(choiceKey, choiceValues, availableSellProps, isHeroButton) {
     const styles = require('./BuyNecklace.scss');
     const currentChoices = this.state.currentChoices;
     const option = choiceValues.map((v) => {
       let active = currentChoices && currentChoices[choiceKey] === v;
       let disabled = (availableSellProps.indexOf(v) == -1)
+        // <Button bsSize="large" disabled={disabled} active={active} onClick={this.setChoicesAndPricing.bind(this, choiceKey, v)}>
       return (
-        <Button bsSize="large" disabled={disabled} active={active} onClick={this.setChoicesAndPricing.bind(this, choiceKey, v)}>
+        <Button bsClass={styles.heroButton} bsSize="large" disabled={disabled} active={active} onClick={this.setChoicesAndPricing.bind(this, choiceKey, v)}>
         {v}
         </Button>
       );
     })
     return (
-      <div>
+      <div className={styles.selection}>
         <p className={styles.subTitle}>{choiceKey}</p>
         <ButtonToolbar>
           {option}
@@ -224,30 +249,45 @@ export default class UserCenter extends Component {
   renderItem(product) {
       // <div className="col-md-3" style={{width:'250px', height:'180px'}}>
     const {shop, authKey, location} = this.props;
-    const {currentChoices, num, skuId, realPayAmt, validateFormError} = this.state;
+    const {isLocalNavVisable, currentChoices, num, skuId, realPayAmt, validateFormError} = this.state;
     const styles = require('./BuyNecklace.scss');
     const imagePath = this.product.images.hero_image;
     const choicesSection = this.renderSellProps();
     return (
       <div className={styles.gridItem}>
+        <div className={[styles.localnav, isLocalNavVisable==true?"active":""].join(' ')}>
+          <div className={styles.navContent}>
+            <h6>
+            {product.name}
+            { realPayAmt && <span className={styles.price}>{'¥' + realPayAmt}</span>}
+            </h6>
+          </div>
+        </div>
         <Row>
-          <Col xs={12} sm={6} md={6} lg={6} className={styles.fpProductContent}>
+          <Col xs={12} sm={6} md={6} lg={6} className={styles.productColumn}>
             <div className={styles.selectionImage}>
               <Image width={400} height={400} alt='400x400' src={imagePath} responsive rounded/>
             </div>
           </Col>
-          <Col xs={12} sm={6} md={6} lg={6} className={styles.fpProductContent}>
+          <Col xs={12} sm={6} md={6} lg={6} className={styles.productColumn}>
             <div className={styles.productSelectionArea}>
-              <p className={styles.introductionTitle}>{product.name}</p>
-              <p className={styles.introductionSummary}>{product.name}</p>
+              <div className={styles.productSelectionHeader} id={"productSelectionHeader"}>
+                <h3 className={styles.introductionTitle}>{product.name}</h3>
+                <p className={styles.introductionSummary}>
+                {product.name}
+                { realPayAmt && <span className={styles.price}>{'¥' + realPayAmt}</span>}
+                </p>
+              </div>
               {choicesSection}
-              <p className={styles.subTitle}>{"选择数量"}</p>
-              <ButtonGroup>
-                <Button bsSize="large" onClick={this.decreaseNum.bind(this)}>-</Button>
-                <Button bsSize="large">{num}</Button>
-                <Button bsSize="large" onClick={this.increaseNum.bind(this)}>+</Button>
-              </ButtonGroup>
-              <p className={styles.chooseOptionComment}></p>
+              <div className={styles.selection}>
+                <p className={styles.subTitle}>{"选择数量"}</p>
+                <ButtonGroup>
+                  <Button bsSize="large" onClick={this.decreaseNum.bind(this)}>-</Button>
+                  <Button bsSize="large">{num}</Button>
+                  <Button bsSize="large" onClick={this.increaseNum.bind(this)}>+</Button>
+                </ButtonGroup>
+                <p className={styles.chooseOptionComment}></p>
+              </div>
               { realPayAmt && <p>{realPayAmt}</p>}
               <form id="shop-form" action={"http://" + Config.orderDomain + "/buy/checkout"} 
               method="post" onSubmit={this.handleSubmit.bind(this)}>
@@ -273,7 +313,7 @@ export default class UserCenter extends Component {
     }
 
     return (
-      <div className={styles.necklacePage + ' container'}>
+      <div className={styles.buyNecklacePage}>
         {itemView}
       </div>
     );

@@ -2,9 +2,9 @@ import ApiPath from 'api/ApiPath';
 
 const CHECKOUT = 'redux-example/checkout/CHECKOUT';
 
-const LOAD_ITEM = 'redux-example/product/LOAD_ITEM';
-const LOAD_ITEM_SUCCESS = 'redux-example/product/LOAD_ITEM_SUCCESS';
-const LOAD_ITEM_FAIL = 'redux-example/product/LOAD_ITEM_FAIL';
+const LOAD_ITEM = 'redux-example/checkout/LOAD_ITEM';
+const LOAD_ITEM_SUCCESS = 'redux-example/checkout/LOAD_ITEM_SUCCESS';
+const LOAD_ITEM_FAIL = 'redux-example/checkout/LOAD_ITEM_FAIL';
 
 const PRICING = 'redux-example/checkout/PRICING';
 const PRICE_SUCCESS = 'redux-example/checkout/PRICE_SUCCESS';
