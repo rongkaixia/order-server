@@ -44,7 +44,9 @@ export default class NavBar extends Component {
       returnTo = '?' + Querystring.stringify({return_to: redirectPath});
     }
     return (
-      <Navbar className={styles.navbar} style={{'margin-bottom': '0px'}}>
+      <Navbar className={styles.navbar} 
+              style={{'margin-bottom': '0px'}}
+              id={"navbar"}>
         <Navbar.Header>
           <Navbar.Brand>
             <IndexLink to="/">

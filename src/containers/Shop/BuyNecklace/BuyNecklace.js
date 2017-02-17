@@ -12,6 +12,7 @@ import Config from 'config';
 import Querystring from 'querystring';
 import Image from 'react-bootstrap/lib/Image';
 import {Grid, Row, Col, Well, Collapse, ButtonToolbar, ButtonGroup, Button} from 'react-bootstrap/lib';
+import Slider from 'react-slick';
 
 // TODO: 增加错误展示界面，监听loadInfo的错误
 /* eslint-disable */ 
@@ -57,13 +58,15 @@ export default class UserCenter extends Component {
     currentChoices: null,
     num: 1,
     realPayAmt: null,
-    isLocalNavVisable: false
+    isLocalNavVisable: false,
+    isMobileLocalNavFixedTop: false
   };
 
   handleScroll(e) {
-    console.log("========BuyNecklace handleScroll===========")
     const el = window.document.getElementById("productSelectionHeader")
+    const navbar = window.document.getElementById("navbar")
     if (el){
+      console.log("========productSelectionHeader handleScroll===========")
       const bottom = el.getBoundingClientRect().bottom;
       console.log(JSON.stringify(bottom))
       if (this.state.isLocalNavVisable && bottom > 0) {
@@ -71,6 +74,17 @@ export default class UserCenter extends Component {
       }
       if (!this.state.isLocalNavVisable && bottom <= 0) {
         this.setState({isLocalNavVisable: true})
+      }
+    }
+    if (navbar){
+      console.log("========navbar handleScroll===========")
+      const bottom = navbar.getBoundingClientRect().bottom;
+      console.log(JSON.stringify(bottom))
+      if (!this.state.isMobileLocalNavFixedTop && bottom <= 0) {
+        this.setState({isMobileLocalNavFixedTop: true})
+      }
+      if (this.state.isMobileLocalNavFixedTop && bottom > 0) {
+        this.setState({isMobileLocalNavFixedTop: false})
       }
     }
   }
@@ -188,9 +202,75 @@ export default class UserCenter extends Component {
                      .then(() => { return this.props.loadCart()})
   }
 
+  renderSlider() {
+    const settings = {
+      dots: true,
+      adaptiveHeight: true,
+    };
+    const styles = require('./BuyNecklace.scss');
+    return (
+      <article className={styles.galleryContainer}>
+        <div className={styles.gallery}>
+          <div className={styles.gallerySlideWrapper}>
+            <Slider {...settings} style={{height: '100%'}}>
+              <a className={styles.galleryItem}>
+                {/*<div className={styles.galleryImage}>1</div>*/}
+                <figure className={styles.galleryImage + ' ' + styles.galleryImageTest}/>
+              </a>
+              <a className={styles.galleryItem}>
+                <figure className={styles.galleryImage + ' ' + styles.galleryImageClassic}/>
+              </a>
+              <a className={styles.galleryItem}>
+                <figure className={styles.galleryImage + ' ' + styles.galleryImageSnow}/>
+              </a>
+            </Slider>
+          </div>
+        </div>
+      </article>
+    );
+  }
+
+  renderLocalNav(product) {
+    const styles = require('./BuyNecklace.scss');
+    const {authKey} = this.props;
+    const {isLocalNavVisable, isMobileLocalNavFixedTop, currentChoices, num, skuId, realPayAmt} = this.state;
+    let summaryStr = ""
+    const summary = Object.keys(currentChoices).map(key => {
+      return (
+        <li>{key + ":" + currentChoices[key]}</li>
+      );
+    })
+    return (
+      <div className={[styles.localnavbar, 
+                      isLocalNavVisable==true?"active":"", 
+                      isMobileLocalNavFixedTop==true?"fixTop":""].join(' ')}
+      id = {"localnavbar"}>
+        <div className={styles.nav}>
+          <div className={styles.navContent}>
+            <div className={styles.summary}>
+              <p className={styles.name}> {product.name} </p>
+              <ul> {summary} </ul>
+            </div>
+            { realPayAmt && <span className={styles.price}>{'¥' + realPayAmt}</span>}
+          </div>
+          <div className={styles.submit}>
+            <form className={styles.submitForm} action={"http://" + Config.orderDomain + "/buy/checkout"} 
+                method="post" onSubmit={this.handleSubmit.bind(this)}>
+              <input type="hidden" name="items[][skuId]" value={skuId} />
+              <input type="hidden" name="items[][num]" value={num} />
+              <input name="_csrf" type="hidden" value={authKey} />
+              <Button bsClass={styles.submitButton} bsSize="large" type="submit">立即购买</Button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   renderChoice(choiceKey, choiceValues, availableSellProps, isHeroButton) {
     const styles = require('./BuyNecklace.scss');
     const currentChoices = this.state.currentChoices;
+    // choiceValues = ["18k白金", "18k黄金", "18k白金", "18k黄金", "18k白金", "18k黄金"]
     const option = choiceValues.map((v) => {
       let active = currentChoices && currentChoices[choiceKey] === v;
       let disabled = (availableSellProps.indexOf(v) == -1)
@@ -253,21 +333,14 @@ export default class UserCenter extends Component {
     const styles = require('./BuyNecklace.scss');
     const imagePath = this.product.images.hero_image;
     const choicesSection = this.renderSellProps();
+    const localnav = this.renderLocalNav(product);
+    const slider = this.renderSlider();
     return (
-      <div className={styles.gridItem}>
-        <div className={[styles.localnav, isLocalNavVisable==true?"active":""].join(' ')}>
-          <div className={styles.navContent}>
-            <h6>
-            {product.name}
-            { realPayAmt && <span className={styles.price}>{'¥' + realPayAmt}</span>}
-            </h6>
-          </div>
-        </div>
+      <div className={styles.buyNecklaceContainer}>
+        {localnav}
         <Row>
           <Col xs={12} sm={6} md={6} lg={6} className={styles.productColumn}>
-            <div className={styles.selectionImage}>
-              <Image width={400} height={400} alt='400x400' src={imagePath} responsive rounded/>
-            </div>
+            {slider}
           </Col>
           <Col xs={12} sm={6} md={6} lg={6} className={styles.productColumn}>
             <div className={styles.productSelectionArea}>
@@ -280,24 +353,23 @@ export default class UserCenter extends Component {
               </div>
               {choicesSection}
               <div className={styles.selection}>
-                <p className={styles.subTitle}>{"选择数量"}</p>
-                <ButtonGroup>
-                  <Button bsSize="large" onClick={this.decreaseNum.bind(this)}>-</Button>
-                  <Button bsSize="large">{num}</Button>
-                  <Button bsSize="large" onClick={this.increaseNum.bind(this)}>+</Button>
-                </ButtonGroup>
+                <p className={styles.subTitle}>{"数量"}</p>
+                <div className={styles.numberSelection}>
+                  <Button bsClass={styles.buttonFocusDisabled} bsSize="large" onClick={this.decreaseNum.bind(this)}>-</Button>
+                  <span className={styles.number}>{num}</span>
+                  <Button bsClass={styles.buttonFocusDisabled} bsSize="large" onClick={this.increaseNum.bind(this)}>+</Button>
+                </div>
                 <p className={styles.chooseOptionComment}></p>
               </div>
-              { realPayAmt && <p>{realPayAmt}</p>}
-              <form id="shop-form" action={"http://" + Config.orderDomain + "/buy/checkout"} 
+              {/*<form id="shop-form" action={"http://" + Config.orderDomain + "/buy/checkout"} 
               method="post" onSubmit={this.handleSubmit.bind(this)}>
                 <input type="hidden" name="items[][skuId]" value={skuId} />
                 <input type="hidden" name="items[][num]" value={num} />
                 <input name="_csrf" type="hidden" value={authKey} />
                 <Button bsSize="large" bsStyle="info" type="submit">立即购买</Button>
                 <Button bsSize="large" onClick={this.handleAddToCart.bind(this, skuId, num)}>加入购物车</Button>
-              </form>
-              {validateFormError && <div>{validateFormError}</div>}
+              </form>*/}
+              {/*validateFormError && <div>{validateFormError}</div>*/}
             </div>
           </Col>
         </Row>
@@ -312,10 +384,6 @@ export default class UserCenter extends Component {
       itemView = this.renderItem(this.product);
     }
 
-    return (
-      <div className={styles.buyNecklacePage}>
-        {itemView}
-      </div>
-    );
+    return itemView;
   }
 }
