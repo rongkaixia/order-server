@@ -167,6 +167,11 @@ export default class Footer extends Component {
             <Col md={3} sm={3} xs={12}>
               <div className={styles.footerBrand}>
                 <h4>EchoMoment<p>一刻珠宝</p></h4>
+                <div className={styles.contactSocial + " smHide"}>
+                  <a className={styles.contactWechat} />
+                  <a className={styles.contactQQ} />
+                  <a className={styles.contactWeibo} />
+                </div>
               </div>
             </Col>
             <Col md={3} sm={3} xs={12}>

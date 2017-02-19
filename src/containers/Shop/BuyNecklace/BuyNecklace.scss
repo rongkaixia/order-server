@@ -84,65 +84,90 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
 }
 
 .localnavbar {  
-  top: 0;
-  margin: 0 auto;
+  // top: 0;
   width: 100%;
   height: 60px;
   margin: 0 auto;
+  border-top: 1px solid #d6d6d6;
   border-bottom: 1px solid #d6d6d6;
-  z-index: 1;
-  background: #fff;
-  @include media(">=tablet") {
+  z-index: 9999;
+  background: #fafafa;
+
+  &.fixedBottom {
     position: fixed;
-    visibility: hidden;
-    opacity: 0;
-    &.active {
-      visibility: visible;
-      // display: block;
-      opacity: 0.8;
-    }
+    bottom: 0;
   }
-  @include media("<tablet") {
-    position: relative;
-    opacity: 0.8;
-    &.fixTop {
-      position: fixed !important;
-    }
-  }
+  
+  // @include media(">=tablet") {
+  //   position: fixed;
+  //   visibility: hidden;
+  //   opacity: 0;
+  //   &.active {
+  //     visibility: visible;
+  //     // display: block;
+  //     opacity: 0.8;
+  //   }
+  // }
+  // @include media("<tablet") {
+  //   position: relative;
+  //   opacity: 0.8;
+  //   &.fixTop {
+  //     position: fixed !important;
+  //   }
+  // }
   @include transition(opacity 0.3s 0.1s ease-out);
 
   .nav {
     max-width: 980px;
-    margin: 0 0 0 auto;
+    margin: 0 auto;
     height: 100%;
   }
 
+  .amount {
+    height: 100%;
+    right: 10px;
+    bottom: 25px;
+    color: #de4037;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1;
+    padding-right: 16px;
+    display: flex;
+    align-items: center;
+    float: right;
+    @include media("<tablet") {
+      display: none;
+    }
+  }
+
+
   .submit {
-    width: 30%;
-    float: left;
+    // width: 30%;
+    float: right;
     height: 100%;
     .submitForm {
       height: 100%;
     }
     .submitButton {
-      display: inline-block;
-      line-height: 1rem;
+      padding: 10px 16px;
+      margin: 10px;
+      overflow: hidden;
       color: #fff;
       font-size: 14px;
       text-align: center;
       box-sizing: border-box;
+      border-spacing: 0;
       border: none;
       outline: none;
+      // cursor: pointer;
       // background-color: #f0415f;
       background-color: #00c3f5;
-      float: right;
-      width: 100%;
-      height: 100%;
+      // float: right;
     }
   }
 
   .navContent {
-    width: 70%;
+    // width: 70%;
     padding: 10px;
     height: 100%;
     display: flex;
@@ -151,11 +176,19 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
     @include media(">=tablet") {
       justify-content: flex-end;
     }
+
+    .header {
+      margin: 0 20px;
+      @include media("<tablet") {
+        display: none;
+      }
+    }
+    
     .summary {
       height: 100%;
       display: flex;
       flex-flow: column;
-      align-items: center;
+      align-items: flex-begin;
       justify-content: center;
 
       .name {
@@ -163,6 +196,14 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
         color: #424242;
         font-weight: 400;
         margin-bottom: 0;
+      }
+
+      .mobileAmount {
+        color: #de4037;
+        padding-left: 15px;
+        @include media(">=tablet") {
+          display: none;
+        }
       }
 
       ul {
@@ -178,27 +219,41 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
         line-height: 1.5;
         color: #999;
         &:not(:last-child):after { // not(:last-child) not work
-          content: ",";
-          padding-right: 10px;
+          content: "|";
+          padding: 0 10px;
         }
         &:last-of-type:after {
           content: "";
-          padding-right: 0;
+          padding: 0;
         }
       }
     }
 
-    .price {
+    .numberWrapper {
       height: 100%;
-      right: 10px;
-      bottom: 25px;
-      color: #de4037;
-      font-weight: 700;
-      font-size: 20px;
-      line-height: 1;
-      padding-left: 16px;
-      display: flex;
-      align-items: center;
+      margin-left: 20px;
+      border-left: 1px solid #d6d6d6;
+      @include media("<tablet") {
+        display: none;
+      }
+
+      .times {
+        &:before {
+          font-family: FontAwesome;
+          content: "x";
+          padding-right: 10px;
+        }
+      }
+      .number {
+        height: 100%;
+        padding-left: 20px;
+        // color: #de4037;
+        font-size: 20px;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        float: right;
+      }
     }
   }
 }
@@ -240,16 +295,6 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
         font-size: 16px;
         color: #757575;
     }
-
-    .price {
-      right: 10px;
-      bottom: 25px;
-      float: right;
-      color: #de4037;
-      font-weight: 700;
-      font-size: 26px;
-      line-height: 1;
-    }
   }
 
   .selection {
@@ -290,52 +335,12 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
   height: calc(95vh - 76px);
   .gallery {
     position: relative;
-    z-index: 1;
+    // z-index: 1;
     overflow: hidden;
     height: 100%;
 
     .gallerySlideWrapper {
       height: 100%;
-
-      .slick-arrow {
-        z-index: 1000;
-        border-radius: 64px;
-        margin-top: -32px;
-        width: 64px;
-        height: 64px;
-        background-color: rgba(180,180,180,0.25);
-        color: #848484;
-        font-size: 35px;
-        line-height: 62px;
-        text-align: center;
-        opacity: 0.3;
-        @include transition(opacity 0.5s ease-in-out);
-        &:hover{
-          opacity: 1;
-        }
-      }//slick-arrow
-
-      .slick-prev{
-        left: 18px;
-        &:before {
-          content: "";
-        }
-        &:after {
-          font-family: FontAwesome;
-          content: "\f104";
-        }
-      }
-
-      .slick-next{
-        right: 18px;
-        &:before {
-          content: "";
-        }
-        &:after {
-          font-family: FontAwesome;
-          content: "\f105";
-        }
-      }
 
       .slick-slider {
         height: 90%;

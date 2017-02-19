@@ -58,35 +58,53 @@ export default class UserCenter extends Component {
     currentChoices: null,
     num: 1,
     realPayAmt: null,
-    isLocalNavVisable: false,
-    isMobileLocalNavFixedTop: false
+    localNavBarFixedBottom: true,
+    localNavBarFixedBottomTop: null
   };
 
   handleScroll(e) {
-    const el = window.document.getElementById("productSelectionHeader")
-    const navbar = window.document.getElementById("navbar")
-    if (el){
-      console.log("========productSelectionHeader handleScroll===========")
-      const bottom = el.getBoundingClientRect().bottom;
-      console.log(JSON.stringify(bottom))
-      if (this.state.isLocalNavVisable && bottom > 0) {
-        this.setState({isLocalNavVisable: false})
-      }
-      if (!this.state.isLocalNavVisable && bottom <= 0) {
-        this.setState({isLocalNavVisable: true})
-      }
+    const localnavbarEl = window.document.getElementById("localnavbar")
+    const productSelectionEl = window.document.getElementById("productSelection")
+
+    if (localnavbarEl && productSelectionEl) {
+      const localnavbarElRect = localnavbarEl.getBoundingClientRect()
+      const productSelectionElRect = productSelectionEl.getBoundingClientRect()
+      console.log("localnavbarEl.top: " + localnavbarElRect.top)
+      console.log("productSelectionEl.bottom: " + productSelectionElRect.bottom)
+      // set localNavBarFixedBottomTop if need
+      if (this.state.localNavBarFixedBottomTop == null && this.state.localNavBarFixedBottom)
+        this.setState({localNavBarFixedBottomTop: localnavbarElRect.top})
+
+      if (this.state.localNavBarFixedBottom && productSelectionElRect.bottom <= localnavbarElRect.top)
+        this.setState({localNavBarFixedBottom: false})
+
+      if (!this.state.localNavBarFixedBottom && productSelectionElRect.bottom > this.state.localNavBarFixedBottomTop)
+        this.setState({localNavBarFixedBottom: true})
     }
-    if (navbar){
-      console.log("========navbar handleScroll===========")
-      const bottom = navbar.getBoundingClientRect().bottom;
-      console.log(JSON.stringify(bottom))
-      if (!this.state.isMobileLocalNavFixedTop && bottom <= 0) {
-        this.setState({isMobileLocalNavFixedTop: true})
-      }
-      if (this.state.isMobileLocalNavFixedTop && bottom > 0) {
-        this.setState({isMobileLocalNavFixedTop: false})
-      }
-    }
+    // const el = window.document.getElementById("productSelectionHeader")
+    // const navbar = window.document.getElementById("navbar")
+    // if (el){
+    //   console.log("========productSelectionHeader handleScroll===========")
+    //   const bottom = el.getBoundingClientRect().bottom;
+    //   console.log(JSON.stringify(bottom))
+    //   if (this.state.isLocalNavVisable && bottom > 0) {
+    //     this.setState({isLocalNavVisable: false})
+    //   }
+    //   if (!this.state.isLocalNavVisable && bottom <= 0) {
+    //     this.setState({isLocalNavVisable: true})
+    //   }
+    // }
+    // if (navbar){
+    //   console.log("========navbar handleScroll===========")
+    //   const bottom = navbar.getBoundingClientRect().bottom;
+    //   console.log(JSON.stringify(bottom))
+    //   if (!this.state.isMobileLocalNavFixedTop && bottom <= 0) {
+    //     this.setState({isMobileLocalNavFixedTop: true})
+    //   }
+    //   if (this.state.isMobileLocalNavFixedTop && bottom > 0) {
+    //     this.setState({isMobileLocalNavFixedTop: false})
+    //   }
+    // }
   }
 
   componentDidMount() {
@@ -233,25 +251,33 @@ export default class UserCenter extends Component {
   renderLocalNav(product) {
     const styles = require('./BuyNecklace.scss');
     const {authKey} = this.props;
-    const {isLocalNavVisable, isMobileLocalNavFixedTop, currentChoices, num, skuId, realPayAmt} = this.state;
+    const {localNavBarFixedBottom, currentChoices, num, skuId, realPayAmt} = this.state;
     let summaryStr = ""
     const summary = Object.keys(currentChoices).map(key => {
       return (
-        <li>{key + ":" + currentChoices[key]}</li>
+        <li>{key + ": " + currentChoices[key]}</li>
       );
     })
     return (
-      <div className={[styles.localnavbar, 
-                      isLocalNavVisable==true?"active":"", 
-                      isMobileLocalNavFixedTop==true?"fixTop":""].join(' ')}
+      <div className={[styles.localnavbar,
+                      localNavBarFixedBottom==true?"fixedBottom":""].join(' ')}
       id = {"localnavbar"}>
         <div className={styles.nav}>
           <div className={styles.navContent}>
+            <p className={styles.header}>
+              你已选择
+            </p>
             <div className={styles.summary}>
-              <p className={styles.name}> {product.name} </p>
+              <p className={styles.name}> 
+                {product.name} 
+                {realPayAmt && 
+                <span className={styles.mobileAmount}>{'¥' + realPayAmt}</span> }
+              </p>
               <ul> {summary} </ul>
             </div>
-            { realPayAmt && <span className={styles.price}>{'¥' + realPayAmt}</span>}
+            <div className={styles.numberWrapper}>
+              <div className={styles.number}><span className={styles.times}></span>{num}</div>
+            </div>
           </div>
           <div className={styles.submit}>
             <form className={styles.submitForm} action={"http://" + Config.orderDomain + "/buy/checkout"} 
@@ -262,6 +288,7 @@ export default class UserCenter extends Component {
               <Button bsClass={styles.submitButton} bsSize="large" type="submit">立即购买</Button>
             </form>
           </div>
+          { realPayAmt && <div className={styles.amount}>{'¥' + realPayAmt}</div>}
         </div>
       </div>
     );
@@ -337,18 +364,16 @@ export default class UserCenter extends Component {
     const slider = this.renderSlider();
     return (
       <div className={styles.buyNecklaceContainer}>
-        {localnav}
-        <Row>
+        <Row id = {"productSelection"}>
           <Col xs={12} sm={6} md={6} lg={6} className={styles.productColumn}>
             {slider}
           </Col>
           <Col xs={12} sm={6} md={6} lg={6} className={styles.productColumn}>
             <div className={styles.productSelectionArea}>
-              <div className={styles.productSelectionHeader} id={"productSelectionHeader"}>
+              <div className={styles.productSelectionHeader}>
                 <h3 className={styles.introductionTitle}>{product.name}</h3>
                 <p className={styles.introductionSummary}>
                 {product.name}
-                { realPayAmt && <span className={styles.price}>{'¥' + realPayAmt}</span>}
                 </p>
               </div>
               {choicesSection}
@@ -373,6 +398,7 @@ export default class UserCenter extends Component {
             </div>
           </Col>
         </Row>
+        {localnav}
       </div>
     );
   }

@@ -78,9 +78,10 @@ export default class UserCenter extends Component {
           </div>
         </section>
 
+
         <section className={styles.fpHero}>
-          <Row className={styles.fpSectionContent}>
-            <Col xs={12} sm={6} md={6} lg={6} className={styles.fpProductContent}>
+          <Row className={styles.fpSectionContentWider}>
+            <Col xs={12} sm={5} md={5} lg={5} className={styles.fpProductContent + " gray"}>
               <div className={styles.centeralign}>
                 <h3>你的下一台电脑，<br/>现更以两种尺寸呈现。</h3>
                 <div className={styles.fpHeroMoreblock}>
@@ -88,22 +89,10 @@ export default class UserCenter extends Component {
                 </div>
               </div>
             </Col>
-            <Col xs={12} sm={6} md={6} lg={6}>
-            <figure className={styles.necklaceSnowWhite}/>
+            <Col xs={12} sm={7} md={7} lg={7} className={styles.columnImage}>
+            <figure className={styles.necklaceSnowBlack}/>
             </Col>
           </Row>
-        </section>
-
-        <section className={styles.fpHero}>
-          <div className={styles.fpBillboard}>
-            <div className={styles.fpProductContent}>
-              <h3 className={styles.fontWhiteLighter}>你的下一台电脑，<br/>现更以两种尺寸呈现。</h3>
-              <div className={styles.fpHeroMoreblock}>
-                <a className={styles.more}>立即购买</a>
-              </div>
-            </div>
-            <figure className={styles.necklaceTradition}/>
-          </div>
         </section>
 
 

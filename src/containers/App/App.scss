@@ -5,6 +5,9 @@ $slick-arrow-color: blue;
 @import "~slick-carousel/slick/slick.scss";
 @import "~slick-carousel/slick/slick-theme.scss";
 @import "../../theme/variables.scss";
+@import "~include-media/dist/_include-media.scss";
+
+$breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
 
 .app {
   font-family: $font-family-Yahei;
@@ -44,6 +47,10 @@ h3 {
   font-size: 34px;
   opacity: 0.87;
   font-weight: 400;
+  @include media("<tablet") {
+    font-size: 26px;
+  }
+
 }
 
 h4 {

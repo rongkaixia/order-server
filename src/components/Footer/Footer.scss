@@ -24,8 +24,6 @@ $footerColumnHeight: 170px;
     max-width: 992px;
   }
 
-  margin-top: 2px;
-
   .footerBrand {
     height: $footerColumnHeight;
     display: flex;
@@ -33,6 +31,7 @@ $footerColumnHeight: 170px;
     align-items: center;
     justify-content: center;
     text-align: center;
+    align-content: center;
   }
 
   .contactUs {
@@ -46,43 +45,53 @@ $footerColumnHeight: 170px;
     p {
       font-size: 14px;
       opacity: 0.38;
+    }  
+    @include media("<tablet") {
+      display: none;
     }
-    .contactSocial {
-      width: 100%;
-      margin-top: -20px;
-      .contactQQ {
-        $size: 40px;
-        display: inline-block;
-        background: url('./qq.png') no-repeat center center;
-        width: $size;
-        height: $size;
-        background-size: 70%;
-        margin: 0 10px 0 0;
-        border-radius: $size / 2;
-      }
-      .contactWeibo {
-        $size: 40px;
-        display: inline-block;
-        background: url('./weibo.png') no-repeat center center;
-        width: $size;
-        height: $size;
-        background-size: 90%;
-        margin: 0 10px 0 0;
-        border-radius: $size / 2;
-      }
-      .contactWechat {
-        $size: 40px;
-        display: inline-block;
-        background: url('./wechat2.png') no-repeat center center;
-        width: $size;
-        height: $size;
-        background-size: 100%;
-        margin: 0 10px 0 0;
-        border-radius: $size / 2;
-      }
 
+  }
+
+  .contactSocial {
+    width: 100%;
+    margin-top: -20px;
+    &.smHide {
+      @include media(">=tablet") {
+        display: none;
+      }
+    }
+    .contactQQ {
+      $size: 40px;
+      display: inline-block;
+      background: url('./qq.png') no-repeat center center;
+      width: $size;
+      height: $size;
+      background-size: 70%;
+      margin: 0 10px 0 0;
+      border-radius: $size / 2;
+    }
+    .contactWeibo {
+      $size: 40px;
+      display: inline-block;
+      background: url('./weibo.png') no-repeat center center;
+      width: $size;
+      height: $size;
+      background-size: 90%;
+      margin: 0 10px 0 0;
+      border-radius: $size / 2;
+    }
+    .contactWechat {
+      $size: 40px;
+      display: inline-block;
+      background: url('./wechat2.png') no-repeat center center;
+      width: $size;
+      height: $size;
+      background-size: 100%;
+      margin: 0 10px 0 0;
+      border-radius: $size / 2;
     }
   }
+
 
   .helpContent {
     height: $footerColumnHeight;
