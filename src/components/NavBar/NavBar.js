@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import { IndexLink } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import { asyncConnect } from 'redux-async-connect';
-import Navbar from 'react-bootstrap/lib/Navbar';
-import Nav from 'react-bootstrap/lib/Nav';
-import NavItem from 'react-bootstrap/lib/NavItem';
+import {Nav, Navbar, NavItem, NavDropdown, MenuItem} from 'react-bootstrap/lib';
 import config from '../../config';
 import Querystring from 'querystring';
 
@@ -18,20 +16,21 @@ export default class NavBar extends Component {
     logout: PropTypes.func.isRequired
   }
 
+  state = {
+    navbarExpanded: false
+  };
+
   handleLogout = (event) => {
     event.preventDefault();
     this.props.logout();
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.location && nextProps.location !== this.currentLocation) {
-  //     // this.setState({previousLocation: nextProps.location});
-  //     this.previousLocation = this.currentLocation;
-  //     this.currentLocation = nextProps.location;
-  //   }
-  // }
+  handleToggle = (expanded) => {
+    this.setState({navbarExpanded: expanded});
+  }
 
   render() {
+    const {navbarExpanded} = this.state;
     const {user, location, cart} = this.props; // eslint-disable-line no-shadow
     let numCart = 0;
     if (cart) {
@@ -43,10 +42,9 @@ export default class NavBar extends Component {
       const redirectPath = location.pathname + location.search;
       returnTo = '?' + Querystring.stringify({return_to: redirectPath});
     }
+    const navbarClassName = ["fixedTop", navbarExpanded?"active":""].join(' ');
     return (
-      <Navbar className={styles.navbar} 
-              style={{'margin-bottom': '0px'}}
-              id={"navbar"}>
+      <Navbar collapseOnSelect className={navbarClassName} onToggle={this.handleToggle.bind(this)}>
         <Navbar.Header>
           <Navbar.Brand>
             <IndexLink to="/">
@@ -57,20 +55,20 @@ export default class NavBar extends Component {
         </Navbar.Header>
 
         <Navbar.Collapse eventKey={0}>
-          <Nav className={styles.navbarNavLeft}>
-            <LinkContainer to="/shop/buy-necklace">
+          <Nav >
+            <LinkContainer to="/shop/buy-ring">
               <NavItem eventKey={1}>戒指</NavItem>
             </LinkContainer>
-            <LinkContainer to="/shop/buy-necklace2">
+            <LinkContainer to="/shop/buy-necklace">
               <NavItem eventKey={2}>项链/吊坠</NavItem>
             </LinkContainer>
-            <LinkContainer to="/shop/buy-necklac3">
+            <LinkContainer to="/shop/buy-earring">
               <NavItem eventKey={3}>耳钉/耳环</NavItem>
             </LinkContainer>
-            <LinkContainer to="/shop/buy-necklac4">
+            <LinkContainer to="/shop/buy-package">
               <NavItem eventKey={4}>套装</NavItem>
             </LinkContainer>
-            <LinkContainer to="/shop/buy-necklace5">
+            <LinkContainer to="/shop/buy-gift">
               <NavItem eventKey={8}>礼品</NavItem>
             </LinkContainer>
             {/*user &&

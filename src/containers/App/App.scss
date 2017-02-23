@@ -33,6 +33,7 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
   // margin: 50px 0; // for fixed navbar
 }
 
+
 h1 {
   font-size: 56px;
   opacity: 0.87;
@@ -57,19 +58,35 @@ h4 {
   font-size: 24px;
   opacity: 0.87;
   font-weight: 400;
+  @include media("<tablet") {
+    font-size: 20px;
+  }
+
 }
+
 h5 {
   font-size: 22px;
   opacity: 0.87;
   font-weight: 400;
+  @include media("<tablet") {
+    font-size: 16px;
+  }
 }
 
 h6 {
   font-size: 16px;
   color: #424242;
   font-weight: 400;
+  @include media("<tablet") {
+    font-size: 12px;
+  }
+
 }
 
+ul {
+  li {
+  }
+}
 // a {
 //     color: #0070c9;
 // }

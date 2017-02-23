@@ -285,7 +285,8 @@ export default class UserCenter extends Component {
               <input type="hidden" name="items[][skuId]" value={skuId} />
               <input type="hidden" name="items[][num]" value={num} />
               <input name="_csrf" type="hidden" value={authKey} />
-              <Button bsClass={styles.submitButton} bsSize="large" type="submit">立即购买</Button>
+              {/*<Button bsClass={styles.submitButton} bsSize="large" type="submit">立即购买</Button>*/}
+              <Button className={"disabled"} bsClass={styles.submitButton} bsSize="large">暂未开放</Button>
             </form>
           </div>
           { realPayAmt && <div className={styles.amount}>{'¥' + realPayAmt}</div>}

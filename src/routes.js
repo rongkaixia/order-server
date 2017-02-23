@@ -18,6 +18,7 @@ import {
     ProductNeck,
     Necklace,
     BuyNecklace,
+    Ring,
     Cart,
     Checkout,
     Payment,
@@ -82,9 +83,14 @@ export default (store) => {
         <Route path="buy/payment/:id" component={Payment}/>
       </Route>
       <Route path="necklace" component={ProductNeck}/>
-      <Route path="shop/buy-necklace">
-        <IndexRoute component={Necklace}/>
-        <Route path=":id" component={BuyNecklace}/>
+      <Route path="shop">
+        <Route path="buy-necklace">
+          <IndexRoute component={Necklace}/>
+          <Route path=":id" component={BuyNecklace}/>
+        </Route>
+        <Route path="buy-ring">
+          <IndexRoute component={Ring}/>
+        </Route>
       </Route>
       <Route path="cart" component={Cart}/>
       { /* Routes */ }

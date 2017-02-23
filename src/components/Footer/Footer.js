@@ -116,12 +116,14 @@ export default class Footer extends Component {
                 <h6 onClick={this.handleCollapseOrderService.bind(this)}>
                 订单服务
                 </h6>
-                <Collapse in={this.state.openOrderService}>
-                  <ul>
-                    <li>购物指南</li>
-                    <li>支付方式</li>
-                    <li>送货服务</li>
-                  </ul>
+                <Collapse in={this.state.openOrderService} timeout={200}>
+                  <div>
+                    <ul>
+                      <li>购物指南</li>
+                      <li>支付方式</li>
+                      <li>送货服务</li>
+                    </ul>
+                  </div>
                 </Collapse>
               </div>
             </Col>
@@ -130,11 +132,13 @@ export default class Footer extends Component {
                 <h6 onClick={this.handleCollapseSupport.bind(this)}>
                 服务支持
                 </h6>
-                <Collapse in={this.state.openSupport}>
-                  <ul>
-                    <li>珠宝保养</li>
-                    <li>售后服务</li>
-                  </ul>
+                <Collapse in={this.state.openSupport} timeout={200}>
+                  <div>
+                    <ul>
+                      <li>珠宝保养</li>
+                      <li>售后服务</li>
+                    </ul>
+                  </div>
                 </Collapse>
               </div>
             </Col>
@@ -143,12 +147,14 @@ export default class Footer extends Component {
                 <h6 onClick={this.handleCollapseAboutUs.bind(this)}>
                 关于我们
                 </h6>
-                <Collapse in={this.state.openAboutUs}>
-                  <ul>
-                    <li>了解我们</li>
-                    <li>加入我们</li>
-                    <li>联系我们</li>
-                  </ul>
+                <Collapse in={this.state.openAboutUs} timeout={200}>
+                  <div>
+                    <ul>
+                      <li>了解我们</li>
+                      <li>加入我们</li>
+                      <li>联系我们</li>
+                    </ul>
+                  </div>
                 </Collapse>
               </div>
             </Col>

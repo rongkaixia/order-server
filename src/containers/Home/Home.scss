@@ -1,4 +1,7 @@
 @import "../../theme/variables.scss";
+@import "~include-media/dist/_include-media.scss";
+
+$breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
 
 @mixin transition($transition...) {
     -moz-transition:    $transition;
@@ -26,6 +29,9 @@
         height: 100%;
 
         .slick-arrow {
+          @include media("<tablet") {
+            display: none !important;
+          }
           z-index: 1000;
           border-radius: 64px;
           margin-top: -32px;

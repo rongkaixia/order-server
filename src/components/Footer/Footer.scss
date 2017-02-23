@@ -157,18 +157,34 @@ $footerColumnHeight: 170px;
     h6 {
       width: 100%;
       margin: 5;
+
+      &.after,
+      &:after {
+        @include media("<tablet") {
+          content: "+";
+          font-size: 14px;
+          font-weight: normal;
+          float: right;
+          padding-right: 10px;
+        }
+      }
     }
 
     ul {
       list-style: none;
       padding: 0;
       li {
+        font-size: 14px;
+        @include media("<tablet") {
+          font-size: 12px;
+          padding-left: 14px;
+        }
         float: left;
         color: #757575;
-        font-size: 14px;
         padding: 6px 0;
         line-height: 1;
         width: 100%;
+
       }
     }
   }
@@ -183,7 +199,7 @@ $footerColumnHeight: 170px;
   margin: 0;
   border-top: 1px solid #e3e3e3;
   h2, h3 {
-    height: 15px;
+    // height: 15px;
     line-height: 15px;
     color: #757575;
     font-size: 100%;

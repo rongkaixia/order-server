@@ -80,6 +80,22 @@ export default class UserCenter extends Component {
 
 
         <section className={styles.fpHero}>
+          <Row className={styles.fpSectionContent}>
+            <Col xs={12} sm={6} md={6} lg={6} smPush={6} mdPush={6} lgPush={6} className={styles.fpProductContent}>
+              <div className={styles.centeralign}>
+                <h3>你的下一台电脑，<br/>现更以两种尺寸呈现。</h3>
+                <div className={styles.fpHeroMoreblock}>
+                  <a className={styles.more}>立即购买</a>
+                </div>
+              </div>
+            </Col>
+            <Col xs={12} sm={6} md={6} lg={6} smPull={6} mdPull={6} lgPull={6}>
+            <figure className={styles.necklaceSnowWhite}/>
+            </Col>
+          </Row>
+        </section>
+
+        <section className={styles.fpHero}>
           <Row className={styles.fpSectionContentWider}>
             <Col xs={12} sm={5} md={5} lg={5} className={styles.fpProductContent + " gray"}>
               <div className={styles.centeralign}>

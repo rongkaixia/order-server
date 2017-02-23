@@ -50,9 +50,10 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       &.gray {
         background-color: #fafafa;
         padding: 15px 10px 0 0;
-        background-clip: padding-box;
+        background-clip: content-box;
         @include media("<tablet") {
           padding: 60px 0 0 0;
+          background-clip: padding-box;
         }
       }
     }
@@ -93,25 +94,6 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
     }
   }
 
-  .necklaceWhite2 {
-    // width: 715px;
-    // height: 1005px;
-    // background-size: 715px 1005px;
-    // background-image: url('./family_ipad_red_large.png');
-    width: 300px;
-    height: 500px;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-image: url('./neck_white_large.png');
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 48px;
-    // margin-right: -50px;
-    // height: 566px;
-    // height: 500px;
-    // float: right;
-  }
-
   .necklaceWhite {
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -145,26 +127,6 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
     @include media("<tablet", "retina2x") {
       background-image: url('./neck_white_small_x2.png');
     }
-    // margin-right: -50px;
-    // height: 566px;
-    // height: 500px;
-    // float: right;
-  }
-
-
-  .necklaceBlack2 {
-    // width: 715px;
-    // height: 1005px;
-    // background-size: 715px 1005px;
-    // background-image: url('./family_ipad_red_large.png');
-    width: auto;
-    height: 600px;
-    background-size: auto 100%;
-    background-repeat: no-repeat;
-    // background-color: #e6b2b2;
-    background-image: url('./hero2.jpg');
-    margin-left: auto;
-    margin-right: auto;
   }
 
   .necklaceBlack {
@@ -202,6 +164,42 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
     }
   }
 
+
+  .necklaceSnowWhite {
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 48px;
+
+    @include media(">=desktop") {
+      width: 405px;
+      height: 500px;
+      background-image: url('./neck_snow_white_large.png');
+    }
+    @include media(">=desktop", "retina2x") {
+      background-image: url('./neck_snow_white_large_x2.png');
+    }
+
+    @include media(">=tablet", "<desktop") {
+      width: 289px;
+      height: 400px;
+      background-image: url('./neck_snow_white_small.png');
+    }
+    @include media(">=tablet", "<desktop", "retina2x") {
+      background-image: url('./neck_snow_white_small_x2.png');
+    }
+
+    @include media("<tablet") {
+      width: 289px;
+      height: 400px;
+      background-image: url('./neck_snow_white_small.png');
+    }
+    @include media("<tablet", "retina2x") {
+      background-image: url('./neck_snow_white_small_x2.png');
+    }
+  }
+
   .necklaceSnowBlack {
     // width: 715px;
     // height: 1005px;
@@ -222,13 +220,7 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
     @include media(">=desktop", "retina2x") {
       background-image: url('./neck_snow_black_large.jpg');
     }
-    @include media("<tablet") {
-      background-image: url('./neck_snow_black_small.jpg');
-      height: 350px;
-    }
-    @include media("<tablet", "retina2x") {
-      background-image: url('./neck_snow_black_small_x2.jpg');
-    }
+
     @include media(">=tablet", "<desktop") {
       height: 400px;
       background-image: url('./neck_snow_black_medium_x2.jpg');
@@ -237,16 +229,13 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       background-image: url('./neck_snow_black_medium_x2.jpg');
     }
 
-  }
-
-  .necklaceSnowWhite {
-    width: 397px;
-    height: 500px;
-    background-size: auto 90%;
-    background-repeat: no-repeat;
-    background-image: url('./snow.png');
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 48px;
+    @include media("<tablet") {
+      margin-top: 0;
+      background-image: url('./neck_snow_black_small.jpg');
+      height: 350px;
+    }
+    @include media("<tablet", "retina2x") {
+      background-image: url('./neck_snow_black_small_x2.jpg');
+    }
   }
 }

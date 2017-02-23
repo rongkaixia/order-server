@@ -9,6 +9,23 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
     transition:         $transition;
 }
 
+.buyNecklaceHome {
+  height: calc(95vh - 76px);
+  .headline {
+    text-align: center;
+    margin-top: 46px;
+    margin-bottom: 48px;
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+  .gridItem {
+    text-align: center;
+    //padding-bottom: 32px;
+    vertical-align: top;
+  }
+}
+
 .buyNecklaceContainer {
   .row {
     margin: 0 auto;
@@ -78,6 +95,7 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       width: 45%;
     }
     @include media("<tablet") {
+      margin: 5px 0;
       width: 100%;
     }
   }
@@ -92,6 +110,11 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
   border-bottom: 1px solid #d6d6d6;
   z-index: 9999;
   background: #fafafa;
+
+  @include media("<tablet") {
+    position: fixed;
+    bottom: 0;
+  }
 
   &.fixedBottom {
     position: fixed;
@@ -159,10 +182,14 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       border-spacing: 0;
       border: none;
       outline: none;
-      // cursor: pointer;
-      // background-color: #f0415f;
       background-color: #00c3f5;
-      // float: right;
+      &.disabled,
+      &[disabled],
+      fieldset[disabled] & {
+        color: #fff;
+        background-image: linear-gradient(#b1b1b1,#a6a6a6);
+        cursor: default;
+      }
     }
   }
 
@@ -434,4 +461,3 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
     //top: 5%;
   }
 }
-

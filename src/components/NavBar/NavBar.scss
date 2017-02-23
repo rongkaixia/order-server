@@ -3,10 +3,51 @@
 $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
 
 .navbar-default {
-  background-color: #fefefe;
+  background-color: #fafafa;
+  // background-color: rgba(236,240,241,0.8);
+  // background-color: rgba(42, 187, 155, 0.8);
+  // border-radius: 0px;
+  // border: 0;
+  &.fixedTop {
+    top: 0;
+    border-width: 0 0 1px;
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    &.active,
+    &:active {
+      height: 100%;
+    }
+  }
+
+  .container {
+    height: 100%;
+    .navbar-collapse {
+      height: 100%;
+      &.in {
+        overflow: hidden;
+      }
+    }
+  }
+
   .navbar-brand {
     color: #000;
     font-size: 24px;
+    @include media("<tablet") {
+      font-size: 20px;
+      width: 100%;
+      padding-left: 0;
+      padding-right: 0;
+      text-align: center;
+    }
+  }
+
+  .navbar-toggle {
+    @include media("<tablet") {
+      position: absolute;
+      left: 10px;
+    }
   }
 
   .nav .navbar-nav{
@@ -21,6 +62,10 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
     .container {
       width: 100%;
     }
+  }
+
+  .navbar-toggle {
+    border-color: transparent;
   }
 }
 
