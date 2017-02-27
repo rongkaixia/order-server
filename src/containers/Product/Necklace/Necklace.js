@@ -53,9 +53,9 @@ export default class UserCenter extends Component {
       <div className={styles.necklacePage}>
         <section className={styles.fpHero}>
           <Row className={styles.fpSectionContent}>
-            <Col xs={12} sm={6} md={6} lg={6} smPush={6} mdPush={6} lgPush={6} className={styles.fpProductContent}>
+            <Col xs={12} sm={6} md={6} lg={6} smPush={6} mdPush={6} lgPush={6} className={styles.fpProductContent + " padTopMore"}>
               <div className={styles.centeralign}>
-                <h3>你的下一台电脑，<br/>现更以两种尺寸呈现。</h3>
+                <h3>经典垂形，<br/>钻石与翡翠的经典结合。</h3>
                 <div className={styles.fpHeroMoreblock}>
                   <a className={styles.more}>立即购买</a>
                 </div>
@@ -69,7 +69,7 @@ export default class UserCenter extends Component {
         <section className={styles.fpHero}>
           <div className={styles.fpBillboard}>
             <div className={styles.fpProductContent}>
-              <h3 className={styles.fontWhiteLighter}>你的下一台电脑，<br/>现更以两种尺寸呈现。</h3>
+              <h3 className={styles.fontWhiteLighter}>翠璨主石，星光璀璨。</h3>
               <div className={styles.fpHeroMoreblock}>
                 <a className={styles.more}>立即购买</a>
               </div>
@@ -83,7 +83,7 @@ export default class UserCenter extends Component {
           <Row className={styles.fpSectionContent}>
             <Col xs={12} sm={6} md={6} lg={6} smPush={6} mdPush={6} lgPush={6} className={styles.fpProductContent}>
               <div className={styles.centeralign}>
-                <h3>你的下一台电脑，<br/>现更以两种尺寸呈现。</h3>
+                <h3>冰钻翠芯，<br/>冷艳登场，只为您。</h3>
                 <div className={styles.fpHeroMoreblock}>
                   <a className={styles.more}>立即购买</a>
                 </div>
@@ -99,7 +99,7 @@ export default class UserCenter extends Component {
           <Row className={styles.fpSectionContentWider}>
             <Col xs={12} sm={5} md={5} lg={5} className={styles.fpProductContent + " gray"}>
               <div className={styles.centeralign}>
-                <h3>你的下一台电脑，<br/>现更以两种尺寸呈现。</h3>
+                <h3>花瓣钻石，<br/>只为翠璨主石。</h3>
                 <div className={styles.fpHeroMoreblock}>
                   <a className={styles.more}>立即购买</a>
                 </div>

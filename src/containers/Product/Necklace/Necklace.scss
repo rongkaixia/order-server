@@ -11,11 +11,19 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
   .fpHeroMoreblock{
     .more{
       // color: #0070c9;
-      font-size: 22px;
+      font-size: 18px;
       line-height: 1.45455;
       font-weight: 300;
       letter-spacing: .016em;
-      // font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
+      // color: #5079d9;
+      color: #0070c9;
+      cursor: pointer;
+      font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
+      &:after {
+        font-family: FontAwesome;
+        content: "\f105";
+        padding-left: 10px;
+      }
     }
   }
 
@@ -47,12 +55,17 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       @include media("<tablet") {
         padding-top: 60px;
       }
+      &.padTopMore {
+        @include media("<tablet") {
+          padding-top: 100px;
+        }
+      }
       &.gray {
         background-color: #fafafa;
         padding: 15px 10px 0 0;
         background-clip: content-box;
         @include media("<tablet") {
-          padding: 60px 0 0 0;
+          padding: 20px 0 20px 0;
           background-clip: padding-box;
         }
       }

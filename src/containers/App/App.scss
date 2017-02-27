@@ -87,10 +87,16 @@ ul {
   li {
   }
 }
+
 // a {
-//     color: #0070c9;
-// }
-// p {
-//   color: #757575;
-//   font-size: 14px;
+//   font-size: 18px;
+//   line-height: 1.45455;
+//   font-weight: 300;
+//   letter-spacing: .016em;
+//   color: #5079d9;
+//   cursor: pointer;
+//   &:after {
+//     font-family: FontAwesome;
+//     content: "\f105";
+//   }
 // }

@@ -9,15 +9,18 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
   // border-radius: 0px;
   // border: 0;
   &.fixedTop {
-    top: 0;
-    border-width: 0 0 1px;
-    position: fixed;
-    right: 0;
-    left: 0;
-    z-index: 1030;
-    &.active,
-    &:active {
-      height: 100%;
+    @include media("<tablet") {
+      top: 0;
+      border-width: 0 0 1px;
+      right: 0;
+      left: 0;
+      z-index: 1030;
+      position: absolute;
+      &.active,
+      &:active {
+        position: fixed;
+        height: 100%;
+      }
     }
   }
 
