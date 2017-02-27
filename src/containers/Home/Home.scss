@@ -72,7 +72,7 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
         }
 
         .slick-slider {
-          height: 90%;
+          height: 100%;
           .slick-list {
             height: 100% !important;
             .slick-track {
@@ -82,12 +82,13 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
         }//slick-slider
 
         .slick-dots {
-          position: absolute;
+          // position: absolute;
           z-index: 1000;
-          //bottom: 20px;
+          bottom: 20px;
           width: 100%;
           text-align: center;
           line-height: 1;
+          // margin-top: -40px;
           .slick-active {
             opacity: 1 !important;
           }
@@ -130,6 +131,47 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       height: 100%;
       color: #333;
       will-change: transform;
+
+      .galleryMoreblock{
+        .more{
+          // color: #0070c9;
+          font-size: 18px;
+          line-height: 1.45455;
+          font-weight: 300;
+          letter-spacing: .016em;
+          // color: #5079d9;
+          color: #0070c9;
+          cursor: pointer;
+          font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
+          &:after {
+            font-family: FontAwesome;
+            content: "\f105";
+            padding-left: 10px;
+          }
+        }
+      }
+
+      .galleryItemContent {
+        h3 {
+          padding-left: 0.5em;
+        }
+        text-align: center;
+        @include media(">=tablet") { // center things
+          justify-content: center;
+          display: flex;
+          flex-flow: column wrap;
+          align-content: center;
+          align-items: center;
+        }
+        @include media("<tablet") {
+          padding-top: 60px;
+        }
+        &.padTopMore {
+          @include media("<tablet") {
+            padding-top: 100px;
+          }
+        }
+      }
     }
 
     .galleryImage {
@@ -137,27 +179,6 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       z-index: 1;
       width: 100%;
       height: 100%;
-    }
-
-    .galleryImageMacbook{
-      width: auto;
-      height: auto;
-      top: -10%;
-      bottom: -10%;
-      left: 0;
-      right: 0;
-      background-size: auto 100%;
-      background-position: top center;
-      background-repeat: no-repeat;
-      background-image: url('./hero.jpg');
-    }
-
-    .galleryImageWatch {
-      background-size: auto 100%;
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-image: url('./jade.jpg');
-      //top: 5%;
     }
 
     .galleryImageTest {
@@ -175,13 +196,75 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       background-repeat: no-repeat;
       background-image: url('./jade.jpg');
       //top: 5%;
-    }    
-    .galleryImageSnow {
-      background-size: auto 85%;
+    }  
+    .galleryImageClassicBlack {
+      width: auto;
+      background-size: auto 80%;
+      background-repeat: no-repeat;
+      margin-left: auto;
+      margin-right: auto;
+      background-position: top;
+      margin-top: 15px;
+      // background-color: #e6b2b2;
+      
+      @include media(">=desktop") {
+        // height: 600px;
+        background-image: url('./neck_black_large.jpg');
+      }
+      @include media(">=desktop", "retina2x") {
+        background-image: url('./neck_black_large_x2.jpg');
+      }
+
+      @include media(">=tablet", "<desktop") {
+        background-image: url('./neck_black_medium.jpg');
+        height: 400px;
+      }
+      @include media(">=tablet", "<desktop", "retina2x") {
+        background-image: url('./neck_black_medium_x2.jpg');
+      }
+
+      @include media("<tablet") {
+        background-image: url('./neck_black_small.jpg');
+        height: 350px;
+      }
+      @include media("<tablet", "retina2x") {
+        background-image: url('./neck_black_small_x2.jpg');
+      }
+    }
+
+    .galleryImageSnowWhite {
+      background-size: auto 100%;
       background-position: center center;
       background-repeat: no-repeat;
-      background-image: url('./jade2.jpg');
+      margin: -40px auto;
+      @include media(">=desktop") {
+        width: 289px;
+        height: 400px;
+        background-image: url('./neck_snow_white_large.png');
+      }
+      @include media(">=desktop", "retina2x") {
+        background-image: url('./neck_snow_white_large_x2.png');
+      }
+
+      @include media(">=tablet", "<desktop") {
+        width: 289px;
+        height: 400px;
+        background-image: url('./neck_snow_white_small.png');
+      }
+      @include media(">=tablet", "<desktop", "retina2x") {
+        background-image: url('./neck_snow_white_small_x2.png');
+      }
+
+      @include media("<tablet") {
+        width: 289px;
+        height: 400px;
+        background-image: url('./neck_snow_white_small.png');
+      }
+      @include media("<tablet", "retina2x") {
+        background-image: url('./neck_snow_white_small_x2.png');
+      }
       //top: 5%;
     }
+
   }
 }

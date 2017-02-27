@@ -37,16 +37,28 @@ export default class Home extends Component {
         <div className={styles.gallery}>
           <div className={styles.gallerySlideWrapper}>
             <Slider {...settings} style={{height: '100%'}}>
-              <a className={styles.galleryItem}>
+              <div className={styles.galleryItem}>
                 {/*<div className={styles.galleryImage}>1</div>*/}
                 <figure className={styles.galleryImage + ' ' + styles.galleryImageTest}/>
-              </a>
-              <a className={styles.galleryItem}>
-                <figure className={styles.galleryImage + ' ' + styles.galleryImageClassic}/>
-              </a>
-              <a className={styles.galleryItem}>
-                <figure className={styles.galleryImage + ' ' + styles.galleryImageSnow}/>
-              </a>
+              </div>
+              <div className={styles.galleryItem}>
+                <div className={styles.galleryItemContent}>
+                  <h3>翠璨主石，<br/>星光璀璨。</h3>
+                  <div className={styles.galleryMoreblock}>
+                    <a className={styles.more}>立即购买</a>
+                  </div>
+                </div>
+                <figure className={styles.galleryImage + ' ' + styles.galleryImageClassicBlack}/>
+              </div>
+              <div className={styles.galleryItem}>
+                <div className={styles.galleryItemContent}>
+                  <h3>冰钻翠芯，<br/>冷艳登场。</h3>
+                  <div className={styles.galleryMoreblock}>
+                    <a className={styles.more}>立即购买</a>
+                  </div>
+                </div>
+                <figure className={styles.galleryImage + ' ' + styles.galleryImageSnowWhite}/>
+              </div>
             </Slider>
           </div>
         </div>
