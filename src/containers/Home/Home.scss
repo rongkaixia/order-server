@@ -18,7 +18,7 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
     margin-bottom: 15px;
   }
   .galleryContainer {
-    height: calc(95vh - 76px);
+    height: calc(100vh - 76px);
     .gallery {
       position: relative;
       z-index: 1;
@@ -152,10 +152,13 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       }
 
       .galleryItemContent {
-        h3 {
-          padding-left: 0.5em;
-        }
         text-align: center;
+        width: 100%;
+        padding-top: 20px;
+        z-index: 9999;
+        &.absolute {
+          position: absolute;
+        }
         @include media(">=tablet") { // center things
           justify-content: center;
           display: flex;
@@ -166,9 +169,11 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
         @include media("<tablet") {
           padding-top: 60px;
         }
-        &.padTopMore {
-          @include media("<tablet") {
-            padding-top: 100px;
+        h3 {
+          padding-left: 0.5em;
+          &.white {
+            color: #ffffff;
+            font-weight: 200;
           }
         }
       }
@@ -199,12 +204,12 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
     }  
     .galleryImageClassicBlack {
       width: auto;
-      background-size: auto 80%;
+      background-size: auto 100%;
       background-repeat: no-repeat;
       margin-left: auto;
       margin-right: auto;
       background-position: top;
-      margin-top: 15px;
+      // margin-top: 15px;
       // background-color: #e6b2b2;
       
       @include media(">=desktop") {

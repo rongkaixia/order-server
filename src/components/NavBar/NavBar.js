@@ -25,8 +25,17 @@ export default class NavBar extends Component {
     this.props.logout();
   }
 
-  handleToggle = (expanded) => {
+  handleToggle = (expanded, event) => {
     this.setState({navbarExpanded: expanded});
+    if (window) {
+      if (expanded){
+        let bodyDom = window.document.getElementsByTagName("body");
+        bodyDom[0].style.overflow="hidden"
+      } else {
+        let bodyDom = window.document.getElementsByTagName("body");
+        bodyDom[0].style.overflow="inherit"
+      }
+    }
   }
 
   render() {
@@ -44,7 +53,7 @@ export default class NavBar extends Component {
     }
     const navbarClassName = ["fixedTop", navbarExpanded?"active":""].join(' ');
     return (
-      <Navbar collapseOnSelect className={navbarClassName} onToggle={this.handleToggle.bind(this)}>
+      <Navbar collapseOnSelect className={navbarClassName} onToggle={this.handleToggle}>
         <Navbar.Header>
           <Navbar.Brand>
             <IndexLink to="/">

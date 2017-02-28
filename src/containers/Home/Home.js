@@ -42,8 +42,8 @@ export default class Home extends Component {
                 <figure className={styles.galleryImage + ' ' + styles.galleryImageTest}/>
               </div>
               <div className={styles.galleryItem}>
-                <div className={styles.galleryItemContent}>
-                  <h3>翠璨主石，<br/>星光璀璨。</h3>
+                <div className={styles.galleryItemContent + " absolute"}>
+                  <h3 className={"white"}>翠璨主石，<br/>星光璀璨。</h3>
                   <div className={styles.galleryMoreblock}>
                     <a className={styles.more}>立即购买</a>
                   </div>
