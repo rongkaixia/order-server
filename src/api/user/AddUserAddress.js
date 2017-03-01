@@ -1,4 +1,4 @@
-import Config from '../../Config';
+import Config from '../../config';
 import * as Validation from 'utils/Validation';
 
 // var path = require('path');

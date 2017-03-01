@@ -80,7 +80,15 @@ h6 {
   @include media("<tablet") {
     font-size: 12px;
   }
+  &.inverse {
+    color: #ffffff;
+  }
+}
 
+p {
+  &.inverse {
+    color: #ffffff;
+  }
 }
 
 ul {

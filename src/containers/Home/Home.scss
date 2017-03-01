@@ -209,7 +209,7 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       margin-left: auto;
       margin-right: auto;
       background-position: top;
-      // margin-top: 15px;
+      margin-top: 50px;
       // background-color: #e6b2b2;
       
       @include media(">=desktop") {
@@ -229,11 +229,11 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       }
 
       @include media("<tablet") {
-        background-image: url('./neck_black_small.jpg');
-        height: 350px;
+        background-image: url('./neck_black_large.jpg');
+        // height: 350px;
       }
       @include media("<tablet", "retina2x") {
-        background-image: url('./neck_black_small_x2.jpg');
+        background-image: url('./neck_black_large_x2.jpg');
       }
     }
 
