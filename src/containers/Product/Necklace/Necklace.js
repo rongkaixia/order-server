@@ -51,9 +51,9 @@ export default class UserCenter extends Component {
 
     return (
       <div className={styles.necklacePage}>
-        <section className={styles.fpHero}>
+        <section className={styles.fpHero + " padTop"}>
           <Row className={styles.fpSectionContent}>
-            <Col xs={12} sm={6} md={6} lg={6} smPush={6} mdPush={6} lgPush={6} className={styles.fpProductContent + " padTopMore"}>
+            <Col xs={12} sm={6} md={6} lg={6} smPush={6} mdPush={6} lgPush={6} className={styles.fpProductContent}>
               <div className={styles.centeralign}>
                 <h3>经典垂形，<br/>钻石与翡翠的经典结合。</h3>
                 <div className={styles.fpHeroMoreblock}>

@@ -9,7 +9,6 @@ $promoColumnHeight: 200px;
 	width: 100%;
 	padding: 0;
 	margin: 0;
-  background-color: #fafafa;
 	.row {
 		margin: 2px 0 0px 0;
 	}
@@ -23,7 +22,7 @@ $promoColumnHeight: 200px;
     // padding-bottom: 2px;
     padding-left: 3px;
     padding-right: 3px;
-    padding-bottom: 6px;
+    margin-bottom: 10px;
     text-align: center;
     display: flex;
 
@@ -34,7 +33,13 @@ $promoColumnHeight: 200px;
     }
 
 		.promoContentTop {
-			margin-top: 20px;
+			margin-top: 15px;
+			h6 {
+			  font-size: 16px;
+			}
+			p {
+				font-weight: 300;
+			}
 		}
 
     .promoRing {
@@ -55,11 +60,11 @@ $promoColumnHeight: 200px;
 			transform: translate(0, -38%);
     }
     .promoNecklace {
-			height: 100%;
-			background-size: auto 100%;
-			background-position: center center;
+      width: 100%;
+	    // height: 200px;
+	    background-size: auto 100%;
+	    background-position: bottom;
 			background-repeat: no-repeat;
-			// background-image: url('./necklace.jpg');
 			background-image: url('./neck_black_small.jpg');
 
       @include media("<tablet") {

@@ -13,14 +13,14 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
   // background-color: rgba(42, 187, 155, 0.8);
   // border-radius: 0px;
   // border: 0;
+  top: 0;
+  border-width: 0 0 1px;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+  position: absolute;
   &.fixedTop {
     @include media("<tablet") {
-      top: 0;
-      border-width: 0 0 1px;
-      right: 0;
-      left: 0;
-      z-index: 1030;
-      position: absolute;
       &.active,
       &:active {
         position: fixed;

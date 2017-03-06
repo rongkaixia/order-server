@@ -77,6 +77,7 @@ h6 {
   font-size: 16px;
   color: #424242;
   font-weight: 400;
+  margin: 5px 0;
   @include media("<tablet") {
     font-size: 12px;
   }

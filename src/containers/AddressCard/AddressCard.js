@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import Modal from 'react-modal';
 import Image from 'react-bootstrap/lib/Image';
-import * as Validation from 'utils/validation';
+import * as Validation from 'utils/Validation';
 import * as userAction from 'redux/modules/userInfo';
 import {AddressForm, DeleteConfirmForm} from 'components';
 

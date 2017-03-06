@@ -3,7 +3,7 @@ import {reduxForm} from 'redux-form';
 import Helmet from 'react-helmet';
 import Modal from 'react-modal';
 import Image from 'react-bootstrap/lib/Image';
-import * as Validation from 'utils/validation';
+import * as Validation from 'utils/Validation';
 
 const validate = values => {
   const errors = {}

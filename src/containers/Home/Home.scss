@@ -18,7 +18,8 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
     margin-bottom: 15px;
   }
   .galleryContainer {
-    height: calc(100vh - 76px);
+    // height: calc(100vh - 76px);
+    height: 550px;
     .gallery {
       position: relative;
       z-index: 1;
@@ -154,7 +155,7 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       .galleryItemContent {
         text-align: center;
         width: 100%;
-        padding-top: 20px;
+        padding-top: 60px;
         z-index: 9999;
         &.absolute {
           position: absolute;
@@ -165,9 +166,6 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
           flex-flow: column wrap;
           align-content: center;
           align-items: center;
-        }
-        @include media("<tablet") {
-          padding-top: 60px;
         }
         h3 {
           padding-left: 0.5em;

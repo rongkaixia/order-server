@@ -1,11 +1,19 @@
 @import "~include-media/dist/_include-media.scss";
 
-$breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
+$breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px, ex-large: 1680px);
 
 .necklacePage {
   .fpHero {
     // padding-top: 199px;
     color: #333;
+    &.padTop {
+      @include media(">=tablet") {
+        padding-top: 60px;
+      }
+      @include media("<tablet") {
+        padding-top: 40px;
+      }
+    }
   }
 
   .fpHeroMoreblock{
@@ -55,11 +63,6 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       @include media("<tablet") {
         padding-top: 60px;
       }
-      &.padTopMore {
-        @include media("<tablet") {
-          padding-top: 100px;
-        }
-      }
       &.gray {
         background-color: #fafafa;
         padding: 15px 10px 0 0;
@@ -102,7 +105,7 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
     .fontWhiteLighter {
       @include media(">=tablet") {
         color: #ffffff;
-        font-weight: 200;
+        // font-weight: 200;
       }
     }
   }
@@ -152,12 +155,17 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
     margin-top: 15px;
     // background-color: #e6b2b2;
     
-    @include media(">=desktop") {
+    @include media(">=ex-large") {
+      height: 800px;
+      background-image: url('./neck_black_ex_large.jpg');
+    }
+
+    @include media(">=desktop", "<ex-large") {
       height: 600px;
       background-image: url('./neck_black_large.jpg');
     }
-    @include media(">=desktop", "retina2x") {
-      background-image: url('./neck_black_large_x2.jpg');
+    @include media(">=desktop", "<ex-large", "retina2x") {
+      background-image: url('./neck_black_large.jpg');
     }
 
     @include media(">=tablet", "<desktop") {
