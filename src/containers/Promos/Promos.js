@@ -48,6 +48,17 @@ export default class Propagation extends Component {
 
           <Col xs={12} sm={6} md={6} lg={3} className={styles.promoColumn}>
             <Card onOver={card => card.setLevel(2)} onOut={card => card.setLevel(1)}
+            className="promoCard">
+              <div className={styles.promoContentRight}>
+                <h6>耳环</h6>
+                <p>华贵白金与漂亮宝石是耳环的的组成元素</p>
+              </div>
+              <figure className={styles.promoEaring}/>
+            </Card>
+          </Col>
+          
+          <Col xs={12} sm={6} md={6} lg={3} className={styles.promoColumn}>
+            <Card onOver={card => card.setLevel(2)} onOut={card => card.setLevel(1)}
             className={styles.promoNecklace}>
               <div className={styles.promoContentTop}>
                 <h6 className={"inverse"}>项链</h6>
@@ -59,23 +70,13 @@ export default class Propagation extends Component {
 
           <Col xs={12} sm={6} md={6} lg={3} className={styles.promoColumn}>
             <Card onOver={card => card.setLevel(2)} onOut={card => card.setLevel(1)}
-            className="promoCard">
+            className={styles.promoGift}>
+              <div className={styles.promoShadow}/>
               <div className={styles.promoContentTop}>
-                <h6>戒指</h6>
-                <p>项链吊坠有多重设计。搭配18k白金、黄金和双色项链来表达您的个人风格</p>
+                <h6 className={"inverse"}>礼品</h6>
+                <p className={"inverse"}>多样礼物，总有一款适合您</p>
               </div>
-              <figure className={styles.promoEaring}/>
-            </Card>
-          </Col>
-
-          <Col xs={12} sm={6} md={6} lg={3} className={styles.promoColumn}>
-            <Card onOver={card => card.setLevel(2)} onOut={card => card.setLevel(1)}
-            className="promoCard">
-              <div className={styles.promoContentTop}>
-                <h6>礼品</h6>
-                <p>多样礼物，总有一款适合您</p>
-              </div>
-              <figure className={styles.promoOther}/>
+              {/*<figure className={styles.promoOther}/>*/}
             </Card>
           </Col>
 

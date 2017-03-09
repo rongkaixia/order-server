@@ -34,6 +34,8 @@ $promoColumnHeight: 200px;
 
 		.promoContentTop {
 			margin-top: 15px;
+			position: absolute;
+			width: 100%;
 			h6 {
 			  font-size: 16px;
 			}
@@ -42,6 +44,22 @@ $promoColumnHeight: 200px;
 			}
 		}
 
+		.promoContentRight {
+			width: 50%;
+	    float: right;
+	    height: 100%;
+	    align-items: center;
+	    display: flex;
+	    flex-flow: column;
+	    justify-content: center;
+	    justify-content: center;
+			h6 {
+			  font-size: 16px;
+			}
+			p {
+				font-weight: 300;
+			}
+		}
     .promoRing {
 			height: 320px;
 			background-size: auto 80%;
@@ -57,7 +75,7 @@ $promoColumnHeight: 200px;
 				background-image: url('./ring_crown_small_x2.png');
       }
 
-			transform: translate(0, -38%);
+			transform: translate(0, -10%);
     }
     .promoNecklace {
       width: 100%;
@@ -76,28 +94,42 @@ $promoColumnHeight: 200px;
 			// transform: translate(0, -38%);
     }
     .promoEaring {
-			height: 320px;
-			background-size: auto 80%;
-			background-position: center center;
-			background-repeat: no-repeat;
-			background-image: url('./ring_circle_small.png');
+	    height: 200px;
+	    background-size: auto 90%;
+	    background-position: left center;
+	    background-repeat: no-repeat;
+	    margin-left: -20px;
+			background-image: url('./earring_small.png');
 
       @include media("<tablet") {
-				background-image: url('./ring_circle_small.png');
+				// background-image: url('./earring.jpg');
       }
       @include media("<tablet", "retina2x") {
-				background-image: url('./ring_circle_small_x2.png');
+				background-image: url('./earring_small_x2.png');
       }
-			transform: translate(0, -38%);
+			// transform: translate(0, -38%);
 
     }
-    .promoOther {
-			height: 100%;
-			background-size: auto 100%;
+    .promoGift {
+    	width: 100%;
+	    height: 200px;
+	    background-size: auto 100%;
 			background-position: center center;
 			background-repeat: no-repeat;
-			// background-image: url('./ring2.png');
-			transform: translate(0, -30%);
+			background-image: url('./gift_small.jpg');
+      @include media("retina2x") {
+				background-image: url('./gift_small_x2.jpg');
+      }
+			// transform: translate(0, -30%);
+    }
+
+    .promoShadow {
+    	height: 100%;
+    	width: 100%;
+	    position: absolute;
+	    background-color: black;
+	    opacity: 0.3;
+    	// background-color: 
     }
 	}
 }
