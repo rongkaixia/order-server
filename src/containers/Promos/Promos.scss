@@ -26,11 +26,28 @@ $promoColumnHeight: 200px;
     text-align: center;
     display: flex;
 
+    .promoImage {
+    	padding: 0;
+    }
     .promoCard {
     	height: 100%;
     	width: 100%;
     	background-color: #fafafa !important;
     }
+
+		.promoContentCenter {
+			width: 100%;
+	    height: 100%;
+	    display: flex;
+	    flex-flow: column nowrap;
+	    justify-content: center;
+			h6 {
+			  font-size: 16px;
+			}
+			p {
+				font-weight: 300;
+			}
+		}
 
 		.promoContentTop {
 			margin-top: 15px;
@@ -60,12 +77,78 @@ $promoColumnHeight: 200px;
 				font-weight: 300;
 			}
 		}
+		.promoRing {
+			// height: 320px;
+			// background-size: auto 80%;
+			// background-position: center center;
+			// background-repeat: no-repeat;
+			// background-image: url('./ring_crown_small.png');
+			// transform: translate(0, -20%);
+
+			height: 200px;
+			background-size: auto 100%;
+			background-position: center center;
+			background-repeat: no-repeat;
+			background-image: url('./ring_crown_small.png');
+			// background-image: url('./ring_circle_blue_small.jpg');
+
+      @include media("<tablet") {
+				background-image: url('./ring_crown_small.png');
+				// background-image: url('./ring_circle_blue_small.jpg');
+      }
+      @include media("<tablet", "retina2x") {
+				background-image: url('./ring_crown_small_x2.png');
+				// background-image: url('./ring_circle_blue_small_x2.jpg');
+      }
+
+    }
+    .promoNecklace {
+	  //   height: 100%;
+	  //   background-size: auto 90%;
+	  //   background-position: bottom;
+			// background-repeat: no-repeat;
+			// background-image: url('./neck_white_small.png');
+
+   //    @include media("<tablet") {
+			// 	background-image: url('./neck_white_small.png');
+   //    }
+   //    @include media("<tablet", "retina2x") {
+			// 	background-image: url('./neck_white_small_x2.png');
+			
+      width: 100%;
+	    height: 200px;
+	    background-size: auto 90%;
+	    background-position: bottom;
+			background-repeat: no-repeat;
+			// background-image: url('./neck_black_small.jpg');
+			background-image: url('./neck_snow_white_small_x2.png');
+
+      @include media("<tablet") {
+				// background-image: url('./neck_black_small.jpg');
+				background-image: url('./neck_snow_white_small_x2.png');
+      }
+      @include media("<tablet", "retina2x") {
+				// background-image: url('./neck_black_small_x2.jpg');
+				background-image: url('./neck_snow_white_small_x2.png');
+      }
+    }
+    .promoGift {
+    	width: 100%;
+	    height: 200px;
+	    background-size: auto 100%;
+			background-position: center center;
+			background-repeat: no-repeat;
+			background-image: url('./gift_small.jpg');
+      @include media("retina2x") {
+				background-image: url('./gift_small_x2.jpg');
+      }
+    }
+		/*
     .promoRing {
 			height: 320px;
 			background-size: auto 80%;
 			background-position: center center;
 			background-repeat: no-repeat;
-			// background-image: url('./ring2.png');
 			background-image: url('./ring_crown_small.png');
 
       @include media("<tablet") {
@@ -91,7 +174,6 @@ $promoColumnHeight: 200px;
       @include media("<tablet", "retina2x") {
 				background-image: url('./neck_black_small_x2.jpg');
       }
-			// transform: translate(0, -38%);
     }
     .promoEaring {
 	    height: 200px;
@@ -107,7 +189,6 @@ $promoColumnHeight: 200px;
       @include media("<tablet", "retina2x") {
 				background-image: url('./earring_small_x2.png');
       }
-			// transform: translate(0, -38%);
 
     }
     .promoGift {
@@ -120,7 +201,6 @@ $promoColumnHeight: 200px;
       @include media("retina2x") {
 				background-image: url('./gift_small_x2.jpg');
       }
-			// transform: translate(0, -30%);
     }
 
     .promoShadow {
@@ -131,5 +211,6 @@ $promoColumnHeight: 200px;
 	    opacity: 0.3;
     	// background-color: 
     }
+    */
 	}
 }
