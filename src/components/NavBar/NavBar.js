@@ -8,9 +8,11 @@ import config from '../../config';
 import Querystring from 'querystring';
 
 /* eslint-disable */ 
-@connect(state => ({location: state.routing.location}))
+@connect(state => ({location: state.routing.location,
+                    navbarState: state.navbar}))
 export default class NavBar extends Component {
   static propTypes = {
+    navbarState: PropTypes.object,
     user: PropTypes.object,
     location: PropTypes.object,
     logout: PropTypes.func.isRequired
@@ -40,7 +42,7 @@ export default class NavBar extends Component {
 
   render() {
     const {navbarExpanded} = this.state;
-    const {user, location, cart} = this.props; // eslint-disable-line no-shadow
+    const {user, location, cart, navbarState} = this.props; // eslint-disable-line no-shadow
     let numCart = 0;
     if (cart) {
       numCart = cart.length;
@@ -51,7 +53,7 @@ export default class NavBar extends Component {
       const redirectPath = location.pathname + location.search;
       returnTo = '?' + Querystring.stringify({return_to: redirectPath});
     }
-    const navbarClassName = ["fixedTop", navbarExpanded?"active":""].join(' ');
+    const navbarClassName = ["fixedTop", navbarExpanded?"active":"", navbarState.color].join(' ');
     return (
       <Navbar collapseOnSelect className={navbarClassName} onToggle={this.handleToggle}>
         <Navbar.Header>

@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { CounterButton, GithubButton } from 'components';
 import { Promos } from 'containers';
 import config from '../../config';
 import Helmet from 'react-helmet';
 import Slider from 'react-slick';
+import * as navbarAction from 'redux/modules/navbar';
 
 var SampleNextArrow = React.createClass({
   render: function() {
@@ -20,13 +22,27 @@ var SamplePrevArrow = React.createClass({
   }
 });
 
-
+@connect((state => ({navbarColor: state.navbar.color})),
+        {...navbarAction})
 export default class Home extends Component {
+  static propTypes = {
+    changeToBlack: PropTypes.func.isRequired,
+    changeToWhite: PropTypes.func.isRequired
+  };
+  afterSliderChange(sliderIdx) {
+    console.log(JSON.stringify(sliderIdx))
+    if (sliderIdx == 3) {
+      this.props.changeToBlack()
+    } else {
+      this.props.changeToWhite()
+    }
+  }
 
   renderSlider() {
     const settings = {
       dots: true,
       adaptiveHeight: true,
+      afterChange: this.afterSliderChange.bind(this),
       nextArrow: <SampleNextArrow />,
       prevArrow: <SamplePrevArrow />
     };
@@ -58,6 +74,15 @@ export default class Home extends Component {
                   </div>
                 </div>
                 <figure className={styles.galleryImage + ' ' + styles.galleryImageSnowWhite}/>
+              </div>
+              <div className={styles.galleryItem}>
+                <div className={styles.galleryItemContent + " absolute"}>
+                  <h3 className={"white"}>翠璨主石，<br/>星光璀璨。</h3>
+                  <div className={styles.galleryMoreblock}>
+                    <a className={styles.more}>立即购买</a>
+                  </div>
+                </div>
+                <figure className={styles.galleryImage + ' ' + styles.galleryImageRingCircleBlue}/>
               </div>
             </Slider>
           </div>

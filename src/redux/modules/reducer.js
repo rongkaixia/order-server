@@ -3,6 +3,7 @@ import multireducer from 'multireducer';
 import { routeReducer } from 'react-router-redux';
 import {reducer as reduxAsyncConnect} from 'redux-async-connect';
 
+import navbar from './navbar';
 import auth from './auth';
 import counter from './counter';
 import {reducer as form} from 'redux-form';
@@ -18,6 +19,7 @@ import cart from './cart';
 // console.log("formAuth: " + formAuth);
 // console.log("auth: " + auth);
 export default combineReducers({
+  navbar,
   routing: routeReducer,
   reduxAsyncConnect,
   auth,

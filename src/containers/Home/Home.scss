@@ -21,8 +21,8 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
     // height: calc(100vh - 76px);
     height: 550px;
     .gallery {
-      position: relative;
-      z-index: 1;
+      // position: relative;
+      // z-index: 1;
       overflow: hidden;
       height: 100%;
 
@@ -125,8 +125,8 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
 
     .galleryItem {
       display: block;
-      //position: absolute;
-      z-index: 1;
+      position: relative;
+      // z-index: 1;
       overflow: hidden;
       width: 100%;
       height: 100%;
@@ -153,10 +153,10 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       }
 
       .galleryItemContent {
-        text-align: center;
         width: 100%;
         padding-top: 60px;
-        z-index: 9999;
+        text-align: center;
+        // z-index: 9999;
         &.absolute {
           position: absolute;
         }
@@ -168,18 +168,18 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
           align-items: center;
         }
         h3 {
-          padding-left: 0.5em;
+          // padding-left: 0.5em;
           &.white {
             color: #ffffff;
-            font-weight: 200;
+            // font-weight: 200;
           }
         }
       }
     }
 
     .galleryImage {
-      position: relative;
-      z-index: 1;
+      // position: relative;
+      // z-index: 1;
       width: 100%;
       height: 100%;
     }
@@ -202,12 +202,13 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
     }  
     .galleryImageClassicBlack {
       width: auto;
+      height: 550px;
       background-size: auto 100%;
       background-repeat: no-repeat;
       margin-left: auto;
       margin-right: auto;
       background-position: top;
-      margin-top: 50px;
+      // margin-top: 50px;
       // background-color: #e6b2b2;
       
       @include media(">=desktop") {
@@ -227,11 +228,11 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       }
 
       @include media("<tablet") {
-        background-image: url('./neck_black_large.jpg');
+        background-image: url('./neck_black_small.jpg');
         // height: 350px;
       }
       @include media("<tablet", "retina2x") {
-        background-image: url('./neck_black_large_x2.jpg');
+        background-image: url('./neck_black_small_x2.jpg');
       }
     }
 
@@ -269,5 +270,40 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       //top: 5%;
     }
 
+    .galleryImageRingCircleBlue {
+      width: auto;
+      height: 550px;
+      background-size: auto 100%;
+      background-repeat: no-repeat;
+      margin-left: auto;
+      margin-right: auto;
+      background-position: top;
+      // margin-top: 50px;
+      // background-color: #e6b2b2;
+      
+      @include media(">=desktop") {
+        // height: 600px;
+        background-image: url('./ring_circle_blue_large.jpg');
+      }
+      @include media(">=desktop", "retina2x") {
+        background-image: url('./ring_circle_blue_large.jpg');
+      }
+
+      // @include media(">=tablet", "<desktop") {
+      //   background-image: url('./neck_black_medium.jpg');
+      //   height: 400px;
+      // }
+      // @include media(">=tablet", "<desktop", "retina2x") {
+      //   background-image: url('./neck_black_medium_x2.jpg');
+      // }
+
+      @include media("<tablet") {
+        background-image: url('./ring_circle_blue_small.jpg');
+        // height: 350px;
+      }
+      @include media("<tablet", "retina2x") {
+        background-image: url('./ring_circle_blue_small_x2.jpg');
+      }
+    }
   }
 }
