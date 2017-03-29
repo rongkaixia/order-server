@@ -15,24 +15,46 @@ $promoColumnHeight: 200px;
 	.promoColumn {
 		height: $promoColumnHeight;
     background-size: contain;
-    background-color: #ffffff;
+    // background-color: #ffffff;
     background-clip: content-box;
     // padding-left: 1px;
     // padding-right: 1px;
     // padding-bottom: 2px;
     padding-left: 3px;
     padding-right: 3px;
-    margin-bottom: 10px;
+    margin-bottom: 3px;
     text-align: center;
-    display: flex;
+    // display: flex;
+
+    .subColumnRight {
+    	height: 100%;
+    }
+
+    .promoBorder {
+    	width: 100%;
+    	height: 100%;
+	    border: 1px solid #f4f4f4;
+    }
 
     .promoImage {
     	padding: 0;
+    	height: 100%;
     }
     .promoCard {
     	height: 100%;
     	width: 100%;
-    	background-color: #fafafa !important;
+    	// background-color: #fafafa !important;
+    	background-image: -ms-radial-gradient(center, ellipse farthest-side, #FFFFFF 0%, #FEFEFE 60%, #FAFAFA 100%);
+
+			background-image: -moz-radial-gradient(center, ellipse farthest-side, #FFFFFF 0%, #FEFEFE 60%, #FAFAFA 100%);
+
+			background-image: -o-radial-gradient(center, ellipse farthest-side, #FFFFFF 0%, #FEFEFE 60%, #FAFAFA 100%);
+
+			background-image: -webkit-gradient(radial, center center, 0, center center, 258, color-stop(0, #FFFFFF), color-stop(60, #FEFEFE), color-stop(100, #FAFAFA));
+
+			background-image: -webkit-radial-gradient(center, ellipse farthest-side, #FFFFFF 0%, #FEFEFE 60%, #FAFAFA 100%);
+
+			background-image: radial-gradient(ellipse farthest-side at center, #FFFFFF 0%, #FEFEFE 60%, #FAFAFA 100%);
     }
 
 		.promoContentCenter {
@@ -43,6 +65,11 @@ $promoColumnHeight: 200px;
 	    justify-content: center;
 			h6 {
 			  font-size: 16px;
+        &:after {
+          font-family: FontAwesome;
+          content: "\f105";
+          padding-left: 10px;
+        }
 			}
 			p {
 				font-weight: 300;
@@ -53,6 +80,19 @@ $promoColumnHeight: 200px;
 			margin-top: 15px;
 			position: absolute;
 			width: 100%;
+			h6 {
+			  font-size: 16px;
+			}
+			p {
+				font-weight: 300;
+			}
+		}
+		.promoContentBottom {
+	    padding-top: 15px;
+	    width: 100%;
+	    height: 100px;
+	    border: 2px solid #fafafa;
+	    border-top: none;
 			h6 {
 			  font-size: 16px;
 			}
@@ -117,19 +157,15 @@ $promoColumnHeight: 200px;
 			
       width: 100%;
 	    height: 200px;
-	    background-size: auto 90%;
+	    background-size: auto 100%;
 	    background-position: bottom;
 			background-repeat: no-repeat;
 			// background-image: url('./neck_black_small.jpg');
-			background-image: url('./neck_snow_white_small_x2.png');
+			background-image: url('./neck_white_small.png');
 
-      @include media("<tablet") {
-				// background-image: url('./neck_black_small.jpg');
-				background-image: url('./neck_snow_white_small_x2.png');
-      }
-      @include media("<tablet", "retina2x") {
+      @include media("retina2x") {
 				// background-image: url('./neck_black_small_x2.jpg');
-				background-image: url('./neck_snow_white_small_x2.png');
+				background-image: url('./neck_white_small_x2.png');
       }
     }
     .promoGift {
@@ -143,74 +179,180 @@ $promoColumnHeight: 200px;
 				background-image: url('./gift_small_x2.jpg');
       }
     }
-		/*
-    .promoRing {
-			height: 320px;
-			background-size: auto 80%;
-			background-position: center center;
-			background-repeat: no-repeat;
-			background-image: url('./ring_crown_small.png');
-
-      @include media("<tablet") {
-				background-image: url('./ring_crown_small.png');
-      }
-      @include media("<tablet", "retina2x") {
-				background-image: url('./ring_crown_small_x2.png');
-      }
-
-			transform: translate(0, -10%);
-    }
-    .promoNecklace {
-      width: 100%;
-	    // height: 200px;
-	    background-size: auto 100%;
-	    background-position: bottom;
-			background-repeat: no-repeat;
-			background-image: url('./neck_black_small.jpg');
-
-      @include media("<tablet") {
-				background-image: url('./neck_black_small.jpg');
-      }
-      @include media("<tablet", "retina2x") {
-				background-image: url('./neck_black_small_x2.jpg');
-      }
-    }
-    .promoEaring {
-	    height: 200px;
-	    background-size: auto 90%;
-	    background-position: left center;
-	    background-repeat: no-repeat;
-	    margin-left: -20px;
-			background-image: url('./earring_small.png');
-
-      @include media("<tablet") {
-				// background-image: url('./earring.jpg');
-      }
-      @include media("<tablet", "retina2x") {
-				background-image: url('./earring_small_x2.png');
-      }
-
-    }
-    .promoGift {
-    	width: 100%;
-	    height: 200px;
-	    background-size: auto 100%;
-			background-position: center center;
-			background-repeat: no-repeat;
-			background-image: url('./gift_small.jpg');
-      @include media("retina2x") {
-				background-image: url('./gift_small_x2.jpg');
-      }
-    }
-
-    .promoShadow {
-    	height: 100%;
-    	width: 100%;
-	    position: absolute;
-	    background-color: black;
-	    opacity: 0.3;
-    	// background-color: 
-    }
-    */
 	}
 }
+
+/* 下面是上面card的结构 */
+// $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
+
+// $promoColumnHeight: 250px;
+
+// .promoContainer {
+// 	width: 100%;
+// 	padding: 0;
+// 	margin: 0;
+// 	.row {
+// 		margin: 2px 0 0px 0;
+// 	}
+// 	.promoColumn {
+// 		height: $promoColumnHeight;
+//     background-size: contain;
+//     // background-color: #ffffff;
+//     background-clip: content-box;
+//     // padding-left: 1px;
+//     // padding-right: 1px;
+//     // padding-bottom: 2px;
+//     padding-left: 3px;
+//     padding-right: 3px;
+//     margin-bottom: 3px;
+//     text-align: center;
+//     // display: flex;
+
+//     .subColumnRight {
+//     	border: 2px solid #fafafa;
+//     	height: 100%;
+//     }
+
+//     .promoImage {
+//     	padding: 0;
+//     }
+//     .promoCard {
+//     	height: 150px;
+//     	width: 100%;
+//     	// background-color: #fafafa !important;
+//     	background-image: -ms-radial-gradient(center, ellipse farthest-side, #FFFFFF 0%, #FEFEFE 60%, #FAFAFA 100%);
+
+// 			background-image: -moz-radial-gradient(center, ellipse farthest-side, #FFFFFF 0%, #FEFEFE 60%, #FAFAFA 100%);
+
+// 			background-image: -o-radial-gradient(center, ellipse farthest-side, #FFFFFF 0%, #FEFEFE 60%, #FAFAFA 100%);
+
+// 			background-image: -webkit-gradient(radial, center center, 0, center center, 258, color-stop(0, #FFFFFF), color-stop(60, #FEFEFE), color-stop(100, #FAFAFA));
+
+// 			background-image: -webkit-radial-gradient(center, ellipse farthest-side, #FFFFFF 0%, #FEFEFE 60%, #FAFAFA 100%);
+
+// 			background-image: radial-gradient(ellipse farthest-side at center, #FFFFFF 0%, #FEFEFE 60%, #FAFAFA 100%);
+//     }
+
+// 		.promoContentCenter {
+// 			width: 100%;
+// 	    height: 100%;
+// 	    display: flex;
+// 	    flex-flow: column nowrap;
+// 	    justify-content: center;
+// 			h6 {
+// 			  font-size: 16px;
+// 			}
+// 			p {
+// 				font-weight: 300;
+// 			}
+// 		}
+
+// 		.promoContentTop {
+// 			margin-top: 15px;
+// 			position: absolute;
+// 			width: 100%;
+// 			h6 {
+// 			  font-size: 16px;
+// 			}
+// 			p {
+// 				font-weight: 300;
+// 			}
+// 		}
+// 		.promoContentBottom {
+// 	    padding-top: 15px;
+// 	    width: 100%;
+// 	    height: 100px;
+// 	    border: 2px solid #fafafa;
+// 	    border-top: none;
+// 			h6 {
+// 			  font-size: 16px;
+// 			}
+// 			p {
+// 				font-weight: 300;
+// 			}
+// 		}
+
+// 		.promoContentRight {
+// 			width: 50%;
+// 	    float: right;
+// 	    height: 100%;
+// 	    align-items: center;
+// 	    display: flex;
+// 	    flex-flow: column;
+// 	    justify-content: center;
+// 	    justify-content: center;
+// 			h6 {
+// 			  font-size: 16px;
+// 			}
+// 			p {
+// 				font-weight: 300;
+// 			}
+// 		}
+// 		.promoRing {
+// 			// height: 320px;
+// 			// background-size: auto 80%;
+// 			// background-position: center center;
+// 			// background-repeat: no-repeat;
+// 			// background-image: url('./ring_crown_small.png');
+// 			// transform: translate(0, -20%);
+
+// 			height: 150px;
+// 			background-size: auto 100%;
+// 			background-position: center center;
+// 			background-repeat: no-repeat;
+// 			background-image: url('./ring_crown_small.png');
+// 			// background-image: url('./ring_circle_blue_small.jpg');
+
+//       @include media("<tablet") {
+// 				background-image: url('./ring_crown_small.png');
+// 				// background-image: url('./ring_circle_blue_small.jpg');
+//       }
+//       @include media("<tablet", "retina2x") {
+// 				background-image: url('./ring_crown_small_x2.png');
+// 				// background-image: url('./ring_circle_blue_small_x2.jpg');
+//       }
+
+//     }
+//     .promoNecklace {
+// 	  //   height: 100%;
+// 	  //   background-size: auto 90%;
+// 	  //   background-position: bottom;
+// 			// background-repeat: no-repeat;
+// 			// background-image: url('./neck_white_small.png');
+
+//    //    @include media("<tablet") {
+// 			// 	background-image: url('./neck_white_small.png');
+//    //    }
+//    //    @include media("<tablet", "retina2x") {
+// 			// 	background-image: url('./neck_white_small_x2.png');
+			
+//       width: 100%;
+// 	    height: 150px;
+// 	    background-size: auto 90%;
+// 	    background-position: bottom;
+// 			background-repeat: no-repeat;
+// 			// background-image: url('./neck_black_small.jpg');
+// 			background-image: url('./neck_snow_white_small_x2.png');
+
+//       @include media("<tablet") {
+// 				// background-image: url('./neck_black_small.jpg');
+// 				background-image: url('./neck_snow_white_small_x2.png');
+//       }
+//       @include media("<tablet", "retina2x") {
+// 				// background-image: url('./neck_black_small_x2.jpg');
+// 				background-image: url('./neck_snow_white_small_x2.png');
+//       }
+//     }
+//     .promoGift {
+//     	width: 100%;
+// 	    height: 150px;
+// 	    background-size: auto 100%;
+// 			background-position: center center;
+// 			background-repeat: no-repeat;
+// 			background-image: url('./gift_small.jpg');
+//       @include media("retina2x") {
+// 				background-image: url('./gift_small_x2.jpg');
+//       }
+//     }
+// 	}
+// }
