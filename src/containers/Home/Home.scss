@@ -1,7 +1,7 @@
 @import "../../theme/variables.scss";
 @import "~include-media/dist/_include-media.scss";
 
-$breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
+$breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px, ex-large: 1280px);
 
 @mixin transition($transition...) {
     -moz-transition:    $transition;
@@ -140,14 +140,17 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
           line-height: 1.45455;
           font-weight: 300;
           letter-spacing: .016em;
-          // color: #5079d9;
           color: #0070c9;
           cursor: pointer;
           font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
+          padding: 0 15px;
           &:after {
             font-family: FontAwesome;
             content: "\f105";
             padding-left: 10px;
+          }
+          &.inverse {
+            color: #6ab9ff;
           }
         }
       }
@@ -184,15 +187,6 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       height: 100%;
     }
 
-    .galleryImageTest {
-      background-size: auto 75%;
-      background-position: center center;
-      background-repeat: no-repeat;
-      // background-image: url('./jade.jpg');
-      background-image: url('./macbookpro_large.jpg');
-      //top: 5%;
-    }
-
     .galleryImageClassicBlack {
       width: auto;
       height: 550px;
@@ -201,28 +195,30 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px);
       margin-left: auto;
       margin-right: auto;
       background-position: top;
-      // margin-top: 50px;
+      margin-top: 45px;
       // background-color: #e6b2b2;
       
-      @include media(">=desktop") {
-        // height: 600px;
+      @include media(">=ex-large") {
+        height: 500px;
+        background-image: url('./neck_black_ex_large.jpg');
+      }
+
+      @include media(">=desktop", "<ex-large") {
         background-image: url('./neck_black_large.jpg');
       }
-      @include media(">=desktop", "retina2x") {
+      @include media(">=desktop", "<ex-large", "retina2x") {
         background-image: url('./neck_black_large_x2.jpg');
       }
 
       @include media(">=tablet", "<desktop") {
-        background-image: url('./neck_black_medium.jpg');
-        height: 400px;
+        background-image: url('./neck_black_large.jpg');
       }
       @include media(">=tablet", "<desktop", "retina2x") {
-        background-image: url('./neck_black_medium_x2.jpg');
+        background-image: url('./neck_black_large_x2.jpg');
       }
 
       @include media("<tablet") {
         background-image: url('./neck_black_small.jpg');
-        // height: 350px;
       }
       @include media("<tablet", "retina2x") {
         background-image: url('./neck_black_small_x2.jpg');

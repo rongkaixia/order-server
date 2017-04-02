@@ -76,13 +76,13 @@ export default class NavBar extends Component {
             <LinkContainer to="/shop/buy-earring">
               <NavItem eventKey={3}>耳钉/耳环</NavItem>
             </LinkContainer>
-            <LinkContainer to="/shop/buy-package">
+            {/*<LinkContainer to="/shop/buy-package">
               <NavItem eventKey={4}>套装</NavItem>
-            </LinkContainer>
-            <LinkContainer to="/shop/buy-gift">
+            </LinkContainer>*/}
+            {/*<LinkContainer to="/shop/buy-gift">
               <NavItem eventKey={8}>礼品</NavItem>
             </LinkContainer>
-            {/*user &&
+            user &&
             <LinkContainer to="/account">
               <NavItem eventKey={4}>account</NavItem>
             </LinkContainer>*/}

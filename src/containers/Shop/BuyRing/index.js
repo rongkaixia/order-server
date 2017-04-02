@@ -29,8 +29,9 @@ export default class UserCenter extends Component {
     const {shop} = this.props;
     let items = [];
     return (
-      <div className={styles.ringPage}>
+      <div className={styles.buyRingPage}>
         <h3 className={styles.headline}>敬请期待...</h3>
+        <a className={styles.more} href={"/ring"}>查看部分产品雏形</a>
       </div>
     );
   }

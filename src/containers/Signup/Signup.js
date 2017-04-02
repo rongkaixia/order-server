@@ -53,24 +53,30 @@ export default class Signup extends Component {
   render() {
     const {signupError, signupErrorDesc} = this.props;
     const styles = require('./Signup.scss');
+    // return (
+    //   <div className={styles.signupPage + ' container'}>
+    //     <Helmet title="Signup"/>
+    //     <h1>Signup</h1>
+    //     <div>
+    //       <form className="-form form-horizontal" onSubmit={this.handleSubmit}>
+    //         <div className="form-group form-inline">
+    //           <input type="text" ref="username" placeholder="Enter a username"/>
+    //         </div>
+    //         <div className="form-group">
+    //           <input type="password" ref="password" placeholder="Enter a password"/>
+    //         </div>
+    //         <p>{signupError ? signupErrorDesc : ''}</p>
+    //         <button className="btn btn-success" onClick={this.handleSubmit}><i className="fa fa-sign-in"/>{' '}注册
+    //         </button>
+    //       </form>
+    //       <p>This will "log you in" as this user, storing the username in the session of the API server.</p>
+    //     </div>
+    //   </div>
+    // );
+
     return (
-      <div className={styles.signupPage + ' container'}>
-        <Helmet title="Signup"/>
-        <h1>Signup</h1>
-        <div>
-          <form className="-form form-horizontal" onSubmit={this.handleSubmit}>
-            <div className="form-group form-inline">
-              <input type="text" ref="username" placeholder="Enter a username"/>
-            </div>
-            <div className="form-group">
-              <input type="password" ref="password" placeholder="Enter a password"/>
-            </div>
-            <p>{signupError ? signupErrorDesc : ''}</p>
-            <button className="btn btn-success" onClick={this.handleSubmit}><i className="fa fa-sign-in"/>{' '}注册
-            </button>
-          </form>
-          <p>This will "log you in" as this user, storing the username in the session of the API server.</p>
-        </div>
+      <div className={styles.signupPage}>
+        <h3 className={styles.headline}>暂未开放</h3>
       </div>
     );
   }

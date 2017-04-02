@@ -32,6 +32,9 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px, ex-l
         content: "\f105";
         padding-left: 10px;
       }
+      &.inverse {
+        color: #6ab9ff;
+      }
     }
   }
 
@@ -98,8 +101,8 @@ $breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px, ex-l
       @include media(">=tablet") {
         position: absolute;
         z-index: 10;
-        left: 167px;
-        top: 139px;
+        left: 20%;
+        top: 10%;
       }
     } 
     .fontWhiteLighter {

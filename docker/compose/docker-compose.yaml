@@ -6,10 +6,10 @@ services:
     ports:
       - 27017:27017
 
-  keystone-god:
-    image: keystone-god:1.0.1
+  echo-moment:
+    image: echo-gold:1.0.0
     ports:
-      - 30030:3000
+      - 8080:8080
     depends_on:
       - mongo
     environment:

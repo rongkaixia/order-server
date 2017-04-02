@@ -182,7 +182,7 @@ export default class Footer extends Component {
             </Col>
             <Col md={3} sm={3} xs={12}>
               <div className={styles.contactUs}>
-                <h5>400-619-0909<p>周一至周五09:00~18:00</p></h5>
+                <h5><p>周一至周五09:00~18:00</p></h5>
                 <div className={styles.contactSocial}>
                   <a className={styles.contactWechat} />
                   <a className={styles.contactQQ} />
@@ -194,16 +194,17 @@ export default class Footer extends Component {
 
         {/* copyright */}
           <Row className={styles.copyright}>
-            <h2>Copyright © <span copyright-year="">2016</span>, Smartisan Digital Co., Ltd. All Rights Reserved.
-            <span>深圳市壹刻珠宝有限公司</span>
+            <h2>Copyright © <span copyright-year="">2017 </span>
+              <span>深圳市壹刻珠宝有限公司, </span>            
+              <span>粤ICP备16074226号</span>
             </h2>
-            <h4>
+            {/*<h4>
               <a href="http://www.miibeian.gov.cn/" target="_blank">
                 <span>京ICP备14041720号-1</span>
                 <span>京ICP证140622号</span>
                 <span>京公网安备11010502025474</span>
               </a>
-            </h4>
+            </h4>*/}
           </Row>
         </div>
       </div>

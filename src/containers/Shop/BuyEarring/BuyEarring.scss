@@ -1,0 +1,36 @@
+.buyEarringPage {
+  height: calc(100vh - 76px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+  .headline {
+    text-align: center;
+    margin-top: 46px;
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+  .more{
+    // color: #0070c9;
+    font-size: 18px;
+    line-height: 1.45455;
+    font-weight: 300;
+    letter-spacing: .016em;
+    // color: #5079d9;
+    color: #0070c9;
+    cursor: pointer;
+    font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
+    &:after {
+      font-family: FontAwesome;
+      content: "\f105";
+      padding-left: 10px;
+    }
+  }
+
+  .gridItem {
+    text-align: center;
+    //padding-bottom: 32px;
+    vertical-align: top;
+  }
+}

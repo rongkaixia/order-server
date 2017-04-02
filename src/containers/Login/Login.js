@@ -59,31 +59,38 @@ export default class Login extends Component {
     console.log("===========authKey=========");
     console.log(authKey);
     // const authKey = generateauthKey();
+    
+    // return (
+    //   <div className={styles.loginPage + ' container'}>
+    //     <Helmet title="Login"/>
+    //     <h1>Login</h1>
+    //     {!user &&
+    //     <div>
+    //       <form className="login-form form-horizontal" onSubmit={this.handleSubmit}>
+    //         <div className="form-group form-inline">
+    //           <input type="text" ref="username" placeholder="Enter a username" className="form-control"/>
+    //         </div>
+    //         <div className="form-group form-inline">
+    //           <input type="password" ref="password" placeholder="Enter a password" className="form-control"/>
+    //         </div>
+    //         <p>{loginError ? loginErrorDesc : ''}</p>
+    //         <button className="btn btn-success" onClick={this.handleSubmit}><i className="fa fa-sign-in"/>{' '}Log In
+    //         </button>
+    //       </form>
+    //       <p>This will "log you in" as this user, storing the username in the session of the API server.</p>
+    //     </div>
+    //     }
+    //     {user &&
+    //     <div>
+    //       <p>You are currently logged in as {user.username}.</p>
+    //     </div>
+    //     }
+    //   </div>
+    // );
+    
     return (
-      <div className={styles.loginPage + ' container'}>
-        <Helmet title="Login"/>
-        <h1>Login</h1>
-        {!user &&
-        <div>
-          <form className="login-form form-horizontal" onSubmit={this.handleSubmit}>
-            <div className="form-group form-inline">
-              <input type="text" ref="username" placeholder="Enter a username" className="form-control"/>
-            </div>
-            <div className="form-group form-inline">
-              <input type="password" ref="password" placeholder="Enter a password" className="form-control"/>
-            </div>
-            <p>{loginError ? loginErrorDesc : ''}</p>
-            <button className="btn btn-success" onClick={this.handleSubmit}><i className="fa fa-sign-in"/>{' '}Log In
-            </button>
-          </form>
-          <p>This will "log you in" as this user, storing the username in the session of the API server.</p>
-        </div>
-        }
-        {user &&
-        <div>
-          <p>You are currently logged in as {user.username}.</p>
-        </div>
-        }
+      <div className={styles.loginPage}>
+        <h3 className={styles.headline}>暂未开放</h3>
       </div>
     );
   }

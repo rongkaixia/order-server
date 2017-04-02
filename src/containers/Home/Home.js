@@ -47,29 +47,16 @@ export default class Home extends Component {
       prevArrow: <SamplePrevArrow />
     };
     const styles = require('./Home.scss');
-    const imgPath = require('./jade2.jpg');
     return (
       <article className={styles.galleryContainer}>
         <div className={styles.gallery}>
           <div className={styles.gallerySlideWrapper}>
             <Slider {...settings} style={{height: '100%'}}>
               <div className={styles.galleryItem}>
-                {/*<div className={styles.galleryImage}>1</div>*/}
-                <figure className={styles.galleryImage + ' ' + styles.galleryImageTest}/>
-              </div>
-              <div className={styles.galleryItem}>
-                <div className={styles.galleryItemContent + " absolute"}>
-                  <h3 className={"white"}>翠璨主石，<br/>星光璀璨。</h3>
-                  <div className={styles.galleryMoreblock}>
-                    <a className={styles.more}>立即购买</a>
-                  </div>
-                </div>
-                <figure className={styles.galleryImage + ' ' + styles.galleryImageClassicBlack}/>
-              </div>
-              <div className={styles.galleryItem}>
                 <div className={styles.galleryItemContent}>
                   <h3>冰钻翠芯，<br/>冷艳登场。</h3>
                   <div className={styles.galleryMoreblock}>
+                    <a className={styles.more} href={"/necklace"}>进一步了解</a>
                     <a className={styles.more}>立即购买</a>
                   </div>
                 </div>
@@ -79,10 +66,21 @@ export default class Home extends Component {
                 <div className={styles.galleryItemContent + " absolute"}>
                   <h3 className={"white"}>翠璨主石，<br/>星光璀璨。</h3>
                   <div className={styles.galleryMoreblock}>
+                    <a className={styles.more} href={"/ring"}>进一步了解</a>
                     <a className={styles.more}>立即购买</a>
                   </div>
                 </div>
                 <figure className={styles.galleryImage + ' ' + styles.galleryImageRingCircleBlue}/>
+              </div>
+              <div className={styles.galleryItem}>
+                <div className={styles.galleryItemContent + " absolute"}>
+                  <h3 className={"white"}>翠璨主石，<br/>星光璀璨。</h3>
+                  <div className={styles.galleryMoreblock}>
+                    <a className={styles.more + ' ' + 'inverse'} href={"/necklace"}>进一步了解</a>
+                    <a className={styles.more + ' ' + 'inverse'}>立即购买</a>
+                  </div>
+                </div>
+                <figure className={styles.galleryImage + ' ' + styles.galleryImageClassicBlack}/>
               </div>
             </Slider>
           </div>
@@ -95,7 +93,6 @@ export default class Home extends Component {
     console.log("=========styles========")
     console.log(JSON.stringify(styles))
     // require the logo image both from client and server
-    const logoImage = require('./logo.png');
     const slider = this.renderSlider()
     return (
       <div className={styles.home}>

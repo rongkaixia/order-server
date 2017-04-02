@@ -71,7 +71,7 @@ export default class UserCenter extends Component {
             <div className={styles.fpProductContent}>
               <h3 className={styles.fontWhiteLighter}>翠璨主石，星光璀璨。</h3>
               <div className={styles.fpHeroMoreblock}>
-                <a className={styles.more}>立即购买</a>
+                <a className={styles.more + ' ' + 'inverse'}>立即购买</a>
               </div>
             </div>
             <figure className={styles.necklaceBlack}/>

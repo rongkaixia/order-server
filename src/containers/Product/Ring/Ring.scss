@@ -1,0 +1,220 @@
+@import "~include-media/dist/_include-media.scss";
+
+$breakpoints: (phone: 320px, tablet: 768px, medium: 992px, desktop: 1024px, ex-large: 1680px);
+
+.ringPage {
+  .fpHero {
+    // padding-top: 199px;
+    color: #333;
+    &.padTop {
+      @include media(">=tablet") {
+        padding-top: 60px;
+      }
+      @include media("<tablet") {
+        padding-top: 40px;
+      }
+    }
+  }
+
+  .fpHeroMoreblock{
+    .more{
+      // color: #0070c9;
+      font-size: 18px;
+      line-height: 1.45455;
+      font-weight: 300;
+      letter-spacing: .016em;
+      // color: #5079d9;
+      color: #0070c9;
+      cursor: pointer;
+      font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
+      &:after {
+        font-family: FontAwesome;
+        content: "\f105";
+        padding-left: 10px;
+      }
+    }
+  }
+
+  .centeralign {
+      padding-left: 0;
+  }
+
+  .fpSectionContent {
+    max-width: 980px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 1;
+    height: 100%;
+
+    .fpProductContent {
+      text-align: center;
+      padding-top: 60px;
+      @include media(">=tablet") { // center things
+        justify-content: center;
+        display: flex;
+        flex-flow: row wrap;
+        align-content: center;
+        align-items: center;
+      }
+      &.gray {
+        background-color: #fafafa;
+        padding: 15px 10px 0 0;
+        background-clip: content-box;
+        @include media("<tablet") {
+          padding: 20px 0 20px 0;
+          background-clip: padding-box;
+        }
+      }
+    }
+  }
+  .fpSectionContentWider {
+    @extend .fpSectionContent;
+    max-width: 1600px;
+    margin-bottom: 5px;
+    @include media(">=tablet") {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+    .columnImage {
+      padding: 0;
+    }
+
+    .fpColumn {
+      background-color: #fafafa;
+      padding: 20px 20px;
+      background-clip: content-box;
+    }
+  }
+
+  .fpBillboard {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 1;
+    height: 100%;
+
+    .fpProductContent {
+      position: absolute;
+      z-index: 10;
+      left: 50%;
+      transform: translate(-50%,0);
+      top: 10%;
+      // @include media("<tablet") {
+      //   padding-top: 60px;
+      // }
+      // @include media(">=tablet") {
+      //   left: 167px;
+      //   top: 139px;
+      // }
+    } 
+    .fontWhiteLighter {
+      color: #ffffff;
+    }
+  }
+
+  .ringCrownWhite {
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin-left: auto;
+    margin-right: auto;
+
+    @include media(">=desktop") {
+      width: 528px;
+      height: 350px;
+      background-image: url('./ring_crown_large.png');
+    }
+    @include media(">=desktop", "retina2x") {
+      background-image: url('./ring_crown_large_x2.png');
+    }
+
+    @include media(">=tablet", "<desktop") {
+      width: 528px;
+      height: 350px;
+      background-image: url('./ring_crown_large.png');
+    }
+    @include media(">=tablet", "<desktop", "retina2x") {
+      background-image: url('./ring_crown_large_x2.png');
+    }
+
+    @include media("<tablet") {
+      width: 320px;
+      height: 247px;
+      background-image: url('./ring_crown_small.png');
+    }
+    @include media("<tablet", "retina2x") {
+      background-image: url('./ring_crown_small_x2.png');
+    }
+  }
+
+  .ringCircleWhite {
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin-left: auto;
+    margin-right: auto;
+    width: 320px;
+    height: 249px;
+    background-image: url('./ring_circle_small.png');
+
+    @include media("retina2x") {
+      background-image: url('./ring_circle_small_x2.png');
+    }
+  }
+
+  .ringDiamondWhite {
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin-left: auto;
+    margin-right: auto;
+    width: 312px;
+    height: 227px;
+    background-image: url('./ring_diamond_small.png');
+
+    @include media("retina2x") {
+      width: 320px;
+      height: 235px;
+      background-image: url('./ring_diamond_small_x2.png');
+    }
+  }
+
+  .ringCircleBlue {
+    width: auto;
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    margin-left: auto;
+    margin-right: auto;
+    background-position: top;
+    margin-top: 15px;
+    // background-color: #e6b2b2;
+    
+    @include media(">=ex-large") {
+      height: 550px;
+      background-image: url('./ring_circle_blue_large.jpg');
+    }
+
+    @include media(">=desktop", "<ex-large") {
+      height: 550px;
+      background-image: url('./ring_circle_blue_large.jpg');
+    }
+    @include media(">=desktop", "<ex-large", "retina2x") {
+      background-image: url('./ring_circle_blue_large.jpg');
+    }
+
+    @include media(">=tablet", "<desktop") {
+      background-image: url('./ring_circle_blue_large.jpg');
+      height: 550px;
+    }
+    @include media(">=tablet", "<desktop", "retina2x") {
+      background-image: url('./ring_circle_blue_large.jpg');
+    }
+
+    @include media("<tablet") {
+      background-image: url('./ring_circle_blue_small.jpg');
+      height: 550px;
+    }
+    @include media("<tablet", "retina2x") {
+      background-image: url('./ring_circle_blue_small_x2.jpg');
+    }
+  }
+}
